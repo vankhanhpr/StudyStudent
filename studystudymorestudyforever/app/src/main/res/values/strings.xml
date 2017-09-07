@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="title_login">Nhập thông tin đăng nhập</string>
+    <string name="import_email">Nhập email</string>
+    <string name="import_pass">Nhập mật khẩu</string>
+</resources>
