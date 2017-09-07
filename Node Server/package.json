@@ -1,0 +1,19 @@
+{
+  "name": "node",
+  "version": "0.0.1",
+  "description": "no description",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "config": {
+    "msvs_version": 2015
+  },
+  "dependencies": {
+    "oracledb": "^1.13.1",
+    "socket.io": "^2.0.3"
+  }
+}
