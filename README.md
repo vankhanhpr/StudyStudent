@@ -1,2 +1,0 @@
-# StudyStudent
-Commit thử
