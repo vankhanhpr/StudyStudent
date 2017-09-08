@@ -6,7 +6,7 @@ package com.example.myapplication.value
 
 object  Value{
 
-    var adress:String?="192.168.1.1:8080"
+    var adress:String?="http://127.0.0.1:8081"
     var connect:String?="connect"
     var disconnect:String?="disconnectSystem"
 

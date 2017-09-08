@@ -3,4 +3,5 @@
     <string name="title_login">Nhập thông tin đăng nhập</string>
     <string name="import_email">Nhập email</string>
     <string name="import_pass">Nhập mật khẩu</string>
+    <string name="button_login">Đăng nhập</string>
 </resources>
