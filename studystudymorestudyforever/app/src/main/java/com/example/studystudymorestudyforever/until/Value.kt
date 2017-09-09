@@ -5,7 +5,15 @@ package com.example.studystudymorestudyforever.until
  */
  object Value
 {
-    var adress:String?="http://127.0.0.1:8081"
+    var service:String?="CLIENT_MSG"
+    var address:String?="http://192.168.1.113:8081"
     var connect:String?="connect"
     var disconnect:String?="disconnectSystem"
+
+
+    //login
+    var workername_login= "login"
+    var servicename_login="login01"
+    //signin
+    var workername_signin=""
 }
