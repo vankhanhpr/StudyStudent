@@ -36,7 +36,7 @@ class OnEmitService()
         }
     }
 
-    var mSocket: Socket?= IO.socket(Value.adress)
+    var mSocket: Socket?= IO.socket(Value.address)
     var hasmap:ArrayList<Hasmap>?= ArrayList()
     var stnumber:Int?= 0
     var output : StringWriter?=null
@@ -45,7 +45,7 @@ class OnEmitService()
     fun Sevecie()
     {
         Log.d("connect","Connect")
-        var mSocket: Socket?= IO.socket(Value.adress)
+        var mSocket: Socket?= IO.socket(Value.address)
         mSocket!!.connect()
     }
 
@@ -159,7 +159,7 @@ class OnEmitService()
         var tem:Hasmap= Hasmap()
         tem.setKeySystem(getIns().stnumber!!.toString())
         tem.setKeyString(key)
-        tem.setStatus(1)//set trang thai cua yeu cau gui di
+        tem.setStatus(0)//set trang thai cua yeu cau gui di
         Log.d("Call_Receive_Server",tem.getKeyString()+tem.getKeySystem()+tem.getStatus())
         hasmap!!.add(tem)
         output=null
@@ -169,7 +169,7 @@ class OnEmitService()
         try
         {
             writeJsonStream(output!!,temp2!!)
-            mSocket!!.emit("REQ_MSG",output)
+            mSocket!!.emit(Value.service,output)
             Log.d("Call_Receive_Server",output.toString())
         }
         catch (e:Exception)
