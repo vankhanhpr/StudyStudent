@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mmenu1"
+        android:enabled="true"
+        android:title="@string/schedule"
+        android:icon="@drawable/icon_schedule"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/mmenu2"
+        android:enabled="true"
+        android:title="@string/chat"
+        android:icon="@drawable/icon_chat"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/mmenu3"
+        android:enabled="true"
+        android:title="@string/notification"
+        android:icon="@drawable/icon_notification"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/mmenu4"
+        android:enabled="true"
+        android:title="@string/teacher"
+        android:icon="@drawable/icon_teacher"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/mmenu5"
+        android:enabled="true"
+        android:icon="@drawable/icon_account"
+        android:title="@string/account"
+        app:showAsAction="ifRoom"/>
+</menu>

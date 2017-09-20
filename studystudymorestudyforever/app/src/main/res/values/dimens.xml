@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="text_size_title">16dip</dimen>
-    <dimen name="text_size_text_login">16dip</dimen>
+    <dimen name="text_size_text_login">15dip</dimen>
+    <dimen name="text_size_forgetpass">15dip</dimen>
+    <dimen name="pading_login">10dip</dimen>
+
+    <dimen name="text_size_main_title">16dip</dimen>
+    <dimen name="text_size_main_button">15dip</dimen>
+    <dimen name="text_size_main_nodata">20dip</dimen>
+
+    <!--độ rộng tiêu đề main và kích thước font chữ tiêu đề-->
+    <dimen name="size_title">45dip</dimen>
+    <dimen name="text_size_title_fragment">18dip</dimen>
+
+    detail listview schedule
+    <dimen name="sche_text_view">15dip</dimen>
+    <dimen name="sche_text_title">16dip</dimen>
+    <dimen name="padding_text_image">5dip</dimen>
+
 </resources>

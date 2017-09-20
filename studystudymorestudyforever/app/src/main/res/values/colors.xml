@@ -3,5 +3,22 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="text_title">#000000</color>
+    <color name="text_color_title_layout">#000000</color>
+    <color name="text_title">#FFFFFF</color>
+    <color name="text_color_small">#FFFFFF</color>
+
+    <!--màu của các dialog-->
+    <color name="dialog_title">#000000</color>
+    <color name="dialog_status">#000000</color>
+    <color name="dialog_button">#000000</color>
+
+    <!--màu của các button fragment và màu của tiêu đề-->
+    <color name="botton_fragment">#000000</color>
+    <color name="title_fragment_main">#000000</color>
+    <color name="color_title">#FFCC33</color>
+
+    color detail listview schedule
+    <color name="sche_color_title">#000000</color>
+    <color name="sche_color_view">#000000</color>
+
 </resources>

@@ -1,7 +1,73 @@
 <resources>
     <string name="app_name">studystudymorestudyforever</string>
-    <string name="title_login">Nhập thông tin đăng nhập</string>
+    <string name="login_title">Nhập thông tin đăng nhập</string>
     <string name="import_email">Nhập email</string>
     <string name="import_pass">Nhập mật khẩu</string>
     <string name="button_login">Đăng nhập</string>
+    <string name="signin_title">Trang đăng ký </string>
+    <string name="button_forget_password">Quên mật khẩu?</string>
+    <!--dialog login-->
+    <string name="dialog_title">Lỗi</string>
+    <string name="dialog_status">Email hoặc mật khẩu không hợp lệ vui lòng kiểm tra lại</string>
+    <string name="dialog_button_right">Đồng ý</string>
+    <string name="dialog_button_left">Hủy bỏ</string>
+   <!-- signin-->
+    <string name="sign_title">Đăng kí</string>
+    <string name="import_pass_signin">Nhập mật khẩu</string>
+    <string name="import_pass_again">Nhập lại mật khẩu</string>
+    <string name="signin_button">Đăng kí</string>
+
+    <!--nhập mã xác thực-->
+    <string name="import_code_title">Nhập mã xác thực</string>
+    <string name="import_code_textview">Mã xác thực</string>
+    <string name="import_code_button">Xác nhận</string>
+
+    <!--dialog restart pass word-->
+    <string name="restart_dialog_view">Email không hợp lệ vui lòng kiểm tra lại</string>
+
+    <!--forget pass word-->
+    <string name="forget_title">Quên mật khẩu</string>
+    <string name="forget_button">Lấy lại mật khẩu</string>
+
+    <!--Thay đổi mật khẩu-->
+    <string name="change_pass_title">Thay đỏi mật khẩu</string>
+    <string name="change_pass_import_oldpass">Nhập mật khẩu</string>
+    <string name="change_pass_import_newpass">Nhập mật khẩu mới</string>
+    <string name="change_pass_import_newpass_again">Nhập lại mật khẩu</string>
+    <string name="change_pass_button">Thay đổi mật khẩu</string>
+    <string name="change_pass_no_pass">Chưa nhận được mật khẩu</string>
+    <string name="change_pass_restart_pass">Chúng tôi đã gửi lại mật khẩu cho bạn vui lòng kiểm tra mail</string>
+
+
+    bottom nagivation view
+    <string name="teacher">Giáo viên</string>
+    <string name="account">Tài khoản</string>
+    <string name="schedule">Lịch học</string>
+    <string name="notification">Thông báo</string>
+    <string name="chat">Tin nhắn</string>
+
+
+    fragment account
+    <string name="changepass_button">Đổi mật khẩu</string>
+    <string name="manage_file_student">Quản lý hồ sơ</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="no_data">No data</string>
+
+    tiêu để của các fragment
+    <string name="schedule_fragment">Lịch học</string>
+    
+    detail list schedule
+    <string name="sche_time">Thời gian</string>
+    <string name="sche_name_teacher">Giáo viên</string>
+    <string name="sche_address">Địa điểm:</string>
+    <string name="sche_time_study">Giờ học</string>
+    <string name="sche_status">Tình trạng</string>
+    <string name="sche_date_study">Thời gian học:</string>
+    <string name="sche_start_time">Ngày bắt đầu:</string>
+    <string name="sche_end_time">Ngày kết thúc:</string>
+
+    nhập mã xác thực
+    <string name="text_status_import_code">Mã xác thực không hợp lệ vui lòng kiểm tra lại</string>
+
+
 </resources>

@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="10">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0sp"
@@ -20,52 +21,17 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/login_title"
+                android:text="@string/change_pass_title"
                 android:textColor="@color/text_title"
                 android:textSize="@dimen/text_size_title"
                 android:gravity="center"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center">
-            <RadioGroup
-                android:id="@+id/radio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-                <RadioButton
-                    android:id="@+id/radioStudent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Học sinh"
-                    android:checked="true"
-                    android:paddingRight="10dp"/>
-
-                <RadioButton
-                    android:id="@+id/radioTeacher"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Giáo vien" />
-                <RadioButton
-                    android:id="@+id/radioParent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:text="Phụ huynh" />
-
-            </RadioGroup>
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
             android:layout_weight="8"
-            android:paddingTop="0dp"
+            android:paddingTop="40dp"
             android:weightSum="10">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -82,9 +48,9 @@
                     android:layout_weight="3"
                     android:textSize="@dimen/text_size_text_login"
                     android:textColor="@color/text_title"
-                    android:text="@string/import_email"/>
+                    android:text="@string/change_pass_import_oldpass"/>
                 <EditText
-                    android:id="@+id/edt_user"
+                    android:id="@+id/edt_oldpass"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:textSize="@dimen/text_size_text_login"
@@ -108,9 +74,9 @@
                     android:layout_weight="3"
                     android:textSize="@dimen/text_size_text_login"
                     android:textColor="@color/text_title"
-                    android:text="@string/import_pass"/>
+                    android:text="@string/change_pass_import_newpass"/>
                 <EditText
-                    android:id="@+id/edt_pass"
+                    android:id="@+id/edt_newpass"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -120,12 +86,39 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:paddingLeft="@dimen/pading_login"
+                android:paddingRight="@dimen/pading_login"
+                android:layout_weight="1.5">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:textSize="@dimen/text_size_text_login"
+                    android:textColor="@color/text_title"
+                    android:text="@string/change_pass_import_newpass_again"/>
+                <EditText
+                    android:id="@+id/edt_newpassagain"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textSize="@dimen/text_size_text_login"
+                    android:layout_weight="7"/>
+            </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:id="@+id/tab_button_login"
+                android:id="@+id/tab_button_changepass"
                 android:background="@drawable/sharp_button_login">
                 <TextView
                     android:layout_width="match_parent"
@@ -133,7 +126,7 @@
                     android:gravity="center"
                     android:textSize="@dimen/text_size_text_login"
                     android:textColor="@color/text_title"
-                    android:text="@string/button_login"/>
+                    android:text="@string/changepass_button"/>
             </LinearLayout>
 
             <View
@@ -146,7 +139,7 @@
                 android:layout_weight="1"
                 android:paddingRight="10dip">
                 <LinearLayout
-                    android:id="@+id/goto_signin"
+                    android:id="@+id/btn_no_pass"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="right">
@@ -155,37 +148,14 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_title"
                         android:textSize="@dimen/text_size_forgetpass"
-                        android:text="@string/signin_title"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"/>
-            <LinearLayout
-                android:id="@+id/goto_restart_password"
-                android:layout_width="match_parent"
-                android:layout_height="0sp"
-                android:gravity="right"
-                android:layout_weight="1"
-                android:paddingRight="10dip">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="right">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/text_title"
-                        android:textSize="@dimen/text_size_forgetpass"
-                        android:text="@string/button_forget_password"/>
+                        android:text="@string/change_pass_no_pass"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
     <ProgressBar
-        android:id="@+id/progress_login"
+        android:id="@+id/progress_changepass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

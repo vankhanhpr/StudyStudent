@@ -9,13 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".login.Login">
+        <activity android:name=".welcom.Welcom">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".login.Login"/>
+        <activity android:name=".singin.SignIn"/>
+        <activity android:name=".fragment.main.MainActivity"/>
+        <activity android:name=".restartpass.RestartPass"/>
+        <activity android:name=".changepasss.ChangePass"/>
     </application>
 
 </manifest>
