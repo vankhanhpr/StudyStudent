@@ -18,9 +18,10 @@ class Welcom:AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_welcom)
 
+
         var secondDelay:Long?=5
         Handler().postDelayed(Runnable {
-            startActivity(Intent(this, Login::class.java))
+            startActivity(Intent(this, SelectAccount::class.java))
             finish()
         }, secondDelay!! *1000)
     }

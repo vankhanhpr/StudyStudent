@@ -17,6 +17,7 @@ import com.example.studystudymorestudyforever.encode.Encode
 import com.example.studystudymorestudyforever.fragment.main.MainActivity
 import com.example.studystudymorestudyforever.model.OnEmitService
 import com.example.studystudymorestudyforever.until.Value
+import com.example.studystudymorestudyforever.until.datalocal.LocalData
 import kotlinx.android.synthetic.main.changepass_layout.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -51,13 +52,13 @@ class ChangePass:AppCompatActivity() {
             dialog_changepass= Dialog(this)
             dialog_changepass!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog_changepass!!.setContentView(R.layout.dialog_changepass)
-            var btn_agree_dialogres =dialog_changepass!!.findViewById(R.id.btn_agree_dialogres)
+          /*  var btn_agree_dialogres =dialog_changepass!!.findViewById(R.id.btn_agree_dialogres)
             tv_show_error=dialog_changepass!!.findViewById(R.id.tv_show_error) as TextView
-
-            btn_agree_dialogres!!.setOnClickListener()
+*/
+           /* btn_agree_dialogres!!.setOnClickListener()
             {
                 dialog_changepass!!.cancel()
-            }
+            }*/
 
 
             var oldpass1= edt_oldpass.text.toString()
@@ -118,11 +119,11 @@ class ChangePass:AppCompatActivity() {
             var data2:Array<String> = arrayOf(email!!)
             call.Call_Service(Value.workername_restartpass,Value.servicename_restartpass,data2,"abc")
             dialog_changepass!!.show()
-            var bntok= dialog_changepass!!.findViewById(R.id.btn_agree_dialogres)
-            bntok.setOnClickListener()
+           // var bntok= dialog_changepass!!.findViewById(R.id.btn_agree_dialogres)
+            /*bntok.setOnClickListener()
             {
                 dialog_restartpass!!.cancel()
-            }
+            }*/
         }
     }
     //Nhận kết quả trả về
@@ -135,8 +136,14 @@ class ChangePass:AppCompatActivity() {
 
             if (event.getData()!!.getResult()=="1")
             {
-                var inte= Intent(applicationContext,MainActivity::class.java)
-                startActivity(inte)
+                if(LocalData.userlogin==0) {
+                    var inte = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(inte)
+                }
+                else
+                {
+                    finish()
+                }
             }
             else
             {

@@ -15,6 +15,16 @@ class  EmitService()
     private var InVal: Array<String>? = null  //List of input values
     private  var TotInVal: Int = 0//Total input values
 
+    private var  UserType:Int=0
+
+    fun getUserType():Int{
+        return UserType;
+    }
+
+    fun setUserType(userType:Int) {
+        UserType = userType
+    }
+
     fun getClientSeq(): Int {
         return ClientSeq
     }

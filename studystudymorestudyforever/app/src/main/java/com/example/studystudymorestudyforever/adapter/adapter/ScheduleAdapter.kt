@@ -1,4 +1,4 @@
-package com.example.studystudymorestudyforever.adapter.schedule
+package com.example.studystudymorestudyforever.adapter.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

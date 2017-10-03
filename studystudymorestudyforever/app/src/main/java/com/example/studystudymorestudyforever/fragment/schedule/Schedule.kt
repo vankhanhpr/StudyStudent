@@ -10,15 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.AdapterView
-import com.baoyz.swipemenulistview.SwipeMenuAdapter
 import com.baoyz.swipemenulistview.SwipeMenuCreator
 import com.baoyz.swipemenulistview.SwipeMenuItem
 import com.baoyz.swipemenulistview.SwipeMenuListView
 import com.example.studystudymorestudyforever.R
-import com.example.studystudymorestudyforever.adapter.schedule.ScheduleAdapter
+import com.example.studystudymorestudyforever.adapter.adapter.ScheduleAdapter
 import com.example.studystudymorestudyforever.until.fragment_account.ScheduleStudy
 import com.ramotion.foldingcell.FoldingCell
-import kotlinx.android.synthetic.main.main_schedule_fragment.*
 
 /**
  * Created by VANKHANHPR on 9/13/2017.

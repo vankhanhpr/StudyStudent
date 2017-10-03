@@ -21,4 +21,7 @@
     <color name="sche_color_title">#000000</color>
     <color name="sche_color_view">#000000</color>
 
+    color text recycle view
+    <color name="text_view_student">#000000</color>
+
 </resources>

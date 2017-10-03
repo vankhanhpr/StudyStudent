@@ -18,4 +18,18 @@
     <dimen name="sche_text_title">16dip</dimen>
     <dimen name="padding_text_image">5dip</dimen>
 
+    <dimen name="text_size_view_info_user">12dip</dimen>
+    <dimen name="pading">10dip</dimen>
+
+    size carview file student
+    <dimen name="name_text_file">16sp</dimen>
+    <dimen name="age_text_file">12sp</dimen>
+
+
+    size title
+    <dimen name="sizre_title_view">50dp</dimen>
+
+    size cardview bucking teacher
+    <dimen name="size_view_detail_teacher">13dp</dimen>
+
 </resources>

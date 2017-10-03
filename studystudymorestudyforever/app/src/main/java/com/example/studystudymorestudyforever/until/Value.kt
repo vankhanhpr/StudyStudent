@@ -17,8 +17,8 @@ package com.example.studystudymorestudyforever.until
     var value2:String?= "value2"
 
 
-    //login
-    var workername_login= "login"
+    //login_layout
+    var workername_login= "login_layout"
     var servicename_login="login01"
     var key_login="calllogin"
     //signin
@@ -37,5 +37,39 @@ package com.example.studystudymorestudyforever.until
     var workername_changepasss=""
     var servicename_changepass=""
     var key_changepass="call_changepass"
+    //get infor user
+    var workername_getuser=""
+    var servicename_getuser=""
+    var key_getuser=""
+    //change info user
+    var workername_changeinfouser=""
+    var service_changeinfouser=""
+    var key_change_infor_user =""
+
+    //get list file student
+    var workername_getfile=""
+    var servicename_getfile=""
+    var key_getfile="call_getfile"
+    //get list noticafication
+    var workername_getlistnotif=""
+    var servicename_getlistnotif=""
+    var key_getlistnotif="callgetlistnotif"
+
+    //search friend
+    var workername_searchfriend= ""
+    var servicename_searchfriend=""
+    var key_searchfriend= "callsearch"
+
+    //add friend
+    var workername_addfriend =""
+    var servicename_addfriend =""
+    var key_addfriend=""
+
+    //signin  course
+
+    var workername_signin_course=""
+    var servicename_signin_course=""
+    var key_call_signin_course="callsignincourse"
+
 
 }

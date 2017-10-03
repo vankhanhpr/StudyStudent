@@ -15,56 +15,63 @@ import com.example.studystudymorestudyforever.fragment.schedule.Schedule
 import com.example.studystudymorestudyforever.fragment.teacher.Teacher
 import com.example.studystudymorestudyforever.library_bottomnagivation.BottomNavigationViewEx
 import android.support.design.widget.BottomNavigationView;
+import android.R.id.edit
+import android.content.Context
+import android.content.SharedPreferences
+import com.example.studystudymorestudyforever.until.datalocal.LocalData
 
-class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSelectedListener{
 
-    var account: Account?=null
-    var chat:Chat?=null
-    var notificatio:Notification?=null
-    var schedule:Schedule?=null
-    var teacher:Teacher?=null
+class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSelectedListener {
+
+    var account: Account? = null
+    var chat: Chat? = null
+    var notificatio: Notification? = null
+    var schedule: Schedule? = null
+    var teacher: Teacher? = null
     private var fragmentManager: FragmentManager? = null
     private var fragmentTransaction: FragmentTransaction? = null
 
-    var menu: Menu?=null
+    var menu: Menu? = null
 
-    var fragment_main:LinearLayout?=null
-    var bottomNavigationView:BottomNavigationViewEx?=null
+    var fragment_main: LinearLayout? = null
+    var bottomNavigationView: BottomNavigationViewEx? = null
 
+    var email:String?=""
+    var pass:String?=""
+    var editor : SharedPreferences.Editor?=null
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation_main) as BottomNavigationViewEx
-        fragment_main= findViewById(R.id.fragment_main) as LinearLayout
+        //add editor luu trang thai dang nhap
+        savingPreferences()
 
+        bottomNavigationView = findViewById(R.id.bottom_navigation_main) as BottomNavigationViewEx
+        fragment_main = findViewById(R.id.fragment_main) as LinearLayout
 
 
         addFragment()
         createAnimationBottom()
-        menu=bottomNavigationView!!.menu
+        menu = bottomNavigationView!!.menu
         bottomNavigationView!!.setOnNavigationItemSelectedListener(this)
     }
 
+    fun addFragment() {
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager!!.beginTransaction()
 
-    fun addFragment()
-    {
-        fragmentManager =getSupportFragmentManager();
-        fragmentTransaction=fragmentManager!!.beginTransaction()
-
-        account= Account()
-        schedule= Schedule()
+        account = Account()
+        schedule = Schedule()
         notificatio = Notification()
-        teacher= Teacher()
-        chat= Chat()
+        teacher = Teacher()
+        chat = Chat()
 
-        fragmentTransaction!!.add(R.id.fragment_main,schedule)
-        fragmentTransaction!!.add(R.id.fragment_main,chat)
-        fragmentTransaction!!.add(R.id.fragment_main,notificatio)
-        fragmentTransaction!!.add(R.id.fragment_main,teacher)
-        fragmentTransaction!!.add(R.id.fragment_main,account)
+        fragmentTransaction!!.add(R.id.fragment_main, schedule)
+        fragmentTransaction!!.add(R.id.fragment_main, chat)
+        fragmentTransaction!!.add(R.id.fragment_main, notificatio)
+        fragmentTransaction!!.add(R.id.fragment_main, teacher)
+        fragmentTransaction!!.add(R.id.fragment_main, account)
 
 
         fragmentTransaction!!.hide(schedule)
@@ -77,22 +84,21 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
         fragmentTransaction!!.commit()
     }
 
-    fun createAnimationBottom()
-    {
+    fun createAnimationBottom() {
         bottomNavigationView!!.setTextVisibility(true)     //Ẩn chữ
         bottomNavigationView!!.enableAnimation(true)       //Ẩn đi hiệu ứng chuyện tab
         bottomNavigationView!!.enableShiftingMode(false)     //Ẩn đi hiệu hứng chuyển tab
         bottomNavigationView!!.enableItemShiftingMode(false)
         bottomNavigationView!!.setIconVisibility(true)
 
-        bottomNavigationView!!.setIconTintList(0,null)
-        bottomNavigationView!!.setIconTintList(1,null)
-        bottomNavigationView!!.setIconTintList(2,null)
-        bottomNavigationView!!.setIconTintList(3,null)
-        bottomNavigationView!!.setIconTintList(4,null)
+        bottomNavigationView!!.setIconTintList(0, null)
+        bottomNavigationView!!.setIconTintList(1, null)
+        bottomNavigationView!!.setIconTintList(2, null)
+        bottomNavigationView!!.setIconTintList(3, null)
+        bottomNavigationView!!.setIconTintList(4, null)
     }
-    override fun onNavigationItemSelected(item: MenuItem): Boolean
-    {
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
         var fragmentTransaction = fragmentManager!!.beginTransaction()
         fragmentTransaction.hide(schedule)
         fragmentTransaction.hide(chat)
@@ -100,28 +106,22 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
         fragmentTransaction.hide(teacher)
         fragmentTransaction.hide(account)
 
-        when (item.itemId)
-        {
-            R.id.mmenu1 ->
-            {
+        when (item.itemId) {
+            R.id.mmenu1 -> {
                 setTab(0)
                 fragmentTransaction!!.show(schedule)
             }
-            R.id.mmenu2 ->
-            {
+            R.id.mmenu2 -> {
                 fragmentTransaction!!.show(chat)
             }
-            R.id.mmenu3 ->
-            {
+            R.id.mmenu3 -> {
 
                 fragmentTransaction!!.show(notificatio)
             }
-            R.id.mmenu4 ->
-            {
+            R.id.mmenu4 -> {
                 fragmentTransaction!!.show(teacher)
             }
-            R.id.mmenu5 ->
-            {
+            R.id.mmenu5 -> {
                 fragmentTransaction!!.show(account)
             }
         }
@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
         return true
     }
 
-    fun setTab(currentTabindex:Int) {
+    fun setTab(currentTabindex: Int) {
 
         when (currentTabindex) {
             0 -> {
@@ -142,5 +142,20 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
                 menu!!.getItem(4).setIcon(R.drawable.icon_account)
             }
         }
+    }
+
+    //ham luu trang thai dang nhap
+    fun savingPreferences()
+    {
+        //tạo đối tượng getSharedPreferences
+        var pre:SharedPreferences = getSharedPreferences("status",Context.MODE_PRIVATE)
+        //tạo đối tượng Editor để lưu thay đổi
+        editor = pre.edit()
+        //lưu vào editor
+        editor!!.putString("user",LocalData.email)
+        editor!!.putString("pwd",LocalData.pass)
+        editor!!.putInt("ustype",LocalData.usertype)
+        //chấp nhận lưu xuống file
+        editor!!.commit()
     }
 }

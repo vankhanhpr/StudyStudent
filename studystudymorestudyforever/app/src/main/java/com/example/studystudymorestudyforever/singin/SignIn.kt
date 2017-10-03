@@ -122,7 +122,7 @@ class  SignIn:AppCompatActivity()
         }
     }
 
-    //Nhận kết quả trả về khi login
+    //Nhận kết quả trả về khi login_layout
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MessageEvent) {
         if (event.getKey() == Value.key_sigin)

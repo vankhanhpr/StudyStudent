@@ -6,7 +6,11 @@
     <string name="button_login">Đăng nhập</string>
     <string name="signin_title">Trang đăng ký </string>
     <string name="button_forget_password">Quên mật khẩu?</string>
-    <!--dialog login-->
+
+    <!--welcome-->
+    <string name="title_welcom">Welcom</string>
+
+    <!--dialogin_layoutogin-->
     <string name="dialog_title">Lỗi</string>
     <string name="dialog_status">Email hoặc mật khẩu không hợp lệ vui lòng kiểm tra lại</string>
     <string name="dialog_button_right">Đồng ý</string>
@@ -68,6 +72,21 @@
 
     nhập mã xác thực
     <string name="text_status_import_code">Mã xác thực không hợp lệ vui lòng kiểm tra lại</string>
+
+    cập nhật thông tin cá nhân
+    <string name="info_user">Trang thông tin cá nhân</string>
+    
+    <string name="info_name">Họ tên:</string>
+    <string name="info_email">Email:</string>
+    <string name="info_age">Ngày sinh:</string>
+    <string name="info_phone">Số điện thoại</string>
+    <string name="info_address">Địa chỉ</string>
+    <string name="info_button_update_user">Cập nhật thông tin cá nhân</string>
+
+    danh sách hồ sơ học sinh
+    <string name="title_file_student">Danh sách hồ sơ</string>
+     xem chi tiet giao vien va dang ki hoc
+    <string name="title_select_teacher">Trang đăng kí học</string>
 
 
 </resources>

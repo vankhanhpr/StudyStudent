@@ -245,6 +245,7 @@ class OnEmitService()
         }
         jsonWriter.endArray()
         jsonWriter.name("TotInVal").value(json.getTotInVal())
+        jsonWriter.name("UserType").value(json.getUserType())
         jsonWriter.endObject()// end address
     }
 }
