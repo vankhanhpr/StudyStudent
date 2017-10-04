@@ -1,68 +1,86 @@
 
-var oracledb = require('oracledb');
-var dbconfig = require("../Configuration/dbconfig.js");
-exports.executeQuery= function(sql,callback,param,operation){
-  oracledb.getConnection({
-    user :dbconfig.user,
-    password :dbconfig.password ,
-    connectionString: dbconfig.connectionString
-  },function(err,connection){
-    if(err){
-      callback(null,err.message);
-      return;
+const oracledb = require('oracledb')
+, dbconfig = require("../Configuration/dbconfig.js");
+
+module.exports.executeQuery = executeQuery;
+async function executeQuery (sql,param,operation){
+  /**
+   * sql : string query must have
+   * param : data pass to function to process 
+   * operation : "I" insert , "Q" query , "U" update , "D" delete , "C" commit 
+   */
+    let conn;
+    try{
+      conn = await oracledb.getConnection(dbconfig);
+      let result = await requestOperation(operation,conn,sql,param);
+      return result;
+    }catch(err){
+      console.log(err);
+    }finally{
+      conn ? doRelease(conn):undefined;
     }
-    /* connection.execute(sql,{},
-      { outFormat: oracledb.OBJECT, extendedMetaData: true }
-,function(err,result){
-      if(err){
-        callback(null,err.message);
-        return;
-      }
-      //console.log(result.rows);
-      doRelease(connection);
-      callback(result.rows);
-    }); */
-    switch(operation){
-      case "Q": doSelect(connection,sql,callback);break;
-      case "I": doInsert(connection,sql,param,callback);break;
-      case "U": doUpdate(connection,sql,callback);break;
-      case "D": doDelete(connection,sql,callback);break;
-    }
-  });
 }
 
-function doRelease(connection){
-  connection.close(
-    function(err){
-        if(err){
-          console.error(err.message);
-          return;
-        }
-  });
+
+
+const doRelease = async (conn)=>{
+  try{
+    return await conn.close(); 
+  }catch(err){
+    console.log(err);
+  }
 }
+
 //done
-function doSelect(connection,sql,callback){
-  connection.execute(sql,{},{outFormat:oracledb.OBJECT,extendedMetaData:true},function(err,result){
-    if(err){
-      callback(null,err.message);
-      return;
-    }
-    doRelease(connection);
-    callback(result.rows);
-  });
+const doSelect = async (conn,sql,param)=>{
+  try{
+    let result = await conn.execute(sql,param,{outFormat:oracledb.OBJECT,extendedMetaData:true});
+    return result.rows;
+  }catch(err){
+    console.log('Select error ',err);
+  }
 }
+
+
 //done
-function doInsert(connection,sql,param,callback){
-  console.log(sql);
-  connection.execute(sql,param,{autoCommit:true},function(err,result){
-    if(err){
-      callback(null,err.message);
-      return;
-    }
-    doRelease(connection);   
-    callback(result.rowsAffected);
-  })
+const doInsert = async (conn,sql,param)=>{
+  try{
+    let result = await conn.execute(sql,param,{autoCommit:true})
+    return result.rowsAffected;
+  }catch(err){
+    console.log('Insert error ',err);
+  }
 }
 
+const doUpdate = async (conn,sql,param)=>{
+  try{
+    let result = await conn.execute(sql,param,{autoCommit:true});
+    return result.rowsAffected;
+  }catch(err){
+    console.log('Update error ',err);
+  }
+}
 
+const commitChange = async(conn)=>{
+  try{
+    return await conn.commit();
+  }catch(err){
+    console.log('Commit Error Rollback plz ',err);
+  }
+  
+}
+
+const requestOperation = async (operation,...args) => {
+  //console.log(...args);
+  let result;
+  switch(operation){
+    case "Q": result = await doSelect(...args);break;
+    case "I": result = await doInsert(...args);break;
+    case "U": result = await doUpdate(...args);break;
+    case "D": result = await doDelete(...args);break;
+    case "C": await commitChange(...args);break;
+    default : result = undefined;break; 
+  }
+  return result;
+}
 

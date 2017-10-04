@@ -1,5 +1,6 @@
 module.exports = {
-  user:"system",
+  user:"ANONYMOUS",
   password:"123",
-  connectString:"localhost/tlcn",
+  connectString:"localhost/MYTLCN",
+  host:"http://localhost:8081"
 }

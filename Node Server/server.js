@@ -1,41 +1,59 @@
-var usercontroller = require('./Controller/usercontroller.js');
-var DataError = require('./Exception/DataError.js');
-var express =  require('express')
-var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-var path = require('path');
-server.listen(8081||process.env.PORT);
+//require section
+//begin
+var usercontroller = require('./Controller/usercontroller.js')
+, chatcontroller = require("./Controller/chatcontroller")
+, DataError = require('./Exception/DataError.js')
+, express =  require('express')
+, app = express()
+, server = require('http')
+, io = require('socket.io')(server)
+, path = require('path')
+, myusercontroller = require('./MyAPI/myusercontroller.js')
+, textvalidate = require("./Validate/textvalidate")
+, emailvalidate = require("./Validate/emailvalidate.js");// shit
+//end
+//Load router
+
+//initialize variable section
+//begin
+
+//end
+server.createServer(app).listen(8081||process.env.PORT);
+
+app.use("/myusercontroller",myusercontroller);
+
 
 app.use(express.static(path.join(__dirname, 'ClientTest')));
 app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/index.html');
 });
-
+app.use("/static",express.static(path.join(__dirname,"public")))
 
 io.on('connection',(socket)=>{
   //List User 
-  console.log(socket.id+" connected");
-
-  socket.on(usercontroller.UserControllerObject.listUserObject.ListenClient,function(datafromclient){
+  socket.on("CLIENT_MSG",function(datafromclient){
     //usercontroller.UserControllerObject.listUserObject.Handler(datafromclient,socket);
-    datafromclient = JSON.parse(datafromclient);
-    if(datafromclient.WorkerName === "login"){
-        switch(datafromclient.ServiceName){
-          case "login01": console.log(datafromclient);usercontroller.UserControllerObject.AuthenticateUser.Handler(datafromclient,socket); break;
-          default: break;
-        }
+
+
+    if(textvalidate.isEmpty(datafromclient)){
+      //attach timeout
+      io.attach(server,{
+        //not confirm not sure about timeout formatjson
+        //pingTimeout:datafromclient.timeout
+      })
+      datafromclient = JSON.parse(datafromclient);
+     
     }
   });
 
-  //Check User
-  socket.on(usercontroller.UserControllerObject.AuthenticateUser.ListenClient,(datafromclient)=>{
-    console.log(datafromclient);
-    usercontroller.UserControllerObject.AuthenticateUser.Handler(datafromclient,socket);
-  });
 
-  //
-  socket.on(usercontroller.UserControllerObject.RegisterUser.ListenClient,(datafromclient)=>{
-    usercontroller.UserControllerObject.RegisterUser.Handler(datafromclient,socket);
-  });
 });
+
+
+
+
+
+
+//Share io
+usercontroller(io);
+chatcontroller(io);
