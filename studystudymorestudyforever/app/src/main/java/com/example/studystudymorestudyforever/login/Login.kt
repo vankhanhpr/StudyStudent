@@ -10,6 +10,7 @@ import android.graphics.drawable.AnimationDrawable
 import android.app.Dialog
 import android.content.Intent
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.*
@@ -24,8 +25,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONObject
 import com.afollestad.materialdialogs.MaterialDialog
-
-
+import com.example.studystudymorestudyforever.until.datalocal.LocalData
 
 
 /**
@@ -46,13 +46,20 @@ class Login:AppCompatActivity()
     var tv_show_error:TextView?=null
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_layout)
 
         EventBus.getDefault().register(this)
+
+        if(LocalData.usertype==2)//không cho giáo viên đăng kí
+        {
+            goto_signin.visibility=View.GONE
+        }
+        else//cho phép phụ huynh và học sinh đăng kí
+        {
+            goto_signin.visibility=View.VISIBLE
+        }
 
         call.Sevecie()
         call.ListenEvent()
@@ -101,7 +108,7 @@ class Login:AppCompatActivity()
             }
             else {
                 progress_login!!.visibility = View.VISIBLE
-                var data: Array<String> = arrayOf(user!!, pass2!!)
+                var data: Array<String> = arrayOf(user!!, pass!!)
                 call.Sevecie()
                 call.Call_Service(Value.workername_login, Value.servicename_login, data!!, Value.key_login)
 
@@ -157,7 +164,6 @@ class Login:AppCompatActivity()
             finish()
         }
     }
-
     //Nhận kết quả trả về khi login_layout
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MessageEvent) {
@@ -166,11 +172,21 @@ class Login:AppCompatActivity()
             mCountDownTimer!!.cancel() //turn off timeout
             progress_login!!.visibility= View.GONE//turn off loading
 
+
             var json: ArrayList<JSONObject>? = event.getData()!!.getData()
+            Log.d("login1212","asfhksadfhksdfh" + event.getData().toString())
             var temp=readJson(json!!)
             if (temp.getC0()=="Y")
             {
-                sendToActivityMain(user!!)
+                LocalData.email= user!!
+                if(LocalData.usertype==2)
+                {
+                    sendToActivityMainTeacher(user!!)
+                }
+                else
+                {
+                    sendToActivityMain(user!!)
+                }
             }
             else
             {
@@ -181,13 +197,9 @@ class Login:AppCompatActivity()
                 {
                     dialog_login!!.cancel()
                 }
-
             }
         }
     }
-
-
-
     public override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
@@ -225,6 +237,7 @@ class Login:AppCompatActivity()
     fun readJson(json1: ArrayList<JSONObject>): JsonLogin
     {
         var jsonO: JSONObject?=null
+
         if(json1.size>0)
         {
             jsonO = json1[0]
@@ -237,6 +250,17 @@ class Login:AppCompatActivity()
 
     //Hàm chuyển qua Login
     fun sendToActivityMain(value: String) {
+
+        var intent3 = Intent(applicationContext,MainActivity::class.java)
+        var bundle = Bundle()
+        bundle.putString(Value.value, value)
+        intent3.putExtra(Value.bundle, bundle)
+        startActivity(intent3)
+        finish()
+    }
+
+    //Hàm chuyển qua Login
+    fun sendToActivityMainTeacher(value: String) {
 
         var intent3 = Intent(applicationContext,MainActivity::class.java)
         var bundle = Bundle()

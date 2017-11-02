@@ -50,6 +50,7 @@
                     android:id="@+id/edt_import_code"
                     android:layout_width="0dp"
                     android:textSize="@dimen/text_size_text_login"
+                    android:inputType="number"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"/>
             </LinearLayout>

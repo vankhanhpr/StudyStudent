@@ -198,13 +198,17 @@ class OnEmitService()
         var TransId: String? =json.getString("TransId")
         var ClientSeq:Int? =json.getInt("ClientSeq")
         //jsonArray
-        var jsonOj:String?= json.getString("Data")
+        var jsonArry:String?= json.getJSONArray("Data").toString()/*.substring(1,json.getJSONArray("Data").toString().length-1)*/
+
         var s:String ="{c0:N}"
         var js2 = JSONObject(s)
         var list2:ArrayList<JSONObject> = ArrayList()
         list2.add(js2)
-        if(jsonOj!="") {
-            var js2 = JSONArray(jsonOj)
+
+
+        if(jsonArry!="") {
+            var js2 = JSONArray(jsonArry)
+
             list2.clear()
             for (i in 0..js2!!.length() - 1)
             {
@@ -214,15 +218,19 @@ class OnEmitService()
         var Code :String? =json.getString("Code")
         var Message:String? =json.getString("Message")
         var Result :String? =json.getString("Result")
+        var UserType:Int?= json.getInt("UserType")
+
 
         var ser : OnService = OnService()
 
         ser.setTransId(TransId!!)
         ser.setClientSeq(ClientSeq!!)
         ser.setData(list2)
+
         ser.setCode(Code!!)
         ser.setMessage(Message!!)
         ser.setResult(Result!!)
+        ser.setUserType(UserType.toString())
         return ser
     }
 
