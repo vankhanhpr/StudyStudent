@@ -122,5 +122,8 @@
     <string name="delete_course">Xóa môn học</string>
     <string name="add_course">Thêm môn học</string>
 
+    Gửi thông báo
+    <string name="btn_sent_notif">Gửi thông báo</string>
+
 
 </resources>

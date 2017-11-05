@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.TextView
 import com.example.studystudymorestudyforever.R
 import com.example.studystudymorestudyforever.until.course.CourseStudent
+
 
 /**
  * Created by VANKHANHPR on 11/1/2017.
@@ -28,10 +30,12 @@ class ListCourseAdapter(context: Context, schedule:ArrayList<CourseStudent>): Ba
 
         var holder: ViewHolder
         val view: View?
+        var course:CourseStudent = schedule!![position]
 
         if(convertView == null){
             view = mInflator.inflate(R.layout.child_view_schedule_student_layout,parent,false) //error in this line
             holder = ViewHolder(view)
+
             view!!.tag=holder
         }
         else
@@ -39,6 +43,8 @@ class ListCourseAdapter(context: Context, schedule:ArrayList<CourseStudent>): Ba
             view=convertView
             holder = convertView.tag as ViewHolder
         }
+        holder.tv_child_course!!.setText(course.getLOCATION())
+        holder.tv_child_time!!.setText(course.getTIME())
         return view
     }
 
@@ -54,19 +60,21 @@ class ListCourseAdapter(context: Context, schedule:ArrayList<CourseStudent>): Ba
         return schedule!!.size
     }
 
-    private class ViewHolder(row: View?) {
-        /*var tv_time:TextView? = null
-        var tv_doctor_name:TextView? = null
-        var tv_mon_baby_name:TextView? = null
-        var tv_status:TextView? = null*/
-
-        /*init {
-            this.tv_time = row?.findViewById(R.id.time_sche) as TextView
-            this.tv_doctor_name = row?.findViewById(R.id.doctor_name) as TextView
-            this.tv_mon_baby_name = row?.findViewById(R.id.mom_baby_name) as TextView
-            this.tv_status = row?.findViewById(R.id.status) as TextView
-
-        }*/
+    class ViewHolder(row: View?) {
+        var tv_child_course:TextView? = null
+        var tv_child_time:TextView? = null
+        init {
+            this.tv_child_course = row?.findViewById(R.id.tv_child_course) as TextView
+            this.tv_child_time = row?.findViewById(R.id.tv_child_time) as TextView
+        }
     }
+
+    /*fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        var course =schedule!!.get(position)
+        holder.tv_child_course!!.setText(course.getLOCATION())
+        holder.tv_child_time!!.setText(course.getTIME())
+
+    }*/
+
 
 }

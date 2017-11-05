@@ -11,7 +11,7 @@ import android.widget.LinearLayout
 import com.example.studystudymorestudyforever.fragment.account.Account
 import com.example.studystudymorestudyforever.fragment.chat.Chat
 import com.example.studystudymorestudyforever.fragment.notification.Notification
-import com.example.studystudymorestudyforever.fragment.schedule.Schedule
+
 import com.example.studystudymorestudyforever.fragment.teacher.Teacher
 import com.example.studystudymorestudyforever.library_bottomnagivation.BottomNavigationViewEx
 import android.support.design.widget.BottomNavigationView;
@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.example.myapplication.value.MessageEvent
+import com.example.studystudymorestudyforever.fragment.schedule.SchedulerCalendar
 import com.example.studystudymorestudyforever.model.OnEmitService
 import com.example.studystudymorestudyforever.until.Value
 import com.example.studystudymorestudyforever.until.datalocal.LocalData
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
     var account: Account? = null
     var chat: Chat? = null
     var notificatio: Notification? = null
-    var schedule: Schedule? = null
+    var schedule: SchedulerCalendar? = null
     var teacher: Teacher? = null
     private var fragmentManager: FragmentManager? = null
     private var fragmentTransaction: FragmentTransaction? = null
@@ -101,8 +102,6 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
 
             }
         }
-
-
     }
 
     override fun onStop() {
@@ -118,7 +117,7 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
         fragmentTransaction = fragmentManager!!.beginTransaction()
 
         account = Account()
-        schedule = Schedule()
+        schedule = SchedulerCalendar()
         notificatio = Notification()
         teacher = Teacher()
         chat = Chat()

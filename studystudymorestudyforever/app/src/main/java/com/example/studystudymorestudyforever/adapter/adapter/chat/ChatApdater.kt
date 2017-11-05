@@ -37,7 +37,7 @@ class ChatApdater(context: Context, chat:ArrayList<ChatData>,iner:ISetMessage): 
         val animal = chat!!.get(position)
         holder.itemView.setOnClickListener()
         {
-            iner.chat()
+            iner.chat(chat!![position].getChatID().toString())
         }
     }
     // total number of rows

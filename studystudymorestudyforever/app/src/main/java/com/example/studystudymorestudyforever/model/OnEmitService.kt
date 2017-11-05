@@ -80,11 +80,20 @@ class OnEmitService()
                         {
                             if(getIns().hasmap!![i].getKeySystem()== tm.toString())
                             {
-                                Log.d("hass",hasmap!!.size!!.toString()+" "+ getIns().hasmap!![i].getKeyString()+x.getMessage())
+                                //Log.d("hass",hasmap!!.size!!.toString()+" "+ getIns().hasmap!![i].getKeyString()+x.getMessage())
                                 ttt= getIns().hasmap!![i].getKeyString()
                                 getIns().hasmap!![i].setStatus(0)
                             }
                         }
+                        if(x.getResult()=="-1")
+                        {
+                            ttt= "message"
+                        }
+                        else
+                            if(x.getResult()=="-2")
+                            {
+                                ttt="notification"
+                            }
                         message.setKey(ttt!!)
                         message.setData(x)
                         //truyền data đi

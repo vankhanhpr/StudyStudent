@@ -117,5 +117,10 @@ package com.example.studystudymorestudyforever.until
   var servicename_get_coursestudent=""
   var key_getlistcoursestudent="callgetlistoursestudent"
 
+ // Nhận và gửi tin nhắn
+  var workername_sendmessager= ""
+  var servicename_sendmessage=""
+  var key_sentmessage="callsendmessage"
+
 
 }

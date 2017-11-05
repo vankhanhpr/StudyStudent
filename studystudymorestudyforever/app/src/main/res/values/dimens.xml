@@ -37,4 +37,7 @@
     pading datail course
     <dimen name="pading_view_coures">20dp</dimen>
 
+    textsize add notification
+    <dimen name="textsize_add_notifice">15dp</dimen>
+
 </resources>

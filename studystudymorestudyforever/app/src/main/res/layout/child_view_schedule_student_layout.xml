@@ -9,14 +9,16 @@
         android:orientation="vertical"
         android:padding="@dimen/pading_view_coures">
         <TextView
+            android:id="@+id/tv_child_course"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Vật lý - Cô Mai"
+            android:text="Vật lý"
             android:textSize="15dp"
             android:gravity="center"
             android:paddingBottom="5dp"
             android:textColor="@color/text_view_student" />
         <TextView
+            android:id="@+id/tv_child_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

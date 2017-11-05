@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".fragment.schedule.ShedulerCalendar">
+        <activity android:name=".fragment.notification.TeacherAddNotifi">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -25,7 +25,7 @@
         <activity android:name=".fragment.teacher.courseteacher.SelectCourse"/>
         <activity android:name=".fragment.account.ChangeInforUser"/>
         <activity android:name=".fragment.account.file.FileStudent"/>
-        <activity android:name=".fragment.chat.ChatMessager"/>
+        <!--<activity android:name=".fragment.chat.ChatMessager"/>-->
         <activity android:name=".fragment.scheduleteacher.addcourse.AddCourse"/>
         <activity android:name=".fragment.scheduleteacher.ScheduleTeacherUpdateCourse"/>
 
