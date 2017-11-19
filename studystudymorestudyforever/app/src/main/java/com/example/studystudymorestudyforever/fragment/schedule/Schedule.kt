@@ -40,6 +40,7 @@ class Schedule: Fragment()
 
         var adapter= ScheduleAdapter(context,tem!!)
         lv_schedulestudy!!.adapter= adapter
+
         lv_schedulestudy!!.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             var abc:FoldingCell= view.findViewById(R.id.folding_cell) as FoldingCell
             abc.toggle(false)

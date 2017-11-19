@@ -27,7 +27,7 @@ class MessageEvent()
         return data
     }
 
-    fun setData(service: OnService) {
+    fun setData(data: OnService) {
         this.data = data
     }
 }

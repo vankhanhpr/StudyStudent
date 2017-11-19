@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.studystudymorestudyforever.R
+import com.example.studystudymorestudyforever.myinterface.ISetMessage
 import com.example.studystudymorestudyforever.until.chat.ChatData
 
 import java.util.*
@@ -13,15 +14,17 @@ import java.util.*
 /**
  * Created by VANKHANHPR on 10/1/2017.
  */
-class ChatApdater(context: Context, chat:ArrayList<ChatData>):  RecyclerView.Adapter<ChatApdater.ViewHolder>() {
+class ChatApdater(context: Context, chat:ArrayList<ChatData>,iner:ISetMessage):  RecyclerView.Adapter<ChatApdater.ViewHolder>() {
 
 
     private var chat :List<ChatData> ? = Collections.emptyList()
     private var mInflater: LayoutInflater?=null
+    private  var iner:ISetMessage
 
     init {
         this.mInflater = LayoutInflater.from(context)
         this.chat = chat
+        this.iner=iner
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var view = mInflater!!.inflate(R.layout.child_message_layout, parent, false)
@@ -32,9 +35,11 @@ class ChatApdater(context: Context, chat:ArrayList<ChatData>):  RecyclerView.Ada
     // binds the data to the textview in each row
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val animal = chat!!.get(position)
-        //holder.myTextView.setText(animal)
+        holder.itemView.setOnClickListener()
+        {
+            iner.chat(chat!![position].getChatID().toString())
+        }
     }
-
     // total number of rows
     override fun getItemCount(): Int {
         return chat!!.size

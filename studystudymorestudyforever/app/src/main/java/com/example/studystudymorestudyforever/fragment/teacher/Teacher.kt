@@ -29,6 +29,14 @@ import org.json.JSONObject
 import android.widget.AdapterView.OnItemClickListener
 import com.example.studystudymorestudyforever.fragment.teacher.courseteacher.SelectCourse
 import com.example.studystudymorestudyforever.myinterface.ISetTeacher
+import com.afollestad.materialdialogs.MaterialDialog
+import com.example.studystudymorestudyforever.until.datalocal.LocalData
+import com.example.studystudymorestudyforever.until.user.User
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.main_teacher_fragment.*
+import kotlinx.android.synthetic.main.teacher_add_course.*
+import java.lang.reflect.Type
 
 
 /**
@@ -53,7 +61,8 @@ class  Teacher: Fragment(),ISetTeacher
     var person_name:TextView?=null
     var course_name:TextView?=null
     var imv_add_friend:ImageView?=null
-
+    var emailfriend:String?=null
+    var listUser:ArrayList<TeacherData> = arrayListOf()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view: View = inflater!!.inflate(R.layout.main_teacher_fragment, container, false)
@@ -62,19 +71,16 @@ class  Teacher: Fragment(),ISetTeacher
         recicleview_list_teacher= view.findViewById(R.id.recicleview_list_teacher) as RecyclerView
         tab_add_teacher= view.findViewById(R.id.tab_add_teacher) as LinearLayout
 
-        var listteacher : ArrayList<TeacherData> = arrayListOf()
-        var tem :TeacherData= TeacherData()
-        tem.setTeacherID(1)
+        //Lấy danh sách giáo viên lên từ sv
+        getUser()
 
-        listteacher.add(tem)
-        listteacher.add(tem)
-        listteacher.add(tem)
-        listteacher.add(tem)
-        listteacher.add(tem)
-        listteacher.add(tem)
+        /*var listteacher : ArrayList<TeacherData> = arrayListOf()
+        var tem :TeacherData= TeacherData()
+
         var adapter= TeacherAdapter(context,listteacher,this)
         recicleview_list_teacher!!.layoutManager= LinearLayoutManager(context)
-        recicleview_list_teacher!!.adapter= adapter
+        recicleview_list_teacher!!.adapter= adapter*/
+
 
         tab_add_teacher!!.setOnClickListener()
         {
@@ -143,8 +149,11 @@ class  Teacher: Fragment(),ISetTeacher
 
             imv_add_friend!!.setOnClickListener()
             {
-                var ival2: Array<String> = arrayOf(email)
+                var ival2: Array<String> = arrayOf(LocalData.user.getID().toString(),listUser[0].getID().toString())
                 call.Call_Service(Value.workername_addfriend,Value.servicename_addfriend,ival2,Value.key_addfriend)
+
+                imv_add_friend!!.setImageResource(R.drawable.icon_add_friend2)
+                Toast.makeText(context,"Đã add friend",Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -154,30 +163,73 @@ class  Teacher: Fragment(),ISetTeacher
     //Nhận kết quả trả về khi login_layout
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MessageEvent) {
+
+        if(event.getKey()==Value.key_getlist_teacher)
+        {
+            Log.d("ketquatrsve","là"+event.getData()!!.getResult().toString())
+            if(event.getData()!!.getResult().toString()=="0")//không có dữ liệu
+            {
+                recicleview_list_teacher!!.visibility=View.GONE
+                tab_no_data_teacher.visibility= View.VISIBLE
+
+
+            }
+            else{
+
+                recicleview_list_teacher!!.visibility=View.VISIBLE
+                tab_no_data_teacher.visibility= View.GONE
+            }
+        }
+        Log.d("traveket","haha"+event.getKey().toString())
         if (event.getKey() == Value.key_searchfriend)
         {
+
             progress_search_friend!!.visibility= View.GONE
             if(event.getData()!!.getResult()=="1")
             {
                 tab_no_data!!.visibility= View.GONE
                 tab_teacher!!.visibility= View.VISIBLE
-                var tch:TeacherSearch=readJson(event!!.getData()!!.getData()!!)
-                person_name!!.setText(tch.getTeachername())
-                course_name!!.setText(tch.getCourse())
+
+                var gson= Gson()
+                var list= event!!.getData()!!.getData()
+                /*var type : Type = object:TypeToken<List<User>>(){}.type
+                var temp:List<User> = gson!!.fromJson(event!!.getData()!!.getData().toString(),type)
+                Log.d("logjson",temp[0].getADDRESS().toString())*/
+
+                for(i in 0..list!!.size-1)
+                {
+                    var temp:TeacherData = gson.fromJson(list[i].toString(),TeacherData::class.java)
+                    listUser.add(temp)
+                }
+                person_name!!.setText(listUser[0].getNAME())
+                course_name!!.setText(listUser[0].getADDRESS())
+                Log.d("logjson",listUser[0].getADDRESS().toString())
             }
             else{
+                var dialog = MaterialDialog.Builder(context)
+                        .title("Lỗi")
+                        .content("Không tìm thấy tài khoản người dùng")
+                        .positiveText("Đồng ý")
+                        .show()
 
             }
         }
         if (event.getKey()== Value.key_addfriend)
         {
-            imv_add_friend!!.setImageResource(R.drawable.icon_add_friend2)
+
         }
     }
 
     override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
+    }
+
+    //lấy danh sách bạn bè
+    fun getUser()
+    {
+        var inval3:Array<String> = arrayOf(LocalData.email)
+        call.Call_Service(Value.workername_getlist_teacher,Value.servicename_getlist_teacher,inval3,Value.key_getlist_teacher)
     }
 
     // Đọc file Json để lấy kết quả

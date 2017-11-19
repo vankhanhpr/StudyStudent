@@ -7,12 +7,21 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@drawable/start_sharp_layout"
+        android:paddingLeft="10dp"
         android:weightSum="10">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0sp"
             android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingLeft="10dp"
             android:background="@drawable/sharp_title_layout">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/icon_back"
+                />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -20,6 +29,7 @@
                 android:textColor="@color/text_title"
                 android:textSize="@dimen/text_size_title"
                 android:gravity="center"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -29,84 +39,116 @@
             android:layout_weight="9"
             android:paddingTop="10dp"
             android:weightSum="10">
+
             <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="10"
-            android:paddingLeft="@dimen/pading_login"
-            android:paddingRight="@dimen/pading_login"
-            android:layout_weight="1.5">
-            <TextView
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:textSize="@dimen/text_size_text_login"
-                android:textColor="@color/text_title"
-                android:text="@string/import_email"/>
-            <EditText
-                android:id="@+id/import_email_singin"
-                android:layout_width="0dp"
-                android:textSize="@dimen/text_size_text_login"
-                android:layout_height="wrap_content"
-                android:layout_weight="7"/>
-        </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0sp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                android:paddingLeft="@dimen/pading_login"
-                android:paddingRight="@dimen/pading_login"
-                android:layout_weight="1.5">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:textSize="@dimen/text_size_text_login"
-                    android:textColor="@color/text_title"
-                    android:text="@string/import_pass_signin"/>
-                <EditText
-                    android:id="@+id/import_pass_signin"
-                    android:layout_width="0dp"
-                    android:textSize="@dimen/text_size_text_login"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"/>
+                android:orientation="vertical"
+                android:paddingRight="10dp"
+                android:weightSum="4">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:paddingLeft="@dimen/pading_login"
+                    android:paddingRight="@dimen/pading_login"
+                    android:background="@drawable/sharp_edittext_login"
+                    android:layout_weight="1">
+                    <EditText
+                        android:id="@+id/import_name_user"
+                        android:layout_width="match_parent"
+                        android:textSize="@dimen/text_size_text_login"
+                        android:layout_height="match_parent"
+                        android:hint="Nhập họ tên"
+                        android:gravity="center"
+                        android:textColorHint="@color/color_hint_text_login"
+                        android:background="@android:color/transparent"
+                        android:layout_weight="7"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:paddingLeft="@dimen/pading_login"
+                    android:paddingRight="@dimen/pading_login"
+                    android:background="@drawable/sharp_edittext_login"
+                    android:layout_weight="1">
+                    <EditText
+                        android:id="@+id/import_email_singin"
+                        android:layout_width="match_parent"
+                        android:textSize="@dimen/text_size_text_login"
+                        android:layout_height="match_parent"
+                        android:hint="Nhập email"
+                        android:gravity="center"
+                        android:textColorHint="@color/color_hint_text_login"
+                        android:background="@android:color/transparent"
+                        android:layout_weight="7"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:paddingLeft="@dimen/pading_login"
+                    android:paddingRight="@dimen/pading_login"
+                    android:background="@drawable/sharp_edittext_login"
+                    android:layout_weight="1">
+                    <EditText
+                        android:id="@+id/import_pass_signin"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="@dimen/text_size_text_login"
+                        android:hint="Nhập mật khẩu mới"
+                        android:gravity="center"
+                        android:inputType="textPassword"
+                        android:textColorHint="@color/color_hint_text_login"
+                        android:background="@android:color/transparent"
+                        android:layout_weight="7"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:paddingLeft="@dimen/pading_login"
+                    android:paddingRight="@dimen/pading_login"
+                    android:background="@drawable/sharp_edittext_login"
+                    android:layout_weight="1">
+                    <EditText
+                        android:id="@+id/import_pass_again"
+                        android:layout_width="0dp"
+                        android:textSize="@dimen/text_size_text_login"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:gravity="center"
+                        android:hint="Nhập lại mật khẩu"
+                        android:textColorHint="@color/color_hint_text_login"
+                        android:background="@android:color/transparent"
+                        android:layout_weight="7"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"/>
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0sp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                android:paddingLeft="@dimen/pading_login"
-                android:paddingRight="@dimen/pading_login"
-                android:layout_weight="1.5">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:textSize="@dimen/text_size_text_login"
-                    android:textColor="@color/text_title"
-                    android:text="@string/import_pass_again"/>
-                <EditText
-                    android:id="@+id/import_pass_again"
-                    android:layout_width="0dp"
-                    android:textSize="@dimen/text_size_text_login"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"/>
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"/>
+
             <LinearLayout
                 android:id="@+id/tab_sigin"
                 android:layout_width="match_parent"
@@ -122,6 +164,7 @@
                     android:textColor="@color/text_title"
                     android:text="@string/signin_button"/>
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

@@ -30,8 +30,10 @@ import org.json.JSONObject
 
 class  SignIn:AppCompatActivity()
 {
-    var email:String?=null
-    var pass:String?=null
+    var name:String= ""
+    var email:String=""
+    var pass:String=""
+
     var dialog_signin:Dialog?=null
     var mCountDownTimer: CountDownTimer? = null
     //dialog
@@ -48,21 +50,23 @@ class  SignIn:AppCompatActivity()
 
         progress_signin=findViewById(R.id.progress_signin) as ProgressBar
 
-
         //lấy dữ liệu
-        var inte: Intent = intent
-        var bundle:Bundle=inte.getBundleExtra(Value.bundle)
+        //var inte: Intent = intent
+       // var bundle:Bundle=inte.getBundleExtra(Value.bundle)
 
-        email= bundle.getString(Value.value)
-        pass=bundle.getString(Value.value2)
+        //email= bundle.getString(Value.value)
+        //pass=bundle.getString(Value.value2)
 
 
-        email= import_email_singin.text.toString()
-        var pass1= import_pass_signin.text.toString()
-        var pass2= import_pass_again.text.toString()
+
 
         tab_sigin.setOnClickListener()
         {
+            name= import_name_user.text.toString()
+            email= import_email_singin.text.toString()
+            var pass1= import_pass_signin.text.toString()
+            var pass2= import_pass_again.text.toString()
+
             dialog_signin= Dialog(this)
             dialog_signin!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog_signin!!.setContentView(R.layout.dialog_signin)
@@ -81,7 +85,7 @@ class  SignIn:AppCompatActivity()
             {
                 progress_signin!!.visibility = View.VISIBLE
                 pass= Encode().encryptString(pass1)
-                var data: Array<String> = arrayOf(email!!, pass!!)
+                var data: Array<String> = arrayOf(name!!,email!!, pass1!!)
                 call.Call_Service(Value.workername_signin, Value.servicename_signin, data!!, Value.key_sigin)
 
                 //timeout
@@ -91,7 +95,6 @@ class  SignIn:AppCompatActivity()
                         i++
                         OnEmitService.getIns().Sevecie()
                         if (i == 5) {
-
                             for (i in 0..OnEmitService.getIns().hasmap!!.size - 1) {
                                 OnEmitService.getIns().hasmap!![i].setStatus(0)
                             }
@@ -102,7 +105,6 @@ class  SignIn:AppCompatActivity()
                             progress_signin!!.visibility = View.GONE
                         }
                     }
-
                     override fun onFinish() {
                         //Do what you want
                         i++

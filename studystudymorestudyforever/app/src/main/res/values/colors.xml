@@ -6,6 +6,8 @@
     <color name="text_color_title_layout">#000000</color>
     <color name="text_title">#FFFFFF</color>
     <color name="text_color_small">#FFFFFF</color>
+    login
+    <color name="color_hint_text_login">#FFFFFF</color>
 
     <!--màu của các dialog-->
     <color name="dialog_title">#000000</color>
@@ -23,5 +25,6 @@
 
     color text recycle view
     <color name="text_view_student">#000000</color>
+
 
 </resources>

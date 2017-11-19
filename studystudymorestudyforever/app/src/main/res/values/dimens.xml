@@ -25,11 +25,19 @@
     <dimen name="name_text_file">16sp</dimen>
     <dimen name="age_text_file">12sp</dimen>
 
+    size view course
+    <dimen name="size_view_course">60dp</dimen>
 
     size title
     <dimen name="sizre_title_view">50dp</dimen>
 
     size cardview bucking teacher
     <dimen name="size_view_detail_teacher">13dp</dimen>
+
+    pading datail course
+    <dimen name="pading_view_coures">20dp</dimen>
+
+    textsize add notification
+    <dimen name="textsize_add_notifice">15dp</dimen>
 
 </resources>

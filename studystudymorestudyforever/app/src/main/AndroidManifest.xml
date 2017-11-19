@@ -9,21 +9,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".fragment.main.MainActivity">
+        <activity android:name=".fragment.notification.TeacherAddNotifi">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".welcom.SelectAccount"/>
         <activity android:name=".login.Login"/>
         <activity android:name=".singin.SignIn"/>
-       <!-- <activity android:name=".fragment.main.MainActivity"/>-->
+        <activity android:name=".singin.ImportCode"/>
+        <!--<activity android:name=".fragment.main.MainActivity"/>-->
         <activity android:name=".restartpass.RestartPass"/>
         <activity android:name=".changepasss.ChangePass"/>
+        <activity android:name=".welcom.SelectAccount"/>
         <activity android:name=".fragment.teacher.courseteacher.SelectCourse"/>
-        <!--<activity android:name=".fragment.account.ChangeInforUser"/>-->
-        <!--<activity android:name=".fragment.account.file.FileStudent"/>-->
+        <activity android:name=".fragment.account.ChangeInforUser"/>
+        <activity android:name=".fragment.account.file.FileStudent"/>
+        <!--<activity android:name=".fragment.chat.ChatMessager"/>-->
+        <activity android:name=".fragment.scheduleteacher.addcourse.AddCourse"/>
+        <activity android:name=".fragment.scheduleteacher.ScheduleTeacherUpdateCourse"/>
+
     </application>
 
 </manifest>

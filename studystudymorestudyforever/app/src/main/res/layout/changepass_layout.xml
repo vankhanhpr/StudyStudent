@@ -17,13 +17,26 @@
             android:layout_width="match_parent"
             android:layout_height="0sp"
             android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
             android:background="@drawable/sharp_title_layout">
+            <LinearLayout
+                android:id="@+id/tab_back_changepasss"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/icon_back"/>
+            </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/change_pass_title"
                 android:textColor="@color/text_title"
                 android:textSize="@dimen/text_size_title"
+                android:paddingRight="20dp"
                 android:gravity="center"/>
         </LinearLayout>
         <LinearLayout

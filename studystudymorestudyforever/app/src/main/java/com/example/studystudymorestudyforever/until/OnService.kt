@@ -14,6 +14,7 @@ class OnService()
     private  var Message: String? = null
     private var Result :String? =null
     private var Data: ArrayList<JSONObject>?=  null
+    private  var UserType:String?=""
 
     fun getData(): ArrayList<JSONObject>?{
         return Data
@@ -60,5 +61,13 @@ class OnService()
 
     fun setResult(result: String) {
         Result = result
+    }
+
+    fun getUserType(): String? {
+        return UserType
+    }
+
+    fun setUserType(userType: String) {
+        UserType = userType
     }
 }

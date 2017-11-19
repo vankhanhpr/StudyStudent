@@ -4,40 +4,112 @@ package com.example.studystudymorestudyforever.until.teacher
  * Created by VANKHANHPR on 10/1/2017.
  */
 class TeacherData {
-    private var teacherID = 0
-    private var teachername = ""
-    private var teacheraddress = ""
-    private var teachercourse = ""
+    private var ID: Int = 0
+    private var NAME: String? = ""
+    private var EMAIL: String? = ""
+    private var PASSWORD: String? = ""
+    private var PHONENUMBER: Int = 0
+    private var ADDRESS: String? = ""
+    private var BIRTHDAY: Long = 0
+    private var HASHCODE: String? = ""
+    private var ACTIVE: String? = ""
+    private var USER_TYPE: Int = 0
+    private var IMAGEPATH: String? = ""
+    private var STATUS:String=""
 
-    fun getTeacherID(): Int {
-        return teacherID
+    fun getID(): Int {
+        return ID
     }
 
-    fun setTeacherID(teacherID: Int) {
-        this.teacherID = teacherID
+    fun setID(ID: Int) {
+        this.ID = ID
     }
 
-    fun getTeachername(): String {
-        return teachername
+    fun getNAME(): String? {
+        return NAME
     }
 
-    fun setTeachername(teachername: String) {
-        this.teachername = teachername
+    fun setNAME(NAME: String) {
+        this.NAME = NAME
     }
 
-    fun getTeacheraddress(): String {
-        return teacheraddress
+    fun getEMAIL(): String ? {
+        return EMAIL
     }
 
-    fun setTeacheraddress(teacheraddress: String) {
-        this.teacheraddress = teacheraddress
+    fun setEMAIL(EMAIL: String) {
+        this.EMAIL = EMAIL
     }
 
-    fun getTeachercourse(): String {
-        return teachercourse
+    fun getPASSWORD(): String? {
+        return PASSWORD
     }
 
-    fun setTeachercourse(teachercourse: String) {
-        this.teachercourse = teachercourse
+    fun setPASSWORD(PASSWORD: String) {
+        this.PASSWORD = PASSWORD
+    }
+
+    fun getPHONENUMBER(): Int {
+        return PHONENUMBER
+    }
+
+    fun setPHONENUMBER(PHONENUMBER: Int) {
+        this.PHONENUMBER = PHONENUMBER
+    }
+
+    fun getADDRESS(): String ?{
+        return ADDRESS
+    }
+
+    fun setADDRESS(ADDRESS: String) {
+        this.ADDRESS = ADDRESS
+    }
+
+    fun getBIRTHDAY(): Long {
+        return BIRTHDAY
+    }
+
+    fun setBIRTHDAY(BIRTHDAY: Long) {
+        this.BIRTHDAY = BIRTHDAY
+    }
+
+    fun getHASHCODE(): String ? {
+        return HASHCODE
+    }
+
+    fun setHASHCODE(HASHCODE: String) {
+        this.HASHCODE = HASHCODE
+    }
+
+    fun getACTIVE(): String ? {
+        return ACTIVE
+    }
+
+    fun setACTIVE(ACTIVE: String) {
+        this.ACTIVE = ACTIVE
+    }
+
+    fun getUSER_TYPE(): Int {
+        return USER_TYPE
+    }
+
+    fun setUSER_TYPE(USER_TYPE: Int) {
+        this.USER_TYPE = USER_TYPE
+    }
+
+    fun getIMAGEPATH(): String ? {
+        return IMAGEPATH
+    }
+
+    fun setIMAGEPATH(IMAGEPATH: String) {
+        this.IMAGEPATH = IMAGEPATH
+    }
+
+    fun getSTATUS(): String {
+        return STATUS
+    }
+
+    fun setSTATUS(STATUS: String) {
+        this.STATUS = STATUS
     }
 }

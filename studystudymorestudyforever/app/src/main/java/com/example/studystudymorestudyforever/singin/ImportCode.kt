@@ -7,6 +7,7 @@ import android.os.CountDownTimer
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.Window
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -31,7 +32,7 @@ class ImportCode:AppCompatActivity()
     var email:String?=null
     var code:String?=null
     var dialog_import_code:Dialog?=null
-    var btn_agree_dialogres:LinearLayout?=null
+    var btn_agree_dialogres:Button?=null
     var tv_show_error:TextView?=null
 
     var mCountDownTimer: CountDownTimer? = null
@@ -46,18 +47,20 @@ class ImportCode:AppCompatActivity()
         var inte: Intent = intent
         var bundle:Bundle=inte.getBundleExtra(Value.bundle)
         email= bundle.getString(Value.value)
+
         tab_import_code.setOnClickListener()
         {
             dialog_import_code =Dialog(this)
             dialog_import_code!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog_import_code!!.setContentView(R.layout.dialog_import_code)
-            btn_agree_dialogres=dialog_import_code!!.findViewById(R.id.btn_agree_dialogres) as LinearLayout
+            btn_agree_dialogres = dialog_import_code!!.findViewById(R.id.btn_agree_dialogres) as Button
+
             btn_agree_dialogres!!.setOnClickListener()
             {
                 dialog_import_code!!.cancel()
             }
-
             code= edt_import_code.text.toString()
+
             if(code!!.length!=4)
             {
                 dialog_import_code!!.show()
@@ -67,7 +70,6 @@ class ImportCode:AppCompatActivity()
                 progress_importcode!!.visibility = View.VISIBLE
                 var data: Array<String> = arrayOf(email!!,code!!)
                 call.Call_Service(Value.workername_import_code, Value.servicename_import_code, data!!, Value.key_import_code)
-
                 //timeout
                 mCountDownTimer = object : CountDownTimer(15000, 1000) {
                     var i = 0
@@ -122,7 +124,7 @@ class ImportCode:AppCompatActivity()
             else
             {
                 dialog_import_code!!.show()
-                tv_show_error!!.setText(event!!.getData()!!.getMessage())
+                tv_show_error!!.setText(event!!.getData()!!.getMessage()).toString()
             }
         }
     }

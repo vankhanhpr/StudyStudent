@@ -8,8 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.Window
-import android.widget.ProgressBar
-import android.widget.Toast
 import com.example.myapplication.value.MessageEvent
 import com.example.studystudymorestudyforever.R
 import com.example.studystudymorestudyforever.model.OnEmitService
@@ -17,11 +15,25 @@ import com.example.studystudymorestudyforever.until.Value
 import com.example.studystudymorestudyforever.until.datalocal.LocalData
 import com.example.studystudymorestudyforever.until.fragment_account.UserInfo
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.account_change_infor_user.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONObject
+import android.app.DatePickerDialog
+
+import android.app.DatePickerDialog.OnDateSetListener
+
+import android.util.Log
+import android.widget.*
+import com.example.studystudymorestudyforever.convert.milisecond.ConverMiliseconds
+import com.example.studystudymorestudyforever.until.JsonLogin
+import kotlinx.android.synthetic.main.account_change_infor_user.*
+
+import java.util.*
+import com.afollestad.materialdialogs.MaterialDialog
+
+
+
 
 /**
  * Created by VANKHANHPR on 9/28/2017.
@@ -39,25 +51,33 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
     var progress_changeinfouser:ProgressBar?=null
     var dialog_change_info_user:Dialog?=null
 
+    var tv_age:TextView?=null
+    var edt_name:EditText?=null
+    var edt_phone:EditText?=null
+    var edt_address:EditText?=null
+    var edt_email:EditText?=null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.account_change_infor_user)
         EventBus.getDefault().register(this)
+        init1()//khởi tạo các layout
 
-        progress_changeinfouser= findViewById(R.id.progress_changeinfouser) as ProgressBar
-
-        edt_email.setText(LocalData.email)
+        edt_email!!.setText(LocalData.email)
+        Log.d("myemail","haha "+LocalData.email)
         refres_info_user.setOnRefreshListener(this)
 
-        getUser()//lấy thông tin tài khoản
+        //getUser()//lấy thông tin tài khoản
+
 
         tab_change_info_user.setOnClickListener()
         {
-            name_user= edt_name.text.toString()
-            age_user=edt_name.text.toString()
-            phone_user= edt_phone.text.toString()
-            address_user= edt_address.text.toString()
+            name_user= edt_name!!.text.toString()
+            age_user=tv_age!!.text.toString()
+            phone_user= edt_phone!!.text.toString()
+            address_user= edt_address!!.text.toString()
 
             dialog_change_info_user= Dialog(this)
             dialog_change_info_user!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -69,7 +89,10 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
                 dialog_change_info_user!!.cancel()
             }
 
-            var invalchangeuser:Array<String> = arrayOf(email!!,name_user!!,age_user!!,phone_user!!,address_user!!)
+            var invalchangeuser:Array<String> = arrayOf(name_user!!,
+                    phone_user!!,address_user!!,
+                    ConverMiliseconds().converttomiliseconds(age_user!!).toString(),"khanh@gmail.com")
+
             call.Call_Service(Value.workername_changeinfouser,Value.service_changeinfouser,invalchangeuser,Value.key_change_infor_user)
 
 
@@ -109,11 +132,29 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
 
         }
 
+
+        tab_set_birthday.setOnClickListener()
+        {
+            showDatePickerDialog()
+        }
+
+    }
+
+
+    fun init1()
+    {
+        tv_age= findViewById(R.id.tv_age) as TextView
+        progress_changeinfouser= findViewById(R.id.progress_changeinfouser) as ProgressBar
+        edt_name=findViewById(R.id.edt_name) as EditText
+        edt_phone= findViewById(R.id.edt_phone) as EditText
+        edt_address=findViewById(R.id.edt_address) as EditText
+        edt_email= findViewById(R.id.edt_email) as EditText
+
     }
 
     fun getUser()
     {
-        var inval :Array<String> = arrayOf(email!!)
+        var inval :Array<String> = arrayOf("khanh@gmail.com")
         call.Call_Service(Value.workername_getuser,Value.servicename_getuser,inval,Value.key_getuser)
     }
 
@@ -129,26 +170,88 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
             {
                 val gson = Gson()
                 var user: UserInfo= gson.fromJson(event.getData()!!.getData().toString(),UserInfo::class.java)
-                edt_name.setText(user.getUsername())
-                edt_address.setText(user.getUseraddress())
-                edt_age.setText(user.getUserage())
-                edt_phone.setText(user.getUserphone())
+                edt_name!!.setText(user.getUsername())
+                edt_address!!.setText(user.getUseraddress())
+                tv_age!!.setText(user.getUserage())
+                edt_phone!!.setText(user.getUserphone())
             }
             else
             {
-
 
             }
         }
         if (event.getKey()==Value.key_change_infor_user)
         {
-            dialog_change_info_user!!.cancel()
-            progress_changeinfouser!!.visibility= View.GONE
-            Toast.makeText(applicationContext,"Cập nhật thông tin thành công!",Toast.LENGTH_SHORT).show()
-            finish()
+            var json: ArrayList<JSONObject>? = event.getData()!!.getData()
+            var temp=readJson(json!!)
+            if (temp.getC0()=="Y")
+            {
+                dialog_change_info_user!!.cancel()
+                progress_changeinfouser!!.visibility= View.GONE
+                Toast.makeText(applicationContext,"Cập nhật thông tin thành công!",Toast.LENGTH_SHORT).show()
+                finish()
+            }
+            else
+            {
+                MaterialDialog.Builder(this)
+                        .title("Lỗi ")
+                        .content("Cập nhật thông tin không thành công")
+                        .positiveText("OK")
+                        .show()
+            }
+
         }
     }
 
+
+
+    /**
+     * Hàm hiển thị DatePicker dialog
+     */
+    fun showDatePickerDialog() {
+        val callback = OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            //Mỗi lần thay đổi ngày tháng năm thì cập nhật lại TextView Date
+            var day=dayOfMonth
+            var month= monthOfYear
+            var day1:String=""
+            var month1:String=""
+
+            if(day<10)
+            {
+                day1="0"+day
+            }
+            else{
+                day1=day.toString()
+            }
+            if(month+1 < 10)
+            {
+                month1="0"+(month+1).toString()
+            }
+            else
+            {
+                month1=(month+1).toString()
+            }
+
+
+            tv_age!!.setText(day1.toString() + "/" + (month1) + "/" + year)
+
+        }
+
+        var s = tv_age!!.getText()
+
+        if(s== "")
+        {
+            s="01/01/2000"
+        }
+
+        var strArrtmp = s.split("/".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
+        var ngay = Integer.parseInt(strArrtmp[0])
+        var thang = Integer.parseInt(strArrtmp[1]) - 1
+        var nam = Integer.parseInt(strArrtmp[2])
+        var pic = DatePickerDialog(this, callback, nam, thang, ngay)
+        pic.setTitle("Chọn ngày hoàn thành")
+        pic.show()
+    }
 
 
 
@@ -165,6 +268,18 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
             refres_info_user!!.setRefreshing(false)
         }, 2000)
     }
-
+    // Đọc file Json để lấy kết quả
+    fun readJson(json1: ArrayList<JSONObject>): JsonLogin
+    {
+        var jsonO: JSONObject?=null
+        if(json1.size>0)
+        {
+            jsonO = json1[0]
+        }
+        var c0: String? =jsonO!!.getString("c0")
+        var ser1 : JsonLogin = JsonLogin()
+        ser1.setC0(c0!!)
+        return ser1
+    }
 
 }

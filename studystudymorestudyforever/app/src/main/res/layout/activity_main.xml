@@ -21,7 +21,6 @@
                 android:visibility="visible"
                 android:orientation="vertical">
             </LinearLayout>
-
             <com.example.studystudymorestudyforever.library_bottomnagivation.BottomNavigationViewEx
                 android:id="@+id/bottom_navigation_main"
                 android:layout_width="match_parent"

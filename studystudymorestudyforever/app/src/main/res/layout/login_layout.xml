@@ -12,8 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="10">
-        <LinearLayout
+        android:gravity="center"
+        android:padding="15dp"
+        android:weightSum="11">
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0sp"
             android:layout_weight="1"
@@ -25,13 +27,14 @@
                 android:textColor="@color/text_title"
                 android:textSize="@dimen/text_size_title"
                 android:gravity="center"/>
-        </LinearLayout>
+        </LinearLayout>-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
             android:layout_weight="8"
             android:paddingTop="0dp"
+            android:gravity="center"
             android:weightSum="10">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,19 +44,17 @@
                 android:weightSum="10"
                 android:paddingLeft="@dimen/pading_login"
                 android:paddingRight="@dimen/pading_login"
+                android:background="@drawable/sharp_edittext_login"
                 android:layout_weight="1.5">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:textSize="@dimen/text_size_text_login"
-                    android:textColor="@color/text_title"
-                    android:text="@string/import_email"/>
                 <EditText
                     android:id="@+id/edt_user"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:textSize="@dimen/text_size_text_login"
+                    android:hint="Your email"
+                    android:gravity="center"
+                    android:background="@android:color/transparent"
+                    android:textColorHint="@color/color_hint_text_login"
                     android:layout_weight="7"/>
             </LinearLayout>
             <View
@@ -63,24 +64,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
                 android:gravity="center"
+                android:background="@drawable/sharp_edittext_login"
                 android:orientation="horizontal"
                 android:weightSum="10"
                 android:paddingLeft="@dimen/pading_login"
                 android:paddingRight="@dimen/pading_login"
                 android:layout_weight="1.5">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:textSize="@dimen/text_size_text_login"
-                    android:textColor="@color/text_title"
-                    android:text="@string/import_pass"/>
+
                 <EditText
                     android:id="@+id/edt_pass"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:textSize="@dimen/text_size_text_login"
+                    android:hint="Your password"
+                    android:gravity="center"
+                    android:textColorHint="@color/color_hint_text_login"
+                    android:background="@android:color/transparent"
                     android:layout_weight="7"/>
             </LinearLayout>
             <View
@@ -108,18 +108,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
-                android:gravity="right"
+                android:gravity="center_horizontal"
                 android:layout_weight="1"
                 android:paddingRight="10dip">
                 <LinearLayout
                     android:id="@+id/goto_signin"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="right">
+                    android:gravity="center">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_title"
+                        android:gravity="center_vertical"
                         android:textSize="@dimen/text_size_forgetpass"
                         android:text="@string/signin_title"/>
                 </LinearLayout>
@@ -132,13 +133,13 @@
                 android:id="@+id/goto_restart_password"
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
-                android:gravity="right"
+                android:gravity="center"
                 android:layout_weight="1"
                 android:paddingRight="10dip">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="right">
+                    android:gravity="center">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -32,6 +32,12 @@ dependencies {
     compile('com.github.nkzawa:socket.io-client:0.4.1') {
         exclude group: 'org.json', module: 'json'
     }
+    compile ('com.vincentbrison.openlibraries.android:foldablelayout:0.0.1-SNAPSHOT@aar') {
+        transitive = true
+    }
+
+    compile 'com.github.sundeepk:compact-calendar-view:2.0.2.2'
+    compile 'com.vincentbrison.openlibraries.android:foldablelayout:0.0.1@aar'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.google.code.gson:gson:2.6.2'
     //noinspection GradleCompatible

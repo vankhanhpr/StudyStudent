@@ -11,14 +11,24 @@ import android.widget.LinearLayout
 import com.example.studystudymorestudyforever.fragment.account.Account
 import com.example.studystudymorestudyforever.fragment.chat.Chat
 import com.example.studystudymorestudyforever.fragment.notification.Notification
-import com.example.studystudymorestudyforever.fragment.schedule.Schedule
+
 import com.example.studystudymorestudyforever.fragment.teacher.Teacher
 import com.example.studystudymorestudyforever.library_bottomnagivation.BottomNavigationViewEx
 import android.support.design.widget.BottomNavigationView;
 import android.R.id.edit
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
+import com.example.myapplication.value.MessageEvent
+import com.example.studystudymorestudyforever.fragment.schedule.SchedulerCalendar
+import com.example.studystudymorestudyforever.model.OnEmitService
+import com.example.studystudymorestudyforever.until.Value
 import com.example.studystudymorestudyforever.until.datalocal.LocalData
+import com.example.studystudymorestudyforever.until.user.User
+import com.google.gson.Gson
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSelectedListener {
@@ -26,7 +36,7 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
     var account: Account? = null
     var chat: Chat? = null
     var notificatio: Notification? = null
-    var schedule: Schedule? = null
+    var schedule: SchedulerCalendar? = null
     var teacher: Teacher? = null
     private var fragmentManager: FragmentManager? = null
     private var fragmentTransaction: FragmentTransaction? = null
@@ -39,10 +49,21 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
     var email:String?=""
     var pass:String?=""
     var editor : SharedPreferences.Editor?=null
+    var call= OnEmitService.getIns()
+
+    var listUser:ArrayList<User> = arrayListOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        EventBus.getDefault().register(this)
+
+        call.Sevecie()
+        call.ListenEvent()
+
+        var inval3 :Array<String> = arrayOf("khanh@gmail.com")
+        call.Call_Service(Value.workername_getuser,Value.servicename_getuser,inval3,Value.key_getuser)
 
         //add editor luu trang thai dang nhap
         savingPreferences()
@@ -57,12 +78,46 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
         bottomNavigationView!!.setOnNavigationItemSelectedListener(this)
     }
 
+
+    //Nhận kết quả trả về khi login_layout
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MessageEvent) {
+
+        if(event.getKey()==Value.key_getuser)
+        {
+            if(event.getData()!!.getResult().toString()=="1")//không có dữ liệu
+            {
+                var gson= Gson()
+                var list= event!!.getData()!!.getData()
+
+                for(i in 0..list!!.size-1)
+                {
+                    var temp: User = gson.fromJson(list[i].toString(), User::class.java)
+                    listUser.add(temp)
+                }
+                LocalData.user= listUser[0]
+            }
+            else{
+
+
+            }
+        }
+    }
+
+    override fun onStop() {
+        EventBus.getDefault().unregister(this)
+        super.onStop()
+    }
+
+
+
+
     fun addFragment() {
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager!!.beginTransaction()
 
         account = Account()
-        schedule = Schedule()
+        schedule = SchedulerCalendar()
         notificatio = Notification()
         teacher = Teacher()
         chat = Chat()
@@ -154,7 +209,7 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
         //lưu vào editor
         editor!!.putString("user",LocalData.email)
         editor!!.putString("pwd",LocalData.pass)
-        editor!!.putInt("ustype",LocalData.usertype)
+        editor!!.putInt("usertype",LocalData.usertype)
         //chấp nhận lưu xuống file
         editor!!.commit()
     }
