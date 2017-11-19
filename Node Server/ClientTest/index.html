@@ -5,12 +5,40 @@
           
     </head>
     <body>
-        <img src="http://localhost:8081/static/images/1.png" alt="">
         <div></div>
         <button id="btnid" style="height:50">Button</button>
-
-        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="/socket.js"></script>
+        <input id="message" style="height:50">
+        <div>
+            <p id="showmessage"></p>
+        </div>
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
+        <script src="/socket.io/socket.io.js" type="text/javascript"></script>
+        <script src="/socket.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var socket = io.connect('http://127.0.0.1:8081');
+            $(document).ready(function(){
+                $('#btnid').click(function(){
+                    console.log("clicked");
+                    let json ={ClientSeq:1,WorkerName:'usercontroller',ServiceName:'login',InVal:["kien@gmail.com","123456"]};
+                    console.log(json);
+                    socket.emit("CLIENT_MSG",JSON.stringify(json));
+                        $("#showmessage").append('from 2 : '+$('#message').val()+'</br>');
+                        $('#message').val('').focus();
+                });
+                
+            });
+            socket.on("RES_MSG", function(data){
+                console.log("log on"+JSON.stringify(data));
+                console.log(datafromserver.Data.userfrom.ID);
+                console.log(datafromserver);
+                $("#showmessage").append('from '+datafromserver.Data.userfrom.ID+' : '+datafromserver.Data.message+'</br>');
+            });
+            var JsonFormat = function (ClientSeq,WorkerName,ServiceName,data){
+                this.ClientSeq = ClientRect;
+                this.WorkerName = WorkerName;
+                this.ServiceName = ServiceName;
+                this.data = data;
+            }
+        </script>
     </body>
 </html>

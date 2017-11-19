@@ -11,13 +11,12 @@ var router = express.Router();
 
 router.get("/Authenticate",async (req,res)=>{
     res.setHeader('Content-Type', 'application/json');
-    let data = await userprovider.CheckUserExist([req.query.email,req.query.password]);
-    console.log(data);
-     if(data>0){
-      res.send(JSON.stringify({ success:true,message:"Authenticate Success"}));
+    let result = await userprovider.MyCheckUserExist([req.query.email,req.query.password]);
+     if(result.length>0){
+      res.send(JSON.stringify({ success:true,message:"Authenticate Success",user:result[0]}));
       res.end();
     }else{
-      res.send(JSON.stringify({ success:false,message:"Authenticate Fail"}));
+      res.send(JSON.stringify({ success:false,message:"Authenticate Fail",user:{}}));
       res.end();
     } 
   });
@@ -37,10 +36,21 @@ router.get("/Authenticate",async (req,res)=>{
     }),[hashvalue]);
   });
   
-  router.get("/GetListFriend", async(req,res)=>{
+  router.get("/GetListFriendRequest", async(req,res)=>{
+    res.setHeader('Content-Type', 'application/json');
+    let data = await userprovider.GetListFriendRequest([req.query.userid]);
+     if(data){
+      res.send(JSON.stringify(data));
+      res.end();
+    }else{
+      res.send(JSON.stringify({ success:false,message:"Authenticate Fail"}));
+      res.end();
+    } 
+  });
+
+  router.get("/GetListFriend",async(req,res)=>{
     res.setHeader('Content-Type', 'application/json');
     let data = await userprovider.GetListFriend([req.query.userid]);
-    console.log(data);
      if(data){
       res.send(JSON.stringify(data));
       res.end();

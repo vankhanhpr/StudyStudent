@@ -6,36 +6,28 @@ const commonprovider = require('../Provider/commonprovider')
 
 
 
-module.exports = (io)=>{
-    io.on("connection",(socket)=>{
-        socket.on("CLIENT_MSG",(datafromclient)=>{
-            if(!textvalidate.isEmpty(datafromclient)){
-                if(datafromclient.WorkerName === "commoncontroller"){
-                    requestService(datafromclient,socket,resp);
-                }
-                    
-            }
-        });
-    });
-}
+module.exports = (socket,datafromclient)=>{
+    requestService(datafromclient,socket);
+} 
 
-const FindTeacher = (datafromclient,socket)=>{
-    userprovider.FindTeacher((data,err)=>{
-      let resp;
-      if(err){
-        resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,null);
-        throw err.message;
+const FindTeacher = async (datafromclient,socket)=>{
+    let data  = await commonprovider.FindTeacher(datafromclient.InVal);
+    let resp;
+    if(textvalidate.isEmpty(data)){
+        resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,[]);
       }else{
-        resp = new JsonResponse.RESPONSE_MSG(socket.id,datafromclient.ClientSeq,JSON.stringify(data));
+        resp = new JsonResponse.RESPONSE_MSG_SUCCESS(socket.id,datafromclient.ClientSeq,data);
+        if(data.length===0){
+            resp.Result=0;
+        }
       } 
       socket.emit("RES_MSG",resp);
-    },datafromclient.InVal);
   }
   
 
 const requestService = (datafromclient,...args)=>{
     switch(datafromclient.ServiceName){
-        case "findteacher" :commonprovider.FindTeacher(datafromclient,...args); break;        
+        case "findteacher" :FindTeacher(datafromclient,...args); break;        
         default :throw new Exception.UndefineException("undefine exception something was wrong").showMessage(); break;
       }
 }

@@ -9,6 +9,7 @@ async function executeQuery (sql,param,operation){
    * param : data pass to function to process 
    * operation : "I" insert , "Q" query , "U" update , "D" delete , "C" commit 
    */
+    
     let conn;
     try{
       conn = await oracledb.getConnection(dbconfig);
@@ -17,8 +18,25 @@ async function executeQuery (sql,param,operation){
     }catch(err){
       console.log(err);
     }finally{
-      conn ? doRelease(conn):undefined;
+      conn ? await doRelease(conn):undefined;
     }
+}
+module.exports.doTransaction = doTransaction;
+async function doTransaction(sql,param){
+  let conn;
+  let returnstate=false;
+  try{
+    conn = await oracledb.getConnection(dbconfig);
+    let result = await conn.execute(sql,param);
+    await commitChange(conn);
+    returnstate = true;
+  }catch(err){
+    console.log(err);
+    conn.rollback();
+  }finally{
+    conn ? await doRelease(conn):undefined;
+    return returnstate;
+  }
 }
 
 
@@ -45,7 +63,7 @@ const doSelect = async (conn,sql,param)=>{
 //done
 const doInsert = async (conn,sql,param)=>{
   try{
-    let result = await conn.execute(sql,param,{autoCommit:true})
+    let result = await conn.execute(sql,param,{autoCommit:true});
     return result.rowsAffected;
   }catch(err){
     console.log('Insert error ',err);
@@ -71,7 +89,6 @@ const commitChange = async(conn)=>{
 }
 
 const requestOperation = async (operation,...args) => {
-  //console.log(...args);
   let result;
   switch(operation){
     case "Q": result = await doSelect(...args);break;

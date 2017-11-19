@@ -1,5 +1,5 @@
 var crypto = require('crypto');
-var secretkey = require('./Tools/secretkey.js')
+var secretkey = require('../Tools/secretkey.js')
 module.exports = (something)=>{
     /**
      * something is value need to decrypt

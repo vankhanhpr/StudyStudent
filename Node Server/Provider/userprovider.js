@@ -9,7 +9,6 @@ const dbconnect = require("./dbconnect.js")
   module.exports.GetListUser = async ()=>{
     try{
         let data = await dbconnect.executeQuery("Select * from USER_",[],"Q");
-        //console.log(data);
         return data;
     }catch(err){
         console.log("GetListUser error from Provider log: ",err);
@@ -17,81 +16,147 @@ const dbconnect = require("./dbconnect.js")
     
 }
 
-module.exports.GetListFriend = async(array)=>{
-    let data = await dbconnect.executeQuery(`SELECT * FROM RELATIONSHIP INNER JOIN USER_ ON RELATIONSHIP.TOUSER = USER_.ID WHERE (FROMUSER =:FROMUSER OR TOUSER =:FROMUSER) AND
-     STATUS=1`,[...array],"Q");
-     return data;
+module.exports.GetListFriendRequest = async(array)=>{
+    try{
+        console.log(array+" GetListFriendRequest param");
+        let data = await dbconnect.executeQuery(`SELECT * FROM RELATIONSHIP INNER JOIN USER_ ON RELATIONSHIP.TOUSER = USER_.ID WHERE (FROMUSER =:FROMUSER OR TOUSER =:FROMUSER) AND
+        STATUS=0 AND ACTION_USER_ID !=1`,[...array],"Q");
+        return data;
+    }catch(err){
+        console.log("GetListFriendRequest got error from userprovider log: ",err);
+    }
 }
 
+
+  //Get Specific User from db
+module.exports.MyCheckUserExist = async (array)=>{
+    try{
+        console.log(array+" MyCheckUserExist param");
+        let data = await dbconnect.executeQuery(`SELECT *
+        from USER_ where EMAIL=:email and PASSWORD =:password`,[...array],"Q");
+       return data;
+    }catch(err){
+        console.log("MyCheckUserExist got error from userprovider log: ",err);
+    }
+}
   //Get Specific User from db
 module.exports.CheckUserExist = async (array)=>{
-      let data = await dbconnect.executeQuery(`SELECT count(*) as NUMOFRECORD 
-      from USER_ where EMAIL=:email and PASSWORD =:password`,[...array],"Q");
-     return data[0].NUMOFRECORD;
+      try{
+        console.log(array+" CheckUserExist param");
+        let data = await dbconnect.executeQuery(`SELECT ID
+        from USER_ where EMAIL=:email and PASSWORD =:password`,[...array],"Q");
+        console.log(JSON.stringify(data));
+        return data.length>0? {c0:"Y",id:data[0].ID}:{c0:"N"};
+      }catch(err){
+        console.log("CheckUserExist got error from userprovider log: ",err);
+      }
 }
+
 
   //Register User
   //status : not complete need improve
 module.exports.RegisterUser = async(array)=>{
     /**
-     * array[0]: email
-     * array[1]: password
-     * array[2]: user_type
-     * array[3]: active
-     * array[4]: hashvalue
-     * array[5]: name
-     * array[6]: address
-     * array[7]: phonenumber
-     * array[8]: birthday
-     * array[9]: imagepath
+     * array[0]: NAME!!
+     * array[1]: EMAIL!!
+     * array[2]: PASSWORD!!
+     * array[3]: PHONENUMBER?
+     * array[4]: ADDRESS?
+     * array[5]: BIRTHDAY?
+     * array[6]: HASHCODE?
+     * array[7]: ACTIVE
+     * array[8]: USER_TYPE
+     * array[9]: IMAGEPATH?
+     * array[10]:firebasekey : in database is REGISTRATION_ID
      */
 
-    dbconnect.executeQuery(`INSERT INTO USER_ (EMAIL,PASSWORD,USER_TYPE,ACTIVE,HASHVALUE,NAME,ADDRESS,PHONENUMBER,
-    BIRTHDAY,IMAGEPATH) VALUES 
-    (:email,:password,:user_type,:active,:hashvalue,:name,:address,:phonenumber,:birthday,:imagepath);`,
-    [...array],"I");
+    try{
+        console.log(array+" RegisterUser param");
+        let rannum = crypto.randomNum();
+        let data = await dbconnect.executeQuery(`INSERT INTO USER_ (NAME,EMAIL,PASSWORD,ACTIVE,HASHCODE,
+            USER_TYPE) VALUES (:NAME,:EMAIL,:PASSWORD,0,'${rannum.toString()}',:USERTYPE)`,
+            [...array],"I");
+        data = updateResponse(data);
+        data.hashcode = rannum
+        return data;
+    }catch(err){
+        console.log("RegisterUser got error from userprovider log: ",err);
+    }
 }
 
 
 module.exports.ActiveUser = async (array)=>{
-      dbconnect.executeQuery(`UPDATE USER_ SET ACTIVE = 1 WHERE HASHCODE=:value`,[...array],"U");
+      try{
+        console.log(array+" ActiveUser param");
+        let data = await dbconnect.executeQuery("UPDATE USER_  SET ACTIVE = 1 WHERE EMAIL=:EMAIL AND HASHCODE=:VALUE",[...array],"U");
+        data = updateResponse(data);
+        return data;
+      }catch(err){
+        console.log("ActiveUser got error from userprovider log: ",err);
+      }
 }
 
 module.exports.FindUserUnActive = async (array)=>{
-    dbconnect.executeQuery(`SELECT COUNT(*) WHERE HASHCODE=:value`,[...array],"Q");
+    try{
+        console.log(array+" FindUserUnActive param");
+        let data = await dbconnect.executeQuery(`SELECT COUNT(*) WHERE HASHCODE=:value`,[...array],"Q");
+        return data;
+    }catch(err){
+        console.log("FindUserUnActive got error from userprovider log: ",err);
+    }
 }
 
-ChangePassword = async (array)=>{
+module.exports.ChangePassword = async (array)=>{
       /**
-       * [1] : password muốn set mới
-        [2] : email 
-        [3] : oldpass
+       * [0] : password muốn set mới
+        [1] : email 
+        [2] : oldpass
        */
-    let data = await dbconnect.executeQuery(`UPDATE USER_ SET 
-    password=:password where email=:email and password=:oldpass`,
-    [...array],"U");
-    return updateResponse(data,"Password");
+    try{
+        console.log(array+" ChangePassword param");
+        let data = await dbconnect.executeQuery(`UPDATE USER_ SET 
+        password=:password where email=:email and password=:oldpass`,
+        [...array],"U");
+        data = updateResponse(data);
+        return data;
+    }catch(err){
+        console.log("FindUserUnActive got error from userprovider log: ",err);
+    }
 }
 
 module.exports.GetInfoUser = async(array)=>{
     //[1] : Email
-    let data = await dbconnect.executeQuery(`SELECT * FROM USER_ WHERE EMAIL=:EMAIL`,[...array],"Q");
-    console.log(data[0]);
-    return data[0];
+    try{
+        console.log(array+" GetInfoUser param");
+        let data = await dbconnect.executeQuery(`SELECT 
+            ID,NAME,EMAIL,PHONENUMBER,ADDRESS,BIRTHDAY,ACTIVE,USER_TYPE,IMAGEPATH,PARENT_ID
+         FROM USER_ WHERE EMAIL=:EMAIL OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY`,[...array],"Q");
+        return data;
+    }catch(err){
+        console.log("GetInfoUser got error from userprovider log: ",err);
+    }
 }
 
 module.exports.UpdateInfoUser = async(array)=>{
-    let data = await dbconnect.executeQuery(`UPDATE USER_ SET EMAIL=:EMAIL,PHONENUMBER=:PHONENUMBER
-    ,ADDRESS=:ADDRESS,BIRTHDAY=:BIRTHDAY`,
-    [...array],
-    "U");
-    data = updateResponse(data,"Info user");
-    return data;
+    try{
+        console.log(array+" UpdateInfoUser param");
+        let data = await dbconnect.executeQuery(`UPDATE USER_ SET NAME=:NAME,PHONENUMBER=:PHONENUMBER
+        ,ADDRESS=:ADDRESS,BIRTHDAY=:BIRTHDAY WHERE ID=:id`,
+        [...array],
+        "U");
+        data = updateResponse(data);
+        return data;
+    }catch(err){
+        console.log("UpdateInfoUser got error from userprovider log: ",err);
+    }
 }
 
-const updateResponse = (data,whichUpdate)=>{
+
+
+
+const updateResponse = (data)=>{
     if(data>0){
-        return {OperationSuccess:true,Message:`update $resp success`};
+        return {c0:"Y"};
     }
-    return {OperationSuccess:false,Message:`update $resp fail`};
+    return {c0:"N"};
 }
