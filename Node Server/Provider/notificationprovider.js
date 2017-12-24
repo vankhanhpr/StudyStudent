@@ -1,5 +1,6 @@
 const dbconnect = require('../Provider/dbconnect'),
     parseutil = require('../Tools/parseutil'),
+    oracledb = require('oracledb'),
     rannum = require('../Tools/encrypt');
 
 const TAG = "notification provider";
@@ -10,12 +11,15 @@ module.exports.addoneusertomanyNotification = async(array) => {
          * [1]:Title notification
          * [2]:Content notification
          * [3]:userid who receive notification
+         * [4]: notif type
+         * [5]: randomnum
          */
+        console.log(array+"array addoneusertomanyNotification")
         let randomnumber = rannum.randommanydigit(15);
         let data = await dbconnect.doTransaction(`
         BEGIN
         SAVEPOINT start_tran;
-        INSERT INTO NOTIFICATION_ (NO_ID,NO_STATUS,USER_ID_SEND_NOTIFICATION,NO_TITLE,NO_MESSAGE,NOTIF_TYPE) VALUES (${randomnumber},0,:USER_SEND_NOTIF,:TITLE,:CONTENT,0);
+        INSERT INTO NOTIFICATION_ (NO_ID,NO_STATUS,USER_ID_SEND_NOTIFICATION,NO_TITLE,NO_MESSAGE,NOTIF_TYPE) VALUES (${randomnumber},0,:USER_SEND_NOTIF,:TITLE,:CONTENT,:notif_type);
         INSERT INTO USER_NOTIF VALUES (:USERRECEIVENOTIF_ID,${randomnumber},0);
       EXCEPTION
         WHEN OTHERS THEN
@@ -78,8 +82,14 @@ module.exports.MarkAsReadNotification = async(array) => {
          * [0]:userid who read notification already
          * [1]:notif_id which user read
          */
-        return await dbconnect.executeQuery(`UPDATE USER_NOTIF SET UNREAD=1 WHERE USER_ID=:userid  
+        let result =await dbconnect.executeQuery(`UPDATE USER_NOTIF SET UNREAD=1 WHERE USER_ID=:userid  
         AND NOTI_ID=:noti_id`, [...array], "U");
+        if(result){
+            result = result>0?{c0:"Y"}:{c0:"N"}; 
+        }else{
+            result = {c0:"N"};
+        }
+        return result;
     } catch (err) {
         console.log(`MarkAsReadNotification got error from ${TAG} log: `, err);
     }
@@ -107,11 +117,32 @@ module.exports.GetAllNotification = async(array) => {
          * 
          */
         console.log(array + " array pass to getallnotification");
-        return await dbconnect.executeQuery(`SELECT N.NO_ID,N.NO_TITLE,N.NO_MESSAGE,N.NOTIF_TYPE,UN.UNREAD FROM NOTIFICATION_ N
+        return await dbconnect.executeQuery(`SELECT N.NO_ID,N.NO_TITLE,N.NO_MESSAGE,N.USER_ID_SEND_NOTIFICATION,N.NOTIF_TYPE,UN.UNREAD FROM NOTIFICATION_ N
         INNER JOIN USER_NOTIF UN ON UN.NOTI_ID=N.NO_ID 
         INNER JOIN USER_ U ON U.ID=UN.USER_ID
         WHERE U.ID =:userid`, [...array], "Q");
     } catch (err) {
         console.log(`GetAllNotification got error from ${TAG} log: `, err);
+    }
+}
+module.exports.IgnoreNotification = async (array)=>{
+    try{
+        /**
+         * data in array
+         * [0]:noti_id
+         */
+        let bindvar={
+            noti_id:array[0],
+            outvar:{type:oracledb.NUMBER,dir:oracledb.BIND_OUT}
+        }
+        let result = await dbconnect.executeQuery(`begin IGNORE_NOTIFICATION(:noti_id,:outvar);end;`,bindvar,"PR");
+        if(result){
+            result = result.outvar===1?{c0:"Y"}:{c0:"N"};
+        }else{
+            result = {c0:"N"};
+        }
+        return result;
+    }catch(err){
+        console.log(`IgnoreNotification got error from ${TAG} log err `,err);
     }
 }

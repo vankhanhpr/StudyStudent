@@ -6,8 +6,8 @@ var usercontroller = require('./Controller/usercontroller.js'),
   parentcontroller = require("./Controller/parentcontroller"),
   commoncontroller = require("./Controller/commoncontroller"),
   studentcontroller = require("./Controller/studentcontroller"),
-  accessdeniedhandler = require('./Controller/accessdeniedhandler');
-//, relationcontroller = require("./Controller/relationcontroller")
+  accessdeniedhandler = require('./Controller/accessdeniedhandler'),
+  relationcontroller = require("./Controller/relationcontroller");
 var timeutil = require('./Tools/timeutil'),
   DataError = require('./Exception/DataError.js'),
   errorhandler = require('./Controller/errorhandler'),
@@ -33,10 +33,17 @@ const io = require('socket.io')(8081 || process.env.PORT, {
 
 //end
 
-
 io.on('connection', (socket) => {
   socket.use((packet, next) => {
     return next();
+  });
+  (function(socket){
+    _orginemit = socket.emit;
+    socket.emit = function(){
+      event = arguments[0];
+      data = JSON.stringify(arguments[1]);
+      _orginemit.apply(socket,[event,data]);
+    };
   });
   console.log("user connected : " + socket.id);
   errorhandler(socket);
@@ -58,8 +65,11 @@ io.on('connection', (socket) => {
         case "chatcontroller":
           chatcontroller(socket, datafromclient);
           break;
-        case "commomcontroller":
+        case "commoncontroller":
           commoncontroller(socket, datafromclient);
+          break;
+        case "relationcontroller":
+          relationcontroller(socket,datafromclient);
           break;
         case "studentcontroller":
           datafromclient.UserType === 0 ? studentcontroller(socket, datafromclient) : accessdeniedhandler(socket,datafromclient);
@@ -79,7 +89,7 @@ io.on('connection', (socket) => {
 
 
 });
-io.sockets.setMaxListeners(0);
+
 //Share io
 /* usercontroller(io);
 chatcontroller(io);

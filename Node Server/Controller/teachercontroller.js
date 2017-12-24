@@ -25,13 +25,10 @@ const requestService = (datafromclient, ...args) => {
             updateCourseDif(datafromclient, ...args);
             break;
         case "getlistfriend":
-            GetListFriend(datafromclient, ...args);
+            GetListFriendAndStudent(datafromclient, ...args);
             break;
         case "addmanytoonenotif":
             AddManyUserToOneNotification(datafromclient, ...args);
-            break;
-        case "getallnotifation":
-            GetAllNotification(datafromclient, ...args);
             break;
         default:
             break;
@@ -53,7 +50,7 @@ const addCourse = async(datafromclient, socket) => {
                 c0: "N"
             }], datafromclient.UserType);
         }
-        socket.emit("RES_MSG", resp);
+        socket.emit("RES_MSG",resp);
     } catch (err) {
         console.log(`addCource got eror from ${TAG} log err :`, err);
     }
@@ -69,7 +66,7 @@ const getCourseById = async(datafromclient, socket) => {
         } else {
             resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id, datafromclient.ClientSeq, null, datafromclient.UserType);
         }
-        socket.emit("RES_MSG", resp);
+        socket.emit("RES_MSG",resp);
     } catch (err) {
         console.log(`getCourseById got eror from ${TAG} log err :`, err);
     }
@@ -86,7 +83,7 @@ const getAllCourseOfTeacher = async(datafromclient, socket) => {
         } else {
             resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id, datafromclient.ClientSeq, null, datafromclient.UserType);
         }
-        socket.emit("RES_MSG", resp);
+        socket.emit("RES_MSG",resp);
     } catch (err) {
         console.log(`getAllCourseOfTeacher got eror from ${TAG} log err :`, err);
     }
@@ -117,7 +114,7 @@ const updateCourse = async(datafromclient, socket) => {
         } else {
             resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id, datafromclient.ClientSeq, null, datafromclient.UserType);
         }
-        socket.emit("RES_MSG", resp);
+        socket.emit("RES_MSG",resp);
     } catch (err) {
         console.log(`updateCourse got eror from ${TAG} log err :`, err);
     }
@@ -150,16 +147,16 @@ const updateCourseDif = async(datafromclient, socket) => {
                 c0: "N"
             }], datafromclient.UserType);
         }
-        socket.emit("RES_MSG", resp);
+        socket.emit("RES_MSG",resp);
     } catch (err) {
         console.log(`updateCourseDif got eror from ${TAG} log err :`, err);
     }
 }
 
-const GetListFriend = async(datafromclient, socket) => {
+const GetListFriendAndStudent = async(datafromclient, socket) => {
     try {
         //InVal[0]:userid
-        let data = await teacherprovider.GetListFriend(parseutil.parseIntArray(datafromclient.InVal));
+        let data = await teacherprovider.GetListFriendAndStudent(parseutil.parseIntArray(datafromclient.InVal));
         let resp = null;
         if (data.length > 0) {
             resp = new JsonResponse.RESPONSE_MSG_SUCCESS(socket.id, datafromclient.ClientSeq, data, datafromclient.UserType);
@@ -169,11 +166,11 @@ const GetListFriend = async(datafromclient, socket) => {
             }], datafromclient.UserType);
         }
         setTimeout(() => {
-            socket.emit("RES_MSG", resp);
+            socket.emit("RES_MSG",resp);
         }, 100);
 
     } catch (err) {
-        console.log(`GetListFriend got error from ${TAG} `, err);
+        console.log(`GetListFriendAndStudent got error from ${TAG} `, err);
     }
 
 }
@@ -205,35 +202,14 @@ const AddManyUserToOneNotification = (datafromclient, socket) => {
             }], datafromclient.UserType);
         }
         setTimeout(() => {
-            socket.emit("RES_MSG", respusersend);
+            socket.emit("RES_MSG",respusersend);
             if (respuserreceive) {
-                for (let i = 0; i < arruserreceivenotif.length; i++) {
-                    socket.to(chatprovider.FindSocketIdForNotif(datafromclient[i])).emit("RES_MSG", respuserreceive);
-                }
+                arruserreceivenotif.map((currentValue,index,arr)=>{
+                    socket.to(chatprovider.FindSocketIdForNotif(datafromclient[index])).emit("RES_MSG",respuserreceive);    
+                });
             }
 
         });
-    }).catch(err => {
-        console.log(`AddManyUserToOneNotification got error from ${TAG} `, err);
-    });
-}
-
-const GetAllNotification = (datafromclient, socket) => {
-    /**
-     * [0]:userid get all user notification for user
-     * 
-     */
-    datafromclient.InVal = parseutil.parseIntArray(datafromclient.InVal)
-    notificationprovider.GetAllNotification(datafromclient.InVal).then(resolve => {
-        let resp = null;
-        if (resolve) {
-            resp = new JsonResponse.RESPONSE_MSG_SUCCESS(socket.id, datafromclient.ClientSeq, resolve, datafromclient.UserType);
-        } else {
-            resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id, datafromclient.ClientSeq, null, datafromclient.UserType);
-        }
-        setTimeout(() => {
-            socket.emit("RES_MSG", resp);
-        },100);
     }).catch(err => {
         console.log(`AddManyUserToOneNotification got error from ${TAG} `, err);
     });

@@ -1,4 +1,3 @@
-
 const oracledb = require('oracledb')
 , dbconfig = require("../Configuration/dbconfig.js");
 
@@ -39,7 +38,14 @@ async function doTransaction(sql,param){
   }
 }
 
-
+const doProcedure = async(conn,sql,param)=>{
+  try{
+    let result = await conn.execute(sql,param,{extendedMetaData:true});
+    return result.outBinds;
+  }catch(err){
+    console.log('doProcedure error ',err);
+  }
+}
 
 const doRelease = async (conn)=>{
   try{
@@ -70,6 +76,15 @@ const doInsert = async (conn,sql,param)=>{
   }
 }
 
+const doDelete = async (conn,sql,param)=>{
+  try{
+    let result = await conn.execute(sql,param,{autoCommit:true});
+    return result.rowsAffected;
+  }catch(err){
+    console.log('Delete error ',err);
+  }
+}
+
 const doUpdate = async (conn,sql,param)=>{
   try{
     let result = await conn.execute(sql,param,{autoCommit:true});
@@ -85,9 +100,53 @@ const commitChange = async(conn)=>{
   }catch(err){
     console.log('Commit Error Rollback plz ',err);
   }
-  
 }
-
+module.exports.doProcedureForRefCursor = async(sql,param,callback)=>{
+  try{
+    let conn;
+    try{
+      conn = await oracledb.getConnection(dbconfig);
+      let result = await conn.execute(sql,param,{outFormat:oracledb.OBJECT,extendedMetaData:true});
+      fetchRowsFromRS(conn,result.outBinds.cursor,(data)=>{
+        callback(data);
+      });
+      await commitChange(conn);
+    }catch(err){
+      console.log(err);
+      conn.rollback();
+    }
+    
+    
+  }catch(err){
+    console.log("doProcedureForRefCursor error log: ",err);
+  }
+}
+const  fetchRowsFromRS =  (connection, cursor,callback)=>
+{
+    let result = [];
+    let stream = cursor.toQueryStream(); 
+    stream.on('data',(data)=>{
+      result.push(data);
+    })
+    stream.on('end', function () {
+       console.log("end stream");
+       doRelease(connection);
+       callback(result);
+    });
+    stream.on('error',(err)=>{
+      console.log(err);
+      doRelease(connection);
+    })
+    
+}
+const doCloseResultSet = (resultSet)=>
+{
+  try{
+     resultSet.close();
+  }catch(err){
+    console.log(err);
+  }
+}
 const requestOperation = async (operation,...args) => {
   let result;
   switch(operation){
@@ -95,6 +154,7 @@ const requestOperation = async (operation,...args) => {
     case "I": result = await doInsert(...args);break;
     case "U": result = await doUpdate(...args);break;
     case "D": result = await doDelete(...args);break;
+    case "PR": result = await doProcedure(...args);break;
     case "C": await commitChange(...args);break;
     default : result = undefined;break; 
   }

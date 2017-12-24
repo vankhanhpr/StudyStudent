@@ -32,13 +32,15 @@ const listUserObject = async  (datafromclient,socket)=>{
   
 
 const AuthenticateUser = async (datafromclient,socket)=>{
+        datafromclient.InVal.push(datafromclient.UserType);
         datafromclient.InVal[1] = encrypt.encrypt(datafromclient.InVal[1]);
         userprovider.CheckUserExist(datafromclient.InVal).then(data=>{
-          socket.userfrom = data.id.toString();
+          if(data.id){
+            socket.userfrom = data.id.toString();
+          }
           let resp;
           if(socket.userfrom){
             if(chatprovider.pushClientToArray(socket)){
-             
               if(data.c0==="Y"){
                 resp = new JsonResponse.RESPONSE_MSG_SUCCESS(socket.id,
                   datafromclient.ClientSeq,
@@ -53,18 +55,14 @@ const AuthenticateUser = async (datafromclient,socket)=>{
               resp.Message = "You or another people have logged in this account now pls contact us if you lost account";
               resp.Code= -1000;
               }
-          setTimeout(()=>{
-            socket.emit('RES_MSG',resp);
-          },100);
+              socket.emit('RES_MSG',resp);
         }).catch(err=>{
           console.log(`AuthenticateUser got error from ${TAG} `,err);
-          setTimeout(()=>{
-            console.log("go here");
-            resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,[{c0:"N"}],datafromclient.UserType);
-            resp.Message = "You or another people have logged in this account now pls contact us if you lost account";
-            resp.Code= "X0X0X0";
-            socket.emit('RES_MSG',resp);
-          },100);
+          console.log("go here");
+          resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,[{c0:"N"}],datafromclient.UserType);
+          resp.Message = "You or another people have logged in this account now pls contact us if you lost account";
+          resp.Code= "X0X0X0";
+          socket.emit('RES_MSG',resp);
         });
         
         
@@ -75,20 +73,29 @@ const AuthenticateUser = async (datafromclient,socket)=>{
 
 const RegisterUser = async (datafromclient,socket)=>{
       try{
+        let random = encrypt.randomNum().toString();
+        datafromclient.InVal.push(random);
         datafromclient.InVal.push(datafromclient.UserType);
         datafromclient.InVal[2] = encrypt.encrypt(datafromclient.InVal[2]);//encrypt pass here
-        let data = await userprovider.RegisterUser(datafromclient.InVal);     
         let resp;
-        if(data.c0==="Y"){
-          let subject = "Confirm Email Do Not Reply";
-          let content = `Import code to verify your account ${data.hashcode}`;
-          delete data.hashcode;
-          //data[1] is Email
-          SendEmail(datafromclient.InVal[1],subject,content);
-          resp = new JsonResponse.RESPONSE_MSG_SUCCESS(socket.id,datafromclient.ClientSeq,[data],datafromclient.UserType);
+        let subject = "Confirm Email Do Not Reply";
+        let content = `Import code to verify your account ${random}`;
+        //data[1] is Email
+        let sendSuccess =await SendEmail(datafromclient.InVal[1],subject,content);
+        if(!sendSuccess){
+          resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,[{c0:"N"}],datafromclient.UserType);
+          resp.Message = "Mail not existed";
+          resp.Code = "ZCVZNC<MX";
         }else{
-          delete data.hashcode;
-          resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,[data],datafromclient.UserType);
+          let data = await userprovider.RegisterUser(datafromclient.InVal);
+          if(data){
+            resp = new JsonResponse.RESPONSE_MSG_SUCCESS(socket.id,datafromclient.ClientSeq,[data],datafromclient.UserType);
+          }else{
+            resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,[{c0:"N"}],datafromclient.UserType);
+            resp.Message = "Can't save email to database plz retry";
+            resp.Code = "ABXCZCV";
+          }
+          
         }
         socket.emit("RES_MSG",resp);
       }catch(err){
@@ -116,7 +123,6 @@ const ChangePassword = async (datafromclient,socket)=>{
 
 const GetInfoUser = async (datafromclient,socket)=>{
   try{
-    console.log("getuserinfo");
     let data = await userprovider.GetInfoUser(datafromclient.InVal);
     let resp;
     if(!textvalidate.isEmpty(data)) {
@@ -126,9 +132,7 @@ const GetInfoUser = async (datafromclient,socket)=>{
       resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,null
         ,datafromclient.UserType);
     }
-    setTimeout(()=>{
-      socket.emit('RES_MSG',resp);
-    },100);
+    socket.emit('RES_MSG',resp);
     
   }catch(err){
     console.log(`GetInfoUser got error from ${TAG} `,err);
@@ -145,9 +149,7 @@ const UpdateInfo = async (datafromclient,socket)=>{
     }else{
       resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,[data],datafromclient.UserType);
     }
-    setTimeout(()=>{
-      socket.emit('RES_MSG',resp);
-    },100);
+    socket.emit('RES_MSG',resp);
     
   }catch(err){
     console.log(`UpdateInfo got error from ${TAG} `,err);
@@ -164,10 +166,7 @@ const AuthenticateHashCode = async  (datafromclient,socket)=>{
     }else{
       resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,[data],datafromclient.UserType);
     }
-    setTimeout(()=>{
-      socket.emit('RES_MSG',resp);
-      
-    },100);
+    socket.emit('RES_MSG',resp);
    
   }catch(err){
     console.log(`AuthenticateHashCode got error from ${TAG} `,err);
@@ -175,24 +174,30 @@ const AuthenticateHashCode = async  (datafromclient,socket)=>{
 
 }
 
-const SendEmail =(toEmail,subJect,content)=>{
+const SendEmail = async(toEmail,subJect,content)=>{
+  let success = true;
   var transporter  = nodemailer.createTransport(mailconfig);
-  console.log(`my content ${content}`);
+  
   var mailOption = {
       from : mailconfig.auth.user,
       to : toEmail,
       subject:subJect,
       text:content
   }
-  transporter.sendMail(mailOption,(error,info)=>{
-      if(error)console.log(error);
-
-      console.log("email sent "+info)
+  let result =await transporter.sendMail(mailOption,(error,info)=>{
+      if(error){
+        console.log(error);
+      }
+      else{
+        success = true;
+        console.log("send success!!");
+      }
       
   });
   transporter.close();
+  console.log("log success "+success);
+  return success;
 }
-
 
 
 const requestService =  (datafromclient,...args) =>{

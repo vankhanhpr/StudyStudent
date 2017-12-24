@@ -44,9 +44,14 @@ module.exports.CheckUserExist = async (array)=>{
       try{
         console.log(array+" CheckUserExist param");
         let data = await dbconnect.executeQuery(`SELECT ID
-        from USER_ where EMAIL=:email and PASSWORD =:password`,[...array],"Q");
+        from USER_ where EMAIL=:email and PASSWORD =:password and USER_TYPE=:user_type`,[...array],"Q");
         console.log(JSON.stringify(data));
-        return data.length>0? {c0:"Y",id:data[0].ID}:{c0:"N"};
+        if(data){
+           data= data.length>0? {c0:"Y",id:data[0].ID}:{c0:"N"};
+        }else{
+            data ={c0:"N"};
+        }
+        return data;
       }catch(err){
         console.log("CheckUserExist got error from userprovider log: ",err);
       }
@@ -67,17 +72,15 @@ module.exports.RegisterUser = async(array)=>{
      * array[7]: ACTIVE
      * array[8]: USER_TYPE
      * array[9]: IMAGEPATH?
-     * array[10]:firebasekey : in database is REGISTRATION_ID
      */
 
     try{
         console.log(array+" RegisterUser param");
         let rannum = crypto.randomNum();
         let data = await dbconnect.executeQuery(`INSERT INTO USER_ (NAME,EMAIL,PASSWORD,ACTIVE,HASHCODE,
-            USER_TYPE) VALUES (:NAME,:EMAIL,:PASSWORD,0,'${rannum.toString()}',:USERTYPE)`,
+            USER_TYPE) VALUES (:NAME,:EMAIL,:PASSWORD,0,:HASHCODE,:USERTYPE)`,
             [...array],"I");
         data = updateResponse(data);
-        data.hashcode = rannum
         return data;
     }catch(err){
         console.log("RegisterUser got error from userprovider log: ",err);

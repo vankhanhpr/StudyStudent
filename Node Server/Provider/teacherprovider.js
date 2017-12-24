@@ -203,27 +203,22 @@ const generateQueryForUpdateBuoiDif=(arrayofarray,schedule_id)=>{
     ]
 )); */
 
-module.exports.GetListFriend = async (array)=>{
+module.exports.GetListFriendAndStudent = async (array)=>{
     try{
-        console.log(array+" GetListFriend param");
-        let resultarray = [];
+        console.log(array+" GetListFriendAndStudent param");
         let data = await dbconnect.executeQuery(`SELECT 
         U.ID,U.NAME,U.EMAIL,U.PHONENUMBER,U.ADDRESS,U.BIRTHDAY,U.USER_TYPE 
          FROM RELATIONSHIP R INNER JOIN USER_ U ON R.TOUSER = U.ID 
          WHERE (R.FROMUSER =:FROMUSER OR R.TOUSER =:FROMUSER) AND
-        R.STATUS=1
+        (R.STATUS=1 or R.STATUS=3) 
         UNION 
         SELECT US.ID,US.NAME,US.EMAIL,US.PHONENUMBER,US.ADDRESS,US.BIRTHDAY,US.USER_TYPE 
          FROM RELATIONSHIP R INNER JOIN USER_ US ON R.FROMUSER = US.ID 
          WHERE (R.FROMUSER =:FROMUSER OR R.TOUSER =:FROMUSER) AND
-        R.STATUS=1`,[...array],"Q");
-        for(let i=0;i<data.length;i++){
-            if(data[i].ID!==array[0]){
-                resultarray.push(data[i]);
-            }
-        }
-        return resultarray;
+        (R.STATUS=1 or R.STATUS=3)`,[...array],"Q");
+        return data.filter(item=>{return item.ID!==array[0];});
     }catch(err){
-        console.log("GetListFriend got error from userprovider log: ",err);
+        console.log(`GetListFriend got error from ${TAG} log: `,err);
     }
 }
+

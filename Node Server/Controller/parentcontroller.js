@@ -1,6 +1,7 @@
 const parentprovider = require('../Provider/parentprovider'),
 JsonResponse = require('../FormatJson/JsonResponse'),
 chatprovider = require('../Provider/chatprovider'),
+relationprovider = require('../Provider/relationprovider'),
 parseutil = require('../Tools/parseutil'),
 notificationprovider = require('../Provider/notificationprovider'),
 textvalidate = require('../Validate/textvalidate');
@@ -14,56 +15,41 @@ const GetHoSo = async (datafromclient,socket)=>{
     try{
         let data = await parentprovider.GetHoSo(datafromclient.InVal);
         let resp;
-        if(!textvalidate.isEmpty(data) && datafromclient.UserType===1){
+        if(data){
             resp = new JsonResponse.RESPONSE_MSG_SUCCESS(socket.id,datafromclient.ClientSeq,data,datafromclient.UserType);
         }else{
-            resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,null,datafromclient.UserType);
+            resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,[],datafromclient.UserType);
+            resp.Message ="Error occur plz try again";
         }
-        setTimeout(()=>{
-            socket.emit("RES_MSG",resp);
-        },datafromclient.TimeOut||4000);
-    
+        socket.emit("RES_MSG",resp);
     }catch(err){
         console.log(`GetHoSo got error from ${TAG} `,err);
     }
 }
 
-const RequestRelationShipStudent = async (datafromclient,socket)=>{
+const GetScheduleOfStudentRegistered = async (datafromclient,socket)=>{
     try{
         /**
-         * [0] : content
-         * [1] : userid who receive notification
+         * [0]:student id;
          */
-        let data =await notificationprovider.addoneusertomanyNotification(parseutil.parseIntPosition(datafromclient.InVal,1));
-        let findsocket = chatprovider.FindSocketIdToChatWith(datafromclient);
+        let data = await parentprovider.GetScheduleOfStudentRegistered(parseutil.parseIntArray(datafromclient.InVal));
         let resp;
-        if(findsocket){
-            resp = new JsonResponse.RESPONSE_MSG_SUCCESS(socket.id,datafromclient.ClientSeq,
-                [{c0:"Y",message:datafromclient.InVal[0]}],datafromclient.UserType)
-            setTimeout(()=>{
-                socket.to(findsocket.id).emit("RES_MSG",resp);
-                socket.emit("RES_MSG",resp);
-            },datafromclient.TimeOut||4000);
+        if(data){
+            resp = new JsonResponse.RESPONSE_MSG_SUCCESS(socket.id,datafromclient.ClientSeq,data,datafromclient.UserType);
         }else{
-            if(data){
-                resp = new JsonResponse.RESPONSE_MSG_SUCCESS(socket.id,datafromclient.ClientSeq,
-                    [{c0:"Y",message:datafromclient.InVal[0]}],datafromclient.UserType)
-            }else{
-                resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,
-                    [{c0:"N"}],datafromclient.UserType)
-            }
-            setTimeout(()=>{
-                socket.emit("RES_MSG",resp);
-            },datafromclient.TimeOut||4000);
+            resp = new JsonResponse.RESPONSE_MSG_FAIL(socket.id,datafromclient.ClientSeq,[],datafromclient.UserType);
+            resp.Message ="Error occur plz try again";
         }
-
+        socket.emit("RES_MSG",resp);
     }catch(err){
-        console.log(`RequestRelationShipStudent got error from ${TAG} `,err);
+        console.log(`GetScheduleOfStudentRegistered got error from ${TAG} `,err);
     }
 }
+
 const requestService = (datafromclient,...args)=>{
     switch(datafromclient.ServiceName){
         case "gethoso": GetHoSo(datafromclient,...args);break;
+        case "getscheduleofstudentregistered":GetScheduleOfStudentRegistered(datafromclient,...args);break;
         default:break;
     }
 }
