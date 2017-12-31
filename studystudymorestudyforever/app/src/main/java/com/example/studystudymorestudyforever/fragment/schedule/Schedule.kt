@@ -3,6 +3,7 @@ package com.example.studystudymorestudyforever.fragment.schedule
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
@@ -33,10 +34,6 @@ class Schedule: Fragment()
         var tem:ArrayList<ScheduleStudy>?= arrayListOf()
 
         var x:ScheduleStudy?= ScheduleStudy()
-        x!!.setC0("khanh")
-        x.setC1("kahnh")
-        tem!!.add(x)
-        tem!!.add(x)
 
         var adapter= ScheduleAdapter(context,tem!!)
         lv_schedulestudy!!.adapter= adapter
@@ -64,6 +61,8 @@ class Schedule: Fragment()
         }
         lv_schedulestudy!!.setMenuCreator(creator)
 
+
+        //Chặn scroll của listview
         lv_schedulestudy!!.setOnScrollListener(object : AbsListView.OnScrollListener {
             override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
 
@@ -77,7 +76,21 @@ class Schedule: Fragment()
             }
         })
 
+        //load refresh
+        srlLayout!!.setOnRefreshListener(object :SwipeRefreshLayout.OnRefreshListener {
+            override fun onRefresh() {
+
+                Handler().postDelayed({
+
+                    srlLayout!!.setRefreshing(false)
+                }, 2000)
+            }
+
+        })
 
         return  view
     }
+
+
+
 }

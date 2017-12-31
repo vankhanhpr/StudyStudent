@@ -1,9 +1,12 @@
 package com.example.studystudymorestudyforever.until.datalocal
 
 import com.example.studystudymorestudyforever.fragment.scheduleteacher.addcourse.AddCourse
+import com.example.studystudymorestudyforever.until.course.CourseStudent
 import com.example.studystudymorestudyforever.until.course.ScheduleAdd
 import com.example.studystudymorestudyforever.until.course.TeacherSchedule
+import com.example.studystudymorestudyforever.until.notification.Notifi
 import com.example.studystudymorestudyforever.until.teacher.TeacherData
+import com.example.studystudymorestudyforever.until.teacher.TeacherofStudent
 import com.example.studystudymorestudyforever.until.user.User
 
 /**
@@ -12,7 +15,7 @@ import com.example.studystudymorestudyforever.until.user.User
 object LocalData {
 
     //json emit
-    var   usertype:Int= 2
+    var usertype:Int= 2
 
     var email= ""
     var pass=""
@@ -20,8 +23,18 @@ object LocalData {
     //data
     var userlogin= 0
     //teacher
-    var teacher:TeacherData=TeacherData()
+    var teacher: TeacherofStudent =TeacherofStudent()
     //course
     var course: ScheduleAdd = ScheduleAdd()
+    //list friend
+    var listUser:ArrayList<User> = arrayListOf()
+    //listTeacher
+    var listTeacher:ArrayList<TeacherofStudent> = arrayListOf()
+
+    var login:Boolean= true
+
+    var notifi:Notifi=Notifi()
+
+    var selectCourseSt:CourseStudent= CourseStudent()
 
 }

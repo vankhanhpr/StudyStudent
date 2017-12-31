@@ -10,6 +10,10 @@
         card_view:cardCornerRadius="5dp"
         card_view:cardUseCompatPadding="true"
         card_view:cardElevation="5dp">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/reFresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -23,20 +27,66 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical">
+
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="fill_parent"
                         android:layout_height="match_parent"
                         android:textSize="@dimen/text_size_title"
                         android:gravity="center"
                         android:text="@string/notification"
+                        android:layout_toLeftOf="@+id/tab_add_notifi"
+
                         android:textColor="#000000" />
+                    <LinearLayout
+                        android:id="@+id/tab_add_notifi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingRight="5dp"
+                        android:paddingLeft="5dp"
+                        android:visibility="gone"
+                        android:layout_alignParentRight="true">
+
+                        <ImageView
+                            android:id="@+id/imv_back"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="center"
+                            android:background="@drawable/icon_add"
+                            />
+                    </LinearLayout>
 
                 </RelativeLayout>
         </LinearLayout>
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:id="@+id/recicleview_list_notication"/>
+
+            <LinearLayout
+                android:id="@+id/tab_nodata_notifi"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="center"
+                    android:background="@drawable/icon_error"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_data"
+                    android:textSize="@dimen/text_size_main_nodata"/>
+
+            </LinearLayout>
     </LinearLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
     </android.support.v7.widget.CardView>
 </RelativeLayout>

@@ -17,18 +17,15 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:background="@drawable/sharp_title_layout">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/icon_back"
-                />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/sign_title"
                 android:textColor="@color/text_title"
                 android:textSize="@dimen/text_size_title"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:layout_marginRight="30dp"/>
 
         </LinearLayout>
 

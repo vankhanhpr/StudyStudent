@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,11 +25,14 @@ import com.example.studystudymorestudyforever.until.Value
 import com.example.studystudymorestudyforever.until.chat.ChatData
 import com.example.studystudymorestudyforever.until.datalocal.LocalData
 import com.example.studystudymorestudyforever.until.teacher.TeacherData
-import com.example.studystudymorestudyforever.until.user.User
+import com.example.studystudymorestudyforever.until.teacher.TeacherofStudent
 import com.google.gson.Gson
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import android.widget.ProgressBar
+
+
 
 
 /**
@@ -43,10 +47,18 @@ class  Chat: Fragment(),ISetMessage,ISelectAccountChat
     var tab_add_message:LinearLayout ? =null
     var dialog_show_list_account: Dialog?=null
     var recycle_select_account:RecyclerView?=null
-    var listUser:ArrayList<User> = arrayListOf()
+    var listUser:ArrayList<TeacherofStudent> = arrayListOf()
     var tab_nodata_message :LinearLayout?=null
     var sw_refresh:SwipeRefreshLayout?=null
     var listMessage:ArrayList<ChatData> = arrayListOf()
+
+    private var visibleThreshold = 5
+    private var lastVisibleItem: Int = 0
+    var totalItemCount: Int = 0
+    private var isLoading: Boolean = false
+
+
+
 
 
 
@@ -54,29 +66,14 @@ class  Chat: Fragment(),ISetMessage,ISelectAccountChat
         var view: View = inflater!!.inflate(R.layout.main_chat_fragment, container, false)
 
         EventBus.getDefault().register(this)
-        getListMessage()//laay danh sach tin nhan
+        //getListMessage()//laay danh sach tin nhan
 
         recicleview_list_message= view.findViewById(R.id.recicleview_list_message) as RecyclerView
         tab_add_message= view.findViewById(R.id.tab_add_message) as LinearLayout
         tab_nodata_message= view.findViewById(R.id.tab_nodata_message) as LinearLayout
         sw_refresh= view.findViewById(R.id.sw_refresh) as SwipeRefreshLayout
 
-
-
-        /*var listchat:ArrayList<ChatData> = arrayListOf()
-        var chat :ChatData= ChatData()
-        chat.setChatID(1)
-        chat.setChatstatus("khoongsfasdf")
-
-        listchat.add(chat)
-        listchat.add(chat)
-        listchat.add(chat)
-        listchat.add(chat)
-        listchat.add(chat)
-        listchat.add(chat)
-        listchat.add(chat)*/
-
-
+        getListFriend()
 
         tab_add_message!!.setOnClickListener()
         {
@@ -84,19 +81,10 @@ class  Chat: Fragment(),ISetMessage,ISelectAccountChat
             dialog_show_list_account!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog_show_list_account!!.setContentView(R.layout.dialog_list_account_chat)
 
-            var listaccount :ArrayList<TeacherData> = arrayListOf()
-            var tem :TeacherData = TeacherData()
-            tem.setID(1)
-
-            listaccount.add(tem)
-            listaccount.add(tem)
-            listaccount.add(tem)
-            listaccount.add(tem)
-
-
+            getListFriend()
 
             recycle_select_account = dialog_show_list_account!!.findViewById(R.id.recycle_select_account) as RecyclerView
-            getListFriend()
+
             var tab_cancel_dialog_select = dialog_show_list_account!!.findViewById(R.id.tab_cancel_dialog_select) as LinearLayout
             tab_cancel_dialog_select!!.setOnClickListener()
             {
@@ -110,11 +98,11 @@ class  Chat: Fragment(),ISetMessage,ISelectAccountChat
             override fun onRefresh() {
 
                 Handler().postDelayed({
+                    call.Sevecie()
                     getListMessage()
                     sw_refresh!!.setRefreshing(false)
                 }, 2000)
             }
-
         })
 
         recicleview_list_message!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -122,6 +110,16 @@ class  Chat: Fragment(),ISetMessage,ISelectAccountChat
                 val topRowVerticalPosition = if (recyclerView == null || recyclerView.childCount == 0) 0 else recyclerView.getChildAt(0).top
                 sw_refresh!!.setEnabled(topRowVerticalPosition >= 0)
 
+
+                val linearLayoutManager = recyclerView!!.getLayoutManager() as LinearLayoutManager
+
+                totalItemCount = linearLayoutManager.getItemCount();
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+
+                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+
+                    isLoading = true;
+                }
             }
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -129,14 +127,12 @@ class  Chat: Fragment(),ISetMessage,ISelectAccountChat
         })
         return  view
     }
-
     //lay danh sach lich su chat
-    fun getListMessage() {
+    fun getListMessage()
+    {
         var inval2: Array<String> = arrayOf(LocalData.user.getID().toString())
         call.Call_Service(Value.workername_getlistmessage,Value.servicename_getlistmessage,inval2,Value.key_getlistmessage)
     }
-
-
     //Nhận kết quả trả về khi login_layout
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MessageEvent) {
@@ -149,20 +145,26 @@ class  Chat: Fragment(),ISetMessage,ISelectAccountChat
             //khoong co data
             }
             else{
+                listUser.clear()
 
                 var list= event!!.getData()!!.getData()
                 for(i in 0..list!!.size-1)
                 {
-                    var temp: User = gson.fromJson(list[i].toString(), User::class.java)
-                    listUser.add(temp)
+                    var temp: TeacherofStudent = gson.fromJson(list[i].toString(), TeacherofStudent::class.java)
+                    if(boolUser(temp.getID().toString())) {
+                        listUser.add(temp)
+                    }
                 }
                 var adapterw= SelectAcountChatAdapter(context,listUser,this)
                 recycle_select_account!!.layoutManager=LinearLayoutManager(context)
                 recycle_select_account!!.adapter = adapterw
+
+                LocalData.listTeacher= listUser //Lấy user một lần
             }
         }
         if(event.getKey()==Value.key_getlistmessage)
         {
+            listMessage.clear()
             if(event.getData()!!.getResult()=="1") {
 
                 var list= event!!.getData()!!.getData()
@@ -174,29 +176,51 @@ class  Chat: Fragment(),ISetMessage,ISelectAccountChat
                     var temp: ChatData = gson.fromJson(list[i].toString(), ChatData::class.java)
                     listMessage.add(temp)
                 }
-
                 showListMessage()
             }
         }
-
     }
-    override fun onStop() {
+
+    //Kiểm tra tính đúng đắn của User
+
+    fun boolUser(tem:String):Boolean
+    {
+
+        for(i in 0..listUser!!.size-1)
+        {
+            if(listUser!![i].getID().toString() == tem)
+            {
+                return false
+            }
+        }
+        return true
+    }
+
+   /* override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
     }
+*/
+
+    //Hiển thị lịch sử chat ra màn hình
     fun showListMessage()
     {
-        var adapter = ChatApdater(context, listMessage,this)
+        var adapter = ChatApdater(context,listMessage,this)
         recicleview_list_message!!.layoutManager=LinearLayoutManager(context)
         recicleview_list_message!!.adapter= adapter
     }
 
+    //Lấy danh sách bạn bè
     fun getListFriend()
     {
-        var inval:Array<String> =  arrayOf(LocalData.email)
-        call.Call_Service(Value.workername_getlist_teacher,Value.workername_getlist_teacher,inval,Value.key_getlist_tdialog)
+        var inval:Array<String> =  arrayOf(LocalData.user.getID().toString())
+        if(LocalData.usertype == 2) {
+            call.Call_Service(Value.workername_getlist_teacher, Value.servicename_getlist_teacher, inval, Value.key_getlist_tdialog)
+        }
+        else{
+            call.Call_Service(Value.workername_getlistfriendofstudent, Value.servicename_getlistfriendofstudent, inval, Value.key_getlist_tdialog)
+        }
     }
-
     override fun chat(tem: String) {
         super.chat(tem)
         var inten = Intent(context,ChatMessager::class.java)
@@ -205,15 +229,30 @@ class  Chat: Fragment(),ISetMessage,ISelectAccountChat
         inten.putExtra("intent",bundle)
         startActivity(inten)
     }
-
     //xem lịch sử chat và chat tiếp
-    override fun selectaccount(){
-        super.selectaccount()
+    override fun selectaccount(id: String) {
+        super.selectaccount(id)
+
+        var bundle =Bundle()
+        bundle.putString("bundle",id)
+
         var iten2= Intent(context,ChatMessager::class.java)
+        iten2.putExtra("intent",bundle)
+
         startActivity(iten2)
         dialog_show_list_account!!.cancel()
     }
 
+
+
+
+    private inner class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var progressBar: ProgressBar
+
+        init {
+            progressBar = view.findViewById(R.id.progressBar1) as ProgressBar
+        }
+    }
 
 }
 

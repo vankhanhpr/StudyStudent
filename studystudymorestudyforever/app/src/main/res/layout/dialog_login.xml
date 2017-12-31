@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="150dp">
+    android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,15 +12,14 @@
         android:paddingTop="20dp">
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/dialog_title"
             android:textSize="16sp"
             android:gravity="center"
-            android:text="@string/dialog_title"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            android:text="@string/dialog_title"
+            android:layout_marginBottom="20dp"/>
         <TextView
             android:id="@+id/tv_show_error"
             android:gravity="center"
@@ -28,31 +27,20 @@
             android:layout_height="wrap_content"
             android:text="@string/dialog_status"
             android:textSize="12sp"
+            android:layout_marginBottom="20dp"
             android:textColor="@color/dialog_status"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="20dp"/>
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-       <!-- <Button
-            android:id="@+id/btn_cancel_dialogres"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_button_left"
-            android:background="@drawable/opaque_button"
-            android:layout_weight="1" />-->
+        android:orientation="vertical">
         <Button
             android:id="@+id/btn_agree_dialogres"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="14sp"
             android:text="@string/dialog_button_right"
             android:background="@drawable/opaque_button"
-            android:layout_weight="1"
             />
-        <!--android:background="@drawable/opaque_button"-->
     </LinearLayout>
 </LinearLayout>

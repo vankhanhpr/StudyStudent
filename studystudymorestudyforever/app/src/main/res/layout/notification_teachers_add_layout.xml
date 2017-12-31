@@ -2,7 +2,8 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center">
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -21,6 +22,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sizre_title_view"
                 android:gravity="center_vertical">
+                <LinearLayout
+                    android:id="@+id/tab_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:gravity="center">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/icon_back"/>
+
+                </LinearLayout>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -38,11 +51,13 @@
                     android:layout_height="match_parent">
 
                     <LinearLayout
+                        android:weightSum="8"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical">
 
                         <LinearLayout
+                            android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:orientation="horizontal"
@@ -59,12 +74,12 @@
                                 android:textSize="@dimen/textsize_add_notifice"
                                 android:text="Gửi tới"/>
                             <TextView
+                                android:id="@+id/tv_set_name_send"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="6.39"
                                 android:textColor="@color/text_view_student"
-                                android:textSize="@dimen/textsize_add_notifice"
-                                android:text="Khanh Nguyen"/>
+                                android:textSize="12dp"/>
                             <LinearLayout
                                 android:id="@+id/tab_select_uer_chat"
                                 android:layout_width="0dp"
@@ -80,28 +95,40 @@
 
                         </LinearLayout>
 
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:hint="Nhập tiêu đề"
-                            android:textSize="@dimen/textsize_add_notifice"
-                            android:paddingLeft="5dp"
-                            android:textColor="@color/text_view_student"
-                            android:gravity="center_vertical"
-                            android:background="@drawable/sharp_edittext"/>
-                        <EditText
+                        <LinearLayout
+                            android:layout_weight="7"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:hint="Nhập nội dung thông báo"
-                            android:textSize="@dimen/textsize_add_notifice"
-                            android:background="@drawable/sharp_edittext"/>
-
+                            android:orientation="vertical">
+                            <EditText
+                                android:id="@+id/edt_title_notifi"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:hint="Nhập tiêu đề"
+                                android:textSize="@dimen/textsize_add_notifice"
+                                android:paddingLeft="5dp"
+                                android:textColor="@color/text_view_student"
+                                android:gravity="center_vertical"
+                                android:background="@drawable/sharp_edittext"
+                                />
+                            <EditText
+                                android:id="@+id/edt_status_notif"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:lines="8"
+                                android:minLines="6"
+                                android:gravity="top|left"
+                                android:maxLines="10"
+                                android:layout_marginBottom="40dp"
+                                android:background="@drawable/sharp_edittext"
+                                android:hint="Nhập nội dung thông báo"
+                                android:textSize="@dimen/textsize_add_notifice"
+                               />
+                    </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/tab_send_notifilecation"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_alignParentBottom="true"
@@ -118,5 +145,13 @@
             </android.support.v7.widget.CardView>
 
         </LinearLayout>
+
     </android.support.v7.widget.CardView>
+    <ProgressBar
+        android:id="@+id/progress_addnotifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
 </RelativeLayout>

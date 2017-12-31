@@ -16,93 +16,46 @@ class CalendarDayOfWeek
     {
         var listDay:ArrayList<String> = arrayListOf()
 
-        var startDay:Int= Integer.parseInt(startTime.substring(0,2))
-        var startMonth:Int= Integer.parseInt(startTime.substring(3,5))
-        var startYear:Int = Integer.parseInt(startTime.substring(6))
-
-        var endDay:Int= Integer.parseInt(endTime.substring(0,2))
-        var endMonth:Int= Integer.parseInt(endTime.substring(3,5))
-        var endYear:Int = Integer.parseInt(endTime.substring(6))
+        var liststarttime= startTime.split("/")
+        var listendtime= endTime.split("/")
 
 
+        var startDay:Int= Integer.parseInt(liststarttime[0])
+        var startMonth:Int= Integer.parseInt(liststarttime[1])
+        var startYear:Int = Integer.parseInt(liststarttime[2])
 
-        if(startYear==endYear)
-        {
-            if(startMonth == endMonth)
-            {
-                var listDayEx:ArrayList<String> = getMondaysOfMounth(startMonth,dayofweek,endYear!!)
-                for(i in 0..listDayEx.size-1)
-                {
+        var endDay:Int= Integer.parseInt(listendtime[0])
+        var endMonth:Int= Integer.parseInt(listendtime[1])
+        var endYear:Int = Integer.parseInt(listendtime[2])
 
-                    var s= listDayEx[i].split("/")
+        try {
+            if (startYear == endYear) {
+                if (startMonth == endMonth) {
+                    var listDayEx: ArrayList<String> = getMondaysOfMounth(startMonth, dayofweek, endYear!!)
+                    for (i in 0..listDayEx.size - 1) {
 
-                    if(Integer.parseInt(s[0]) > startDay && Integer.parseInt(s[0])<= endDay)
-                    {
-                        listDay.add(listDayEx[i])
-                    }
-                }
-            }
-            else
-            {
-                for(j in startMonth..endMonth)
-                {
+                        var s = listDayEx[i].split("/")
 
-                    var listDayEx:ArrayList<String> = getMondaysOfMounth(j,dayofweek,endYear!!)
-
-                    if(j==startMonth) {
-
-                        for (i in 0..listDayEx.size - 1) {
-                            //Log.d("dayofwe1",""+listDayEx[i] )
-                            var s = listDayEx[i].split("/")
-                            if (Integer.parseInt(s[0]) >= startDay) {
-                                listDay.add(listDayEx[i])
-                            }
-                        }
-                    }
-                    else {
-                        if (j == endMonth) {
-                            for (i in 0..listDayEx.size - 1) {
-                                var s = listDayEx[i].split("/")
-                                if (Integer.parseInt(s[0]) <= endDay) {
-                                    listDay.add(listDayEx[i])
-                                }
-                            }
-                        }
-                        else
+                        if (Integer.parseInt(s[0]) > startDay && Integer.parseInt(s[0]) <= endDay)
                         {
-                            for (i in 0..listDayEx.size - 1) {
-                                    listDay.add(listDayEx[i])
-                            }
+                            listDay.add(listDayEx[i])
                         }
                     }
-                }
-            }
-        }
-        else
-        {
-            for(k in startYear..endYear) {
-                if (k == startYear) {
-                    for (j in startMonth..12) {
-                        var listDayEx: ArrayList<String> = getMondaysOfMounth(j, dayofweek, k)
+                } else {
+                    for (j in startMonth..endMonth) {
+
+                        var listDayEx: ArrayList<String> = getMondaysOfMounth(j, dayofweek, endYear!!)
 
                         if (j == startMonth) {
+
                             for (i in 0..listDayEx.size - 1) {
+                                //Log.d("dayofwe1",""+listDayEx[i] )
                                 var s = listDayEx[i].split("/")
                                 if (Integer.parseInt(s[0]) >= startDay) {
                                     listDay.add(listDayEx[i])
                                 }
                             }
                         } else {
-                            for (i in 0..listDayEx.size - 1) {
-                                listDay.add(listDayEx[i])
-                            }
-                        }
-
-                    }
-                } else {
-                    if (k == endYear) {
-                        for (j in 1..endMonth) {
-                            var listDayEx: ArrayList<String> = getMondaysOfMounth(j, dayofweek, k)
                             if (j == endMonth) {
                                 for (i in 0..listDayEx.size - 1) {
                                     var s = listDayEx[i].split("/")
@@ -117,17 +70,57 @@ class CalendarDayOfWeek
                             }
                         }
                     }
-                    else{
-                        for (j in 1..12) {
+                }
+            } else {
+                for (k in startYear..endYear) {
+                    if (k == startYear) {
+                        for (j in startMonth..12) {
                             var listDayEx: ArrayList<String> = getMondaysOfMounth(j, dayofweek, k)
-                            for (i in 0..listDayEx.size - 1) {
-                                listDay.add(listDayEx[i])
+
+                            if (j == startMonth) {
+                                for (i in 0..listDayEx.size - 1) {
+                                    var s = listDayEx[i].split("/")
+                                    if (Integer.parseInt(s[0]) >= startDay) {
+                                        listDay.add(listDayEx[i])
+                                    }
+                                }
+                            } else {
+                                for (i in 0..listDayEx.size - 1) {
+                                    listDay.add(listDayEx[i])
+                                }
+                            }
+
+                        }
+                    } else {
+                        if (k == endYear) {
+                            for (j in 1..endMonth) {
+                                var listDayEx: ArrayList<String> = getMondaysOfMounth(j, dayofweek, k)
+                                if (j == endMonth) {
+                                    for (i in 0..listDayEx.size - 1) {
+                                        var s = listDayEx[i].split("/")
+                                        if (Integer.parseInt(s[0]) <= endDay) {
+                                            listDay.add(listDayEx[i])
+                                        }
+                                    }
+                                } else {
+                                    for (i in 0..listDayEx.size - 1) {
+                                        listDay.add(listDayEx[i])
+                                    }
+                                }
+                            }
+                        } else {
+                            for (j in 1..12) {
+                                var listDayEx: ArrayList<String> = getMondaysOfMounth(j, dayofweek, k)
+                                for (i in 0..listDayEx.size - 1) {
+                                    listDay.add(listDayEx[i])
+                                }
                             }
                         }
                     }
                 }
             }
         }
+        catch (e:Exception){}
         return  listDay
     }
 
@@ -172,9 +165,6 @@ class CalendarDayOfWeek
             output += cal.get(Calendar.DAY_OF_MONTH).toString() + "/" + (cal.get(Calendar.MONTH) + 1) +"/"+ (cal.get(Calendar.YEAR))+","
             listday!!.add(cal.get(Calendar.DAY_OF_MONTH).toString() + "/" + (cal.get(Calendar.MONTH) + 1) +"/"+ (cal.get(Calendar.YEAR)))
             cal.add(Calendar.DAY_OF_MONTH, 7)
-        }
-        for(x in 0..listday.size-1) {
-            //Log.d("dayofweek", "" + listday[x])
         }
         return listday
     }

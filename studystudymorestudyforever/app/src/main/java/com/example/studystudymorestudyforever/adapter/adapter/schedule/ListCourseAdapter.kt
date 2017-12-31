@@ -1,6 +1,7 @@
 package com.example.studystudymorestudyforever.adapter.adapter.schedule
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,6 @@ class ListCourseAdapter(context: Context, schedule:ArrayList<CourseStudent>): Ba
     {
         this.mInflator = LayoutInflater.from(context)
         this.schedule=schedule
-        /*this.mInflator = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater*/
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
@@ -32,10 +32,10 @@ class ListCourseAdapter(context: Context, schedule:ArrayList<CourseStudent>): Ba
         val view: View?
         var course:CourseStudent = schedule!![position]
 
-        if(convertView == null){
+        if(convertView == null)
+        {
             view = mInflator.inflate(R.layout.child_view_schedule_student_layout,parent,false) //error in this line
             holder = ViewHolder(view)
-
             view!!.tag=holder
         }
         else
@@ -43,8 +43,8 @@ class ListCourseAdapter(context: Context, schedule:ArrayList<CourseStudent>): Ba
             view=convertView
             holder = convertView.tag as ViewHolder
         }
-        holder.tv_child_course!!.setText(course.getLOCATION())
-        holder.tv_child_time!!.setText(course.getTIME())
+        holder.tv_child_course!!.setText("Môn học: "+course.getSUB_NAME())
+        holder.tv_child_time!!.setText("Thời gian học: "+course.getTIME())
         return view
     }
 
@@ -56,7 +56,7 @@ class ListCourseAdapter(context: Context, schedule:ArrayList<CourseStudent>): Ba
         return position.toLong()
     }
 
-    override fun getCount(): Int {
+    override fun getCount(): Int{
         return schedule!!.size
     }
 
@@ -68,13 +68,4 @@ class ListCourseAdapter(context: Context, schedule:ArrayList<CourseStudent>): Ba
             this.tv_child_time = row?.findViewById(R.id.tv_child_time) as TextView
         }
     }
-
-    /*fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var course =schedule!!.get(position)
-        holder.tv_child_course!!.setText(course.getLOCATION())
-        holder.tv_child_time!!.setText(course.getTIME())
-
-    }*/
-
-
 }

@@ -35,7 +35,8 @@ dependencies {
     compile ('com.vincentbrison.openlibraries.android:foldablelayout:0.0.1-SNAPSHOT@aar') {
         transitive = true
     }
-
+    compile 'com.tubb.smrv:swipemenu-recyclerview:5.4.4'
+    compile 'org.jetbrains.anko:anko-sqlite:0.10.0'
     compile 'com.github.sundeepk:compact-calendar-view:2.0.2.2'
     compile 'com.vincentbrison.openlibraries.android:foldablelayout:0.0.1@aar'
     compile 'org.greenrobot:eventbus:3.0.0'

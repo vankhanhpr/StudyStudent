@@ -22,6 +22,7 @@ import com.example.studystudymorestudyforever.myinterface.ISelectCourse
 import com.example.studystudymorestudyforever.until.Value
 import com.example.studystudymorestudyforever.until.course.ScheduleAdd
 import com.example.studystudymorestudyforever.until.course.TeacherSchedule
+import com.example.studystudymorestudyforever.until.datalocal.LocalData
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.main_teacher_fagment_shedule.*
 import org.greenrobot.eventbus.EventBus
@@ -52,17 +53,11 @@ class ScheduleTeacher : Fragment(),ISelectCourse, View.OnClickListener,SwipeRefr
         srlLayout!!.setOnRefreshListener(this)
 
         callGetListCourse()
+        //load refresh
+        srlLayout!!.setOnRefreshListener(this)
         return view
     }
-   /* fun exam()
-    {
-        val gson =Gson()
-        Log.d("kiemtra","hjhj1111111")
-        var x= "{ 'SCHE_ID': 603243020562764,'TEACHER_ID': 39,'START_TIME': 1509296400000,'END_TIME': 1509296400000,'FEE': 0,'LOCATION': null,'SUB_ID': 63657457456,'SUB_NAME': 'Vat ly'}"
-        var temp: ScheduleAdd = gson.fromJson(x,ScheduleAdd::class.java)
-        Log.d("kiemtra","hjhj"+temp.getSTART_TIME())
-    }
-*/
+
     //Khởi tạo các giá trị
     fun initt(view:View)
     {
@@ -74,7 +69,7 @@ class ScheduleTeacher : Fragment(),ISelectCourse, View.OnClickListener,SwipeRefr
     //goi service lay danh sach lop hoc
     fun callGetListCourse()
     {
-        var inval : Array<String> = arrayOf("39")
+        var inval : Array<String> = arrayOf(LocalData.user.getID().toString())
 
         call.Call_Service(Value.workername_getlisttechershedule,
                 Value.servicename_getlistteachershedule,
@@ -85,7 +80,6 @@ class ScheduleTeacher : Fragment(),ISelectCourse, View.OnClickListener,SwipeRefr
     //Đổ các lớp học đã tạo vào trong recycleview
     fun showlistSchedule()
     {
-
         var adapter= ScheduleTeachingAdapter(context,listcourse,this)
         recycle_list_teaching!!.setLayoutManager(LinearLayoutManager(context))
         recycle_list_teaching!!.adapter= adapter
@@ -127,11 +121,8 @@ class ScheduleTeacher : Fragment(),ISelectCourse, View.OnClickListener,SwipeRefr
                     }
                     catch (e:Exception){
                         Log.e("myerr",e.printStackTrace().toString())
-
                     }
                 }
-
-                Log.d("day la dau","ádfasdfsdf"+listcourse[0].getLOCATION())
                 showlistSchedule()
             }
             else
@@ -143,10 +134,10 @@ class ScheduleTeacher : Fragment(),ISelectCourse, View.OnClickListener,SwipeRefr
         }
     }
 
-    override fun onStop() {
+   /* override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
-    }
+    }*/
 
     //Bắt sự kiện khi click vào các item trong recycleview
     override fun selectCourse() {
@@ -158,12 +149,12 @@ class ScheduleTeacher : Fragment(),ISelectCourse, View.OnClickListener,SwipeRefr
     //load lai trang
     override fun onRefresh() {
 
+        callGetListCourse()
+        call.Sevecie()
         var secondDelay: Long? = 5
-        Handler().postDelayed(Runnable
-        {
-            callGetListCourse()
-
-        }, secondDelay!! * 1000)
+        Handler().postDelayed({
+            srlLayout!!.setRefreshing(false)
+        }, 2000)
     }
 }
 

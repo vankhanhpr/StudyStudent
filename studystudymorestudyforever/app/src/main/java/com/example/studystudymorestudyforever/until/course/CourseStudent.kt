@@ -11,8 +11,10 @@ class CourseStudent {
     private var FEE: String = ""
     private var LOCATION: String = ""
     private var SUB_NAME: String = ""
+    private var TIME: String? = ""
 
-    private var TIME: String? = null
+
+
 
 
     fun getTIME(): String ?{

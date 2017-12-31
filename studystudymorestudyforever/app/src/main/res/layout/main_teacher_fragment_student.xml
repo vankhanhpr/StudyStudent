@@ -31,7 +31,7 @@
                         android:textColor="#000000"
                         android:layout_toLeftOf="@+id/tab_add_teacher"/>
                     <LinearLayout
-                        android:id="@+id/tab_add_teacher"
+                        android:id="@+id/tab_add_student"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"

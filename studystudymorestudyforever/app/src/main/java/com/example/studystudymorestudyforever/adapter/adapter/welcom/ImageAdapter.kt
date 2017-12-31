@@ -49,8 +49,9 @@ class  ImageAdapter(mContext: Context,iter:ISelectAccount) : PagerAdapter() {
         view.setOnClickListener()
         {
             LocalData.usertype=position
-            Log.d("phan quyen:",""+LocalData.usertype)
+
             iter.call()//goi chuyen activity
+
         }
 
         return view

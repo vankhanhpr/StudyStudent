@@ -3,6 +3,7 @@ package com.example.studystudymorestudyforever.adapter.adapter.chat
 import android.widget.TextView
 import android.support.design.widget.CoordinatorLayout.Behavior.setTag
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,13 @@ import com.example.studystudymorestudyforever.until.chat.ChatMessage
 /**
  * Created by VANKHANHPR on 10/5/2017.
  */
-class MessageAdapter(val activity: Activity, resource: Int,var messages: ArrayList<ChatMessage>) : ArrayAdapter<ChatMessage>(activity, resource, messages){
-
+class MessageAdapter(val activity: Activity, resource: Int,messages:ArrayList<ChatMessage>) : ArrayAdapter<ChatMessage>(activity, resource, messages){
+    private val TYPE_LEFT = 0
+    private val TYPE_RIGHT = 1
+    private var messages:ArrayList<ChatMessage>
+    init {
+        this.messages = messages
+    }
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
         val holder: ViewHolder
@@ -25,11 +31,17 @@ class MessageAdapter(val activity: Activity, resource: Int,var messages: ArrayLi
         var chatMessage = getItem(position)
         var viewType = getItemViewType(position)
 
-        if (chatMessage!!.isMine()) {
-            layoutResource = R.layout.chat_item_left
-        } else {
+        if(viewType===TYPE_RIGHT){
             layoutResource = R.layout.chat_item_right
+        }else if(viewType===TYPE_LEFT){
+            layoutResource = R.layout.chat_item_left
         }
+
+        /*if (chatMessage!!.isMine()) {
+            layoutResource = R.layout.chat_item_right
+        } else {
+            layoutResource = R.layout.chat_item_left
+        }*/
 
         if (convertView != null) {
             holder = convertView!!.getTag() as ViewHolder
@@ -53,7 +65,21 @@ class MessageAdapter(val activity: Activity, resource: Int,var messages: ArrayLi
 
     override fun getItemViewType(position: Int): Int {
         // return a value between 0 and (getViewTypeCount - 1)
-        return position % 2
+        if(messages.size!==0){
+            if(this.messages[position].isMine()){
+                return TYPE_RIGHT
+            }else if(!this.messages[position].isMine()){
+                return TYPE_LEFT
+            }else{
+                return -1;
+            }
+        }else{
+            return -1;
+        }
+    }
+
+    override fun getItem(position: Int): ChatMessage? {
+        return this.messages.get(position)
     }
 
     private inner class ViewHolder(v: View) {

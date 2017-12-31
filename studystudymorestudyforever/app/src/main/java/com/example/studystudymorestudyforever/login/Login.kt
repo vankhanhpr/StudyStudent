@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONObject
 import com.afollestad.materialdialogs.MaterialDialog
+import com.example.studystudymorestudyforever.fragment.mainteacher.MainTeacher
 import com.example.studystudymorestudyforever.until.datalocal.LocalData
 
 
@@ -60,16 +61,9 @@ class Login:AppCompatActivity()
         {
             goto_signin.visibility=View.VISIBLE
         }
-
-        call.Sevecie()
-        call.ListenEvent()
-
-
         var container = findViewById(R.id.container) as RelativeLayout
         var anim = container.background as AnimationDrawable
         progress_login= findViewById(R.id.progress_login)  as ProgressBar
-
-
 
         anim.setEnterFadeDuration(6000)
         anim.setExitFadeDuration(2000)
@@ -90,11 +84,8 @@ class Login:AppCompatActivity()
             btn_agree_dialogres=dialog_login!!.findViewById(R.id.btn_agree_dialogres) as Button
             tv_show_error=dialog_login!!.findViewById(R.id.tv_show_error) as TextView
 
-
-
-
-            user = edt_user.text.toString()
-            pass = edt_pass.text.toString()
+            user = edt_user.text.trim().toString()
+            pass = edt_pass.text.trim().toString()
             var pass2 = Encode().encryptString(pass!!)//endcode password
 
             if ( boolPass(pass!!, user!!)== false || pass!!.length<6 || user==""||pass=="")
@@ -117,11 +108,12 @@ class Login:AppCompatActivity()
                     var i = 0
                     override fun onTick(millisUntilFinished: Long) {
                         i++
-                        OnEmitService.getIns().Sevecie()
-                        if (i == 5) {
+                       OnEmitService.getIns().Sevecie()
+                        if (i == 5){
 
+                            call.Sevecie()
                             for (i in 0..OnEmitService.getIns().hasmap!!.size - 1) {
-                                OnEmitService.getIns().hasmap!![i].setStatus(0)
+                                call.hasmap!![i].setStatus(0)
                             }
                         }
                         //mProgressBar.progress = i
@@ -172,13 +164,17 @@ class Login:AppCompatActivity()
             mCountDownTimer!!.cancel() //turn off timeout
             progress_login!!.visibility= View.GONE//turn off loading
 
-
+            //LocalData.email=user!!
             var json: ArrayList<JSONObject>? = event.getData()!!.getData()
-            Log.d("login1212","asfhksadfhksdfh" + event.getData().toString())
             var temp=readJson(json!!)
             if (temp.getC0()=="Y")
             {
                 LocalData.email= user!!
+                LocalData.login=true//đăng nhập vào bình thường
+
+                LocalData.pass= pass!!
+                Log.d("passsnew",LocalData.pass)
+
                 if(LocalData.usertype==2)
                 {
                     sendToActivityMainTeacher(user!!)
@@ -187,6 +183,7 @@ class Login:AppCompatActivity()
                 {
                     sendToActivityMain(user!!)
                 }
+
             }
             else
             {
@@ -200,21 +197,15 @@ class Login:AppCompatActivity()
             }
         }
     }
-    public override fun onStop() {
-        EventBus.getDefault().unregister(this)
-        super.onStop()
-    }
 
+    public override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+        call.removeListener()
+    }
 
     fun boolPass(pass:String,email:String):Boolean
     {
-        /*var s= ".*[^a-z^0-9].*+@+&+$"
-        var y =s.toRegex()
-        if(pass!!.matches(y))
-        {
-            return false
-        }*/
-
         if(email.indexOf('@',0,false)==-1)
         {
             return false
@@ -262,7 +253,7 @@ class Login:AppCompatActivity()
     //Hàm chuyển qua Login
     fun sendToActivityMainTeacher(value: String) {
 
-        var intent3 = Intent(applicationContext,MainActivity::class.java)
+        var intent3 = Intent(applicationContext,MainTeacher::class.java)
         var bundle = Bundle()
         bundle.putString(Value.value, value)
         intent3.putExtra(Value.bundle, bundle)

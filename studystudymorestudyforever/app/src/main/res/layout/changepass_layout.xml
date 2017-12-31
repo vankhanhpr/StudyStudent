@@ -67,7 +67,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:textSize="@dimen/text_size_text_login"
-                    android:layout_weight="7"/>
+                    android:layout_weight="7"
+                    android:background="@null"/>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -94,7 +95,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:textSize="@dimen/text_size_text_login"
-                    android:layout_weight="7"/>
+                    android:layout_weight="7"
+                    android:background="@null"/>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -122,9 +124,9 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:textSize="@dimen/text_size_text_login"
-                    android:layout_weight="7"/>
+                    android:layout_weight="7"
+                    android:background="@null"/>
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"

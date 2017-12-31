@@ -1,6 +1,7 @@
 package com.example.studystudymorestudyforever.fragment.scheduleteacher.addcourse
 
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -15,6 +16,7 @@ import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.util.Log
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.*
 import android.widget.ArrayAdapter
 import android.widget.AdapterView
@@ -39,8 +41,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.collections.ArrayList
 import java.util.Arrays.asList
-
-
+import java.util.Arrays.parallelSetAll
 
 
 /**
@@ -73,13 +74,16 @@ class AddCourse:AppCompatActivity(),View.OnClickListener,ISetTimeDialog{
 
     var temp_spiner=""
 
+    var dialog_addcourse_success:Dialog?= null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.teacher_add_course)
 
-        call.Sevecie()
-        call.ListenEvent()
+        //call.Sevecie()
+        //call.ListenEvent()
 
         initt()
 
@@ -154,7 +158,6 @@ class AddCourse:AppCompatActivity(),View.OnClickListener,ISetTimeDialog{
 
             }
         })
-
     }
 
     //Nhận kết quả trả về khi login_layout
@@ -164,13 +167,13 @@ class AddCourse:AppCompatActivity(),View.OnClickListener,ISetTimeDialog{
         {
             if(event.getData()!!.getResult()=="1")
             {
-                 var matrix = MaterialDialog.Builder(this)
-                 .title("Thêm lớp học")
-                 .content("Thêm lớp học thành công!")
-                 .positiveText("Thoát")
-                 .show()
+                dialog_addcourse_success!!.show()
+                var btn_agree_dialogres= dialog_addcourse_success!!.findViewById(R.id.btn_agree_dialogres)
 
-
+                btn_agree_dialogres.setOnClickListener()
+                {
+                    finish();
+                }
             }
             if(event.getData()!!.getResult()=="0")
             {
@@ -205,7 +208,9 @@ class AddCourse:AppCompatActivity(),View.OnClickListener,ISetTimeDialog{
                 parentLinearLayout!!.addView(rowView )
                 resetTag()
 
-                indexOfView++;
+                indexOfView++
+
+
 
 
                 var textview= rowView.findViewById(R.id.tv_course_time_child_view) as TextView
@@ -215,12 +220,8 @@ class AddCourse:AppCompatActivity(),View.OnClickListener,ISetTimeDialog{
                 adapter1.setDropDownViewResource(android.R.layout.simple_list_item_single_choice)
                 spinerview!!.setAdapter(adapter1)
 
-
                 var tv_countview= rowView.findViewById(R.id.tv_count_view) as TextView
-
                 getDefaultInforView(textview!!)
-
-
                 listnNumberView!!.add(tv_countview)
 
                 updatedayofweek()
@@ -244,6 +245,9 @@ class AddCourse:AppCompatActivity(),View.OnClickListener,ISetTimeDialog{
 
             R.id.tab_add_course-> {
 
+                dialog_addcourse_success= Dialog(this)
+                dialog_addcourse_success!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog_addcourse_success!!.setContentView(R.layout.dialog_addcourse_success)
 
                 listTime!!.clear()
                 listDayofWeek!!.clear()
@@ -271,8 +275,15 @@ class AddCourse:AppCompatActivity(),View.OnClickListener,ISetTimeDialog{
                 {
                     tuitionmoney= "0"
                 }
+                if(daystart>dayend)
+                {
+                    Toast.makeText(applicationContext,"Ngày bắt đầu không được nhỏ hơn hay bằng ngày kết thúc",Toast.LENGTH_SHORT).show()
+                }
+                else{
 
-                var inval: Array<String> = arrayOf("39".toString(),
+                }
+
+                var inval: Array<String> = arrayOf(LocalData.user.getID().toString(),
                         address,
                         tuitionmoney,
                         daystart!!.toString(),
@@ -281,7 +292,6 @@ class AddCourse:AppCompatActivity(),View.OnClickListener,ISetTimeDialog{
                         listtimest.toString())
                 call.Call_Service(Value.workername_adđcourse,Value.servicename_addcourse,inval,Value.key_addcourse)
             }
-
         }
     }
 

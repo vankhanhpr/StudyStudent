@@ -22,14 +22,16 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.7"
+                    android:layout_height="?attr/actionBarSize"
                     android:orientation="horizontal"
                     android:background="#5A4D94">
                     <LinearLayout
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:id="@+id/tab_back_updatecourse"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:gravity="center">
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -41,14 +43,14 @@
                         android:layout_height="match_parent"
                         android:textColor="@color/text_title"
                         android:textSize="@dimen/sche_text_title"
-                        android:text="Toán cao cấp A1"
+                        android:text="Cập nhật lịch học"
                         android:gravity="center" />
                 </LinearLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="2"
+                    android:layout_weight="5"
                     android:gravity="center">
                     <ImageView
                         android:layout_width="wrap_content"

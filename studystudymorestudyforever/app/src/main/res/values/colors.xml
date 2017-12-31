@@ -25,6 +25,7 @@
 
     color text recycle view
     <color name="text_view_student">#000000</color>
-
+    <color name="color_change_notifile_status">#ece2e3</color>
+    <color name="color_nochange_notifile_status">#FFFFFF</color>
 
 </resources>

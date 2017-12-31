@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/sharp_title_child"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/sizre_title_view"
+                android:gravity="center_vertical">
+                <LinearLayout
+                    android:id="@+id/tab_back_detail_notif"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="center"
+                        android:background="@drawable/icon_back"/>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textSize="@dimen/text_size_title"
+                    android:gravity="center"
+                    android:text= "Trang thông báo"
+                    android:layout_toRightOf="@+id/tab_back_detail_notif"
+                    android:paddingRight="50dp"
+                    android:textColor="#000000" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_settitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:text="Lời mời kết bạn từ Khanh Nguyen"
+                            android:textSize="@dimen/textsize_add_notifice"
+                            android:paddingLeft="5dp"
+                            android:textColor="@color/text_view_student"
+                            android:gravity="center_vertical"
+                            android:background="@drawable/sharp_edittext"/>
+                        <TextView
+                            android:id="@+id/tv_setstatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="10dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="Khanh Nguyen muốn trở thành bạn của bạn"
+                            android:textSize="@dimen/textsize_add_notifice"
+                            android:textColor="@color/text_view_student"
+                            android:background="@drawable/sharp_edittext"/>
+
+
+                        <LinearLayout
+                            android:id="@+id/tab_send_notifilecation"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="30dp"
+                            android:background="#d6c7c7"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/tv_skip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="Bỏ qua"
+                                android:textColor="@color/text_view_student"
+                                android:textSize="16dp"
+                                android:gravity="center"/>
+                            <TextView
+                                android:id="@+id/tv_agree"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="Đồng ý"
+                                android:textColor="@color/text_view_student"
+                                android:textSize="16dp"
+                                android:gravity="center"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

@@ -16,6 +16,7 @@
                 android:gravity="center"
                 android:background="@drawable/sharp_title_child">
                 <TextView
+                    android:id="@+id/tv_title_dialog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Chọn tài khoản"
@@ -35,7 +36,7 @@
                     android:layout_marginBottom="40dp"/>
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/tab_select_account"
+                    android:id="@+id/tab_cancel_account"
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
                     android:layout_alignParentBottom="true">

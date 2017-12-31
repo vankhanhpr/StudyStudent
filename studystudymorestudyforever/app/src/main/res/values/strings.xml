@@ -16,7 +16,7 @@
     <string name="dialog_button_right">Đồng ý</string>
     <string name="dialog_button_left">Hủy bỏ</string>
    <!-- signin-->
-    <string name="sign_title">Đăng kí</string>
+    <string name="sign_title">Trang đăng kí</string>
     <string name="import_pass_signin">Nhập mật khẩu</string>
     <string name="import_pass_again">Nhập lại mật khẩu</string>
     <string name="signin_button">Đăng kí</string>
@@ -120,10 +120,22 @@
     chỉnh sửa và hủy môn học cho giáo viên
     <string name="update_course">Cập nhật môn học</string>
     <string name="delete_course">Xóa môn học</string>
-    <string name="add_course">Thêm môn học</string>
+    <string name="add_course">Thêm lịch học</string>
 
     Gửi thông báo
     <string name="btn_sent_notif">Gửi thông báo</string>
+
+    Đăng xuất
+    <string name="title_logout">Đăng xuất</string>
+    <string name="content_logout">Bạn có muốn đăng xuất</string>
+
+    Thêm hồ sơ cho phụ huynh
+    <string name="title_add_file_student">Thêm hồ sơ học sinh cho phụ huynh</string>
+
+    Chọn hồ sơ
+    <string name="titile_set_file">Thay đổi hồ sơ</string>
+    <string name="content_set_file">Bạn có muốn thay đổi lịch sang hồ sơ này không?</string>
+    <string name="add_student_parent">Thêm phụ huynh và học sinh</string>
 
 
 </resources>

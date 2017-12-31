@@ -32,7 +32,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/person_age"
+                android:id="@+id/person_subject"
                 android:text="Toán cao cáp A1"
                 android:textSize="@dimen/age_text_file"
                 android:paddingTop="6dp"

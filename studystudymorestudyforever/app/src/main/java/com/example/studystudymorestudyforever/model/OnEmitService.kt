@@ -4,9 +4,11 @@ import android.util.JsonWriter
 import android.util.Log
 import com.example.myapplication.value.Hasmap
 import com.example.myapplication.value.MessageEvent
+import com.example.studystudymorestudyforever.until.EX
 import com.example.studystudymorestudyforever.until.EmitService
 import com.example.studystudymorestudyforever.until.OnService
 import com.example.studystudymorestudyforever.until.Value
+import com.example.studystudymorestudyforever.until.datalocal.LocalData
 import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
 import org.greenrobot.eventbus.EventBus
@@ -16,6 +18,7 @@ import org.json.JSONObject
 import java.io.IOException
 import java.io.StringWriter
 import java.io.Writer
+import javax.xml.validation.Validator
 import kotlin.concurrent.thread
 
 /**
@@ -24,14 +27,22 @@ import kotlin.concurrent.thread
 
 class OnEmitService()
 {
+    var boolx:String= ""
+    var clientSeq:Int= -3
+    var fla:Boolean= true
+
     //singleton
     companion object {
         private var instance : OnEmitService? = null
+        var i:Int =1
         fun getIns(): OnEmitService {
-            if (instance == null) {
+
+            if (instance === null) {
                 Log.d("Call_Receive_Server", "getIns")
                 instance = OnEmitService()
+                i++
             }
+            //Log.d("Call_Receive","khoi"+i)
             return instance!!
         }
     }
@@ -44,31 +55,48 @@ class OnEmitService()
 
     fun Sevecie()
     {
-        Log.d("connect","Connect")
-        var mSocket: Socket?= IO.socket(Value.address)
-        mSocket!!.connect()
+        try {
+            if (!mSocket!!.connected()) {
+                mSocket!!.connect()
+                Log.d("onConnect","onConnect")
+            }
+        }
+        catch (e:Exception){}
+
     }
+
 
     fun Disconnect()
     {
         mSocket!!.disconnect()
-        mSocket!!.connect()
+        //mSocket!!.connect()
     }
 
     fun ListenEvent()
     {
-        mSocket!!.on("RES_MSG",onNewMessage)
-        mSocket!!.on("error",systemError)
+        try {
+            mSocket!!.on("RES_MSG", onNewMessage)
+            mSocket!!.on("error", systemError)
 
-        mSocket!!.on("connect",onConnect)
-        mSocket!!.on("disconnect",onDisconnect)
+            mSocket!!.on("connect", onConnect)
+            mSocket!!.on("disconnect", onDisconnect)
+        }
+        catch (e:Exception){}
+    }
+    fun removeListener()
+    {
+        /*mSocket!!.off("RES_MSG",onNewMessage)
+        mSocket!!.off("error",systemError)
+
+        mSocket!!.off("connect",onConnect)
+        mSocket!!.off("disconnect",onDisconnect)*/
     }
 
     var onNewMessage  =
             object : Emitter.Listener {
                 override fun call(vararg args: Any) {
-                    var json: JSONObject = args[0] as JSONObject
                     thread{
+                        var json: JSONObject =  JSONObject(args[0].toString())
                         var x: OnService
                         Log.d("Call_Receive_Server","onNewMessage result: "+json.toString())
                         x= readJson(json)
@@ -81,23 +109,39 @@ class OnEmitService()
                             if(getIns().hasmap!![i].getKeySystem()== tm.toString())
                             {
                                 //Log.d("hass",hasmap!!.size!!.toString()+" "+ getIns().hasmap!![i].getKeyString()+x.getMessage())
-                                ttt= getIns().hasmap!![i].getKeyString()
-                                getIns().hasmap!![i].setStatus(0)
+                                if(getIns().hasmap!![i].getKeySystem()==boolx && clientSeq == x.getClientSeq())
+                                {
+                                    fla= false
+                                }
+                                else {
+                                    fla=true
+                                    ttt = getIns().hasmap!![i].getKeyString()
+                                    boolx = ttt!!
+
+                                    clientSeq = x.getClientSeq()!!
+
+                                    getIns().hasmap!![i].setStatus(0)
+                                }
                             }
                         }
-                        if(x.getResult()=="-1")
+                        if(x.getClientSeq()==-1)
                         {
                             ttt= "message"
                         }
                         else
-                            if(x.getResult()=="-2")
+                            if(x.getClientSeq()==-2)
                             {
                                 ttt="notification"
                             }
-                        message.setKey(ttt!!)
-                        message.setData(x)
-                        //truyền data đi
-                        EventBus.getDefault().post(message)
+                        //fla= false
+                        if(fla) {
+                            message.setKey(ttt!!)
+                            message.setData(x)
+                            //truyền data đi
+                            Log.d("Call_Receive_Server112",boolx+ "  "+clientSeq)
+                            EventBus.getDefault().post(message)
+                        }
+                        else{}
                     }
                 }
             }
@@ -108,9 +152,9 @@ class OnEmitService()
                     thread{
                         Log.d("onConnect","onConnect")
                         var connect: MessageEvent = MessageEvent()
-                        /*connect.setData(AllValue.connect!!)
+                        connect.setKey(Value.connect!!)
                         //truyền data đi
-                        EventBus.getDefault().post(connect)*/
+                        EventBus.getDefault().post(connect)
                     }
                 }
             }
@@ -169,7 +213,6 @@ class OnEmitService()
         tem.setKeySystem(getIns().stnumber!!.toString())
         tem.setKeyString(key)
         tem.setStatus(0)//set trang thai cua yeu cau gui di
-        Log.d("Call_Receive_Server",tem.getKeyString()+tem.getKeySystem()+tem.getStatus())
         hasmap!!.add(tem)
         output=null
         output= StringWriter()
@@ -198,6 +241,7 @@ class OnEmitService()
         x.setOperation("Q")
         x.setInVal(input)
         x.setTotInVal(input.size)
+        x.setUserType(LocalData.usertype)
         return x
     }
 

@@ -1,6 +1,7 @@
 package com.example.studystudymorestudyforever.fragment.scheduleteacher
 
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v7.app.AppCompatActivity
@@ -19,6 +20,7 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
 import android.widget.*
 import com.example.studystudymorestudyforever.convert.milisecond.ConverMiliseconds
 import com.example.studystudymorestudyforever.fragment.scheduleteacher.addcourse.ViewHolder
@@ -28,6 +30,7 @@ import com.example.studystudymorestudyforever.until.course.DetailCourse
 import com.example.studystudymorestudyforever.until.course.ScheduleAdd
 import com.example.studystudymorestudyforever.until.datalocal.LocalData
 import com.google.gson.Gson
+import org.jetbrains.anko.find
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -243,6 +246,8 @@ class ScheduleTeacherUpdateCourse :AppCompatActivity(), View.OnClickListener,ISe
                 var starttime1= ConverMiliseconds().converttomiliseconds(tv_course_starttime!!.text.toString())
                 var endtime1= ConverMiliseconds().converttomiliseconds(tv_course_endtime!!.text.toString())
 
+                Log.d("ngay12",tv_course_starttime!!.text.toString()+"=="+tv_course_endtime!!.text.toString())
+
                 var listDayofWeek:ArrayList<String> = arrayListOf()
                 var listTime:ArrayList<String> = arrayListOf()
                 listDayofWeek.add(dataspin!!)
@@ -327,15 +332,22 @@ class ScheduleTeacherUpdateCourse :AppCompatActivity(), View.OnClickListener,ISe
 
             mCountDownTimer!!.cancel() //turn off timeout
             dialogwwait!!.cancel()
-            Log.d("codenday","asdfasdfasd1 ")
             if(event.getData()!!.getResult()=="1")
             {
-                Log.d("codenday","asdfasdfasd2 ")
-                var x=MaterialDialog.Builder(this)
-                        .title("Cập nhật lớp học")
-                        .content("Cập nhật lớp học thành công!")
-                        .positiveText("Thoát")
-                        .show()
+                var dialog= Dialog(this)
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog.setContentView(R.layout.dialog_login)
+                dialog.show()
+                var tv_title= dialog.findViewById(R.id.tv_title) as TextView
+                var tv_show_notif= dialog.findViewById(R.id.tv_show_error) as TextView
+                var btn_agree_dialogres= dialog.findViewById(R.id.btn_agree_dialogres)
+                tv_title.setText("Cập nhật lớp học")
+                tv_show_notif.setText("Cập nhật lớp học thành công")
+                btn_agree_dialogres.setOnClickListener()
+                {
+                    dialog.cancel()
+                    finish()
+                }
             }
             else{
                 MaterialDialog.Builder(this)
@@ -347,8 +359,6 @@ class ScheduleTeacherUpdateCourse :AppCompatActivity(), View.OnClickListener,ISe
         }
         if(event.getKey()== Value.key_getdetailcourse)
         {
-
-            Log.d("data5",event.getData()!!.getData()!![0].toString())
             for(i in 0..event.getData()!!.getData()!!.size-1)
             {
                 var detailcourse = Gson().fromJson(event.getData()!!.getData()!![i].toString(),DetailCourse::class.java)
@@ -356,7 +366,6 @@ class ScheduleTeacherUpdateCourse :AppCompatActivity(), View.OnClickListener,ISe
             }
             dataspin=listdetailcourse!![0].getTHU().toString()
             tv_stime!!.setText(listdetailcourse[0].getTIME().toString())
-            Log.d("data5",listdetailcourse!![0].getLOCATION().toString())
             resetLayout()
         }
     }
@@ -367,6 +376,8 @@ class ScheduleTeacherUpdateCourse :AppCompatActivity(), View.OnClickListener,ISe
 
         var sttime:String= ConverMiliseconds().converttodate(listdetailcourse[0].getSTART_TIME().toLong())
         var entime:String= ConverMiliseconds().converttodate(listdetailcourse[0].getEND_TIME().toLong())
+
+        Log.d("thoigian2",""+listdetailcourse[0].getSTART_TIME().toLong())
 
         tv_course_starttime!!.setText(sttime)
         tv_course_endtime!!.setText(entime)

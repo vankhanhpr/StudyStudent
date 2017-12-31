@@ -27,14 +27,15 @@
                 android:layout_toRightOf="@+id/person_photo"
                 android:layout_alignParentTop="true"
                 android:textColor="@color/text_view_student"
-                android:text="Nguyễn Văn  Khánh"
-                android:textSize="@dimen/name_text_file" />
+                android:text=""
+                android:textSize="@dimen/name_text_file"
+                android:paddingBottom="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/person_age"
-                android:text="30"
+                android:text=""
                 android:textSize="@dimen/age_text_file"
                 android:textColor="@color/text_view_student"
                 android:layout_toRightOf="@+id/person_photo"

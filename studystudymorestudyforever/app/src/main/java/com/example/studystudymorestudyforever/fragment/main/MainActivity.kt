@@ -19,16 +19,21 @@ import android.R.id.edit
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import android.view.View
 import com.example.myapplication.value.MessageEvent
+import com.example.studystudymorestudyforever.encode.Encode
 import com.example.studystudymorestudyforever.fragment.schedule.SchedulerCalendar
 import com.example.studystudymorestudyforever.model.OnEmitService
+import com.example.studystudymorestudyforever.until.JsonLogin
 import com.example.studystudymorestudyforever.until.Value
 import com.example.studystudymorestudyforever.until.datalocal.LocalData
 import com.example.studystudymorestudyforever.until.user.User
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSelectedListener {
@@ -59,31 +64,35 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
         setContentView(R.layout.activity_main)
         EventBus.getDefault().register(this)
 
-        call.Sevecie()
-        call.ListenEvent()
-
-        var inval3 :Array<String> = arrayOf("khanh@gmail.com")
-        call.Call_Service(Value.workername_getuser,Value.servicename_getuser,inval3,Value.key_getuser)
-
+        if(LocalData.login)
+        {
+            tab_no_connect.visibility= View.GONE
+        }
+        //Lấy thông tin cá nhân
+        getInforUser()
         //add editor luu trang thai dang nhap
         savingPreferences()
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_main) as BottomNavigationViewEx
         fragment_main = findViewById(R.id.fragment_main) as LinearLayout
-
-
         addFragment()
         createAnimationBottom()
         menu = bottomNavigationView!!.menu
-        bottomNavigationView!!.setOnNavigationItemSelectedListener(this)
+        bottomNavigationView!!.setOnNavigationItemSelectedListener(this)//click button nagivation view
     }
 
+    //Lấy thông tin cá nhân
+    fun getInforUser()
+    {
+        var inval3 :Array<String> = arrayOf(LocalData!!.email)
+        call.Call_Service(Value.workername_getuser,Value.servicename_getuser,inval3,Value.key_getuser)
+    }
 
     //Nhận kết quả trả về khi login_layout
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MessageEvent) {
 
-        if(event.getKey()==Value.key_getuser)
+        if(event.getKey()==Value.key_getuser)//Lấy thông tin cá nhân
         {
             if(event.getData()!!.getResult().toString()=="1")//không có dữ liệu
             {
@@ -99,18 +108,44 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
             }
             else{
 
-
+                tab_no_connect.visibility= View.VISIBLE
             }
         }
+        if(event.getKey()== Value.key_loginshape)//Tự động đăng nhập
+        {
+
+            var json: ArrayList<JSONObject>? = event.getData()!!.getData()
+            var temp=readJson(json!!)
+
+            if (temp.getC0()=="Y")
+            {
+                Log.d("coveday","ádfasdfasd")
+                tab_no_connect.visibility= View.GONE
+                getInforUser()
+            }
+            else {
+                if (temp.getC0() == "N") {
+                    tab_no_connect.visibility = View.GONE
+                    var pre: SharedPreferences = getSharedPreferences("status", Context.MODE_PRIVATE)
+                    editor = pre.edit()
+                    editor!!.clear()
+                    editor!!.commit()
+                } else{
+                    tab_no_connect.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        if(event.getKey()==Value.disconnect)//Xử lí disconect
+        {
+            tab_no_connect.visibility= View.VISIBLE
+
+        }
+        if(event.getKey()==Value.connect)//Có connect lại
+        {
+            tab_no_connect.visibility= View.GONE
+        }
     }
-
-    override fun onStop() {
-        EventBus.getDefault().unregister(this)
-        super.onStop()
-    }
-
-
-
 
     fun addFragment() {
         fragmentManager = getSupportFragmentManager();
@@ -153,6 +188,7 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
         bottomNavigationView!!.setIconTintList(4, null)
     }
 
+    //Click button nagivationView
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         var fragmentTransaction = fragmentManager!!.beginTransaction()
         fragmentTransaction.hide(schedule)
@@ -165,15 +201,18 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
             R.id.mmenu1 -> {
                 setTab(0)
                 fragmentTransaction!!.show(schedule)
+                getCourse()
             }
             R.id.mmenu2 -> {
                 fragmentTransaction!!.show(chat)
+                getListMessage()
             }
             R.id.mmenu3 -> {
-
+                getNotif()
                 fragmentTransaction!!.show(notificatio)
             }
             R.id.mmenu4 -> {
+                getUser()
                 fragmentTransaction!!.show(teacher)
             }
             R.id.mmenu5 -> {
@@ -181,7 +220,6 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
             }
         }
         true
-
         fragmentTransaction!!.commitAllowingStateLoss()
         return true
     }
@@ -204,13 +242,75 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
     {
         //tạo đối tượng getSharedPreferences
         var pre:SharedPreferences = getSharedPreferences("status",Context.MODE_PRIVATE)
-        //tạo đối tượng Editor để lưu thay đổi
+
         editor = pre.edit()
-        //lưu vào editor
+        editor!!.clear()
         editor!!.putString("user",LocalData.email)
         editor!!.putString("pwd",LocalData.pass)
         editor!!.putInt("usertype",LocalData.usertype)
-        //chấp nhận lưu xuống file
         editor!!.commit()
     }
+
+    // Đọc file Json để lấy kết quả
+    fun readJson(json1: ArrayList<JSONObject>): JsonLogin
+    {
+        var jsonO: JSONObject?=null
+
+        if(json1.size>0)
+        {
+            jsonO = json1[0]
+        }
+        var c0: String? =jsonO!!.getString("c0")
+        var ser1 : JsonLogin = JsonLogin()
+        ser1.setC0(c0!!)
+        return ser1
+    }
+
+    //Lấy lịch học của học sinh
+    fun getCourse() {
+        var inval: Array<String> = arrayOf(LocalData.user!!.getID()!!.toString())
+        call.Call_Service(Value.workername_get_coursestudent,
+                Value.servicename_get_coursestudent,
+                inval,
+                Value.key_getlistcoursestudent)
+    }
+
+    //lay danh sach lich su chat
+    fun getListMessage()
+    {
+        var inval2: Array<String> = arrayOf(LocalData.user.getID().toString())
+        call.Call_Service(Value.workername_getlistmessage,Value.servicename_getlistmessage,inval2,Value.key_getlistmessage)
+    }
+
+    //Lấy danh sách thông báo
+    fun getNotif()
+    {
+        if(LocalData.user.getID()!=null) {
+
+            var inval: Array<String> = arrayOf(LocalData.user.getID().toString())
+            call.Call_Service(Value.workername_getlistnotif, Value.servicename_getlistnotif, inval, Value.key_getlistnotif)
+        }
+    }
+
+
+    //lấy danh sách bạn bè
+
+    fun getUser() {
+        var inval3: Array<String> = arrayOf(LocalData.user.getID().toString())
+
+        if(LocalData.usertype == 1)
+        {
+            call.Call_Service(Value.workername_getlistteacher,
+                    Value.servicename_getlistteacher,
+                    inval3,
+                    Value.key_getlistfriendofstudent)
+        }
+        else {
+            call.Call_Service(Value.workername_getlistfriendofstudent,
+                    Value.servicename_getlistfriendofstudent,
+                    inval3,
+                    Value.key_getlistfriendofstudent)
+        }
+    }
+
 }

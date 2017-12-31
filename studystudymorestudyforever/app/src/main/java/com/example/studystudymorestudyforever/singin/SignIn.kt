@@ -62,10 +62,10 @@ class  SignIn:AppCompatActivity()
 
         tab_sigin.setOnClickListener()
         {
-            name= import_name_user.text.toString()
-            email= import_email_singin.text.toString()
-            var pass1= import_pass_signin.text.toString()
-            var pass2= import_pass_again.text.toString()
+            name= import_name_user.text.toString().trim()
+            email= import_email_singin.text.toString().trim()
+            var pass1= import_pass_signin.text.toString().trim()
+            var pass2= import_pass_again.text.toString().trim()
 
             dialog_signin= Dialog(this)
             dialog_signin!!.requestWindowFeature(Window.FEATURE_NO_TITLE)

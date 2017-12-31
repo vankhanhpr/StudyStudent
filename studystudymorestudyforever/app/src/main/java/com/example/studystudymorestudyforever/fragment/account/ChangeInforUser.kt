@@ -31,8 +31,8 @@ import kotlinx.android.synthetic.main.account_change_infor_user.*
 
 import java.util.*
 import com.afollestad.materialdialogs.MaterialDialog
-
-
+import com.example.studystudymorestudyforever.sqlite.dao.DatabaseHandler
+import com.example.studystudymorestudyforever.until.user.User
 
 
 /**
@@ -56,6 +56,7 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
     var edt_phone:EditText?=null
     var edt_address:EditText?=null
     var edt_email:EditText?=null
+    internal var helper = DatabaseHandler(this)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,12 +66,18 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
         EventBus.getDefault().register(this)
         init1()//khởi tạo các layout
 
+        getInforUserLocal()
+
         edt_email!!.setText(LocalData.email)
-        Log.d("myemail","haha "+LocalData.email)
         refres_info_user.setOnRefreshListener(this)
 
-        //getUser()//lấy thông tin tài khoản
+        getUser()//lấy thông tin tài khoản
 
+
+        tab_back.setOnClickListener()
+        {
+            finish()
+        }
 
         tab_change_info_user.setOnClickListener()
         {
@@ -91,10 +98,9 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
 
             var invalchangeuser:Array<String> = arrayOf(name_user!!,
                     phone_user!!,address_user!!,
-                    ConverMiliseconds().converttomiliseconds(age_user!!).toString(),"khanh@gmail.com")
+                    ConverMiliseconds().converttomiliseconds(age_user!!).toString(),LocalData.user.getID().toString())
 
             call.Call_Service(Value.workername_changeinfouser,Value.service_changeinfouser,invalchangeuser,Value.key_change_infor_user)
-
 
             progress_changeinfouser!!.visibility=View.VISIBLE
             mCountDownTimer = object : CountDownTimer(15000, 1000) {
@@ -131,13 +137,10 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
             mCountDownTimer!!.start()
 
         }
-
-
         tab_set_birthday.setOnClickListener()
         {
             showDatePickerDialog()
         }
-
     }
 
 
@@ -149,15 +152,13 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
         edt_phone= findViewById(R.id.edt_phone) as EditText
         edt_address=findViewById(R.id.edt_address) as EditText
         edt_email= findViewById(R.id.edt_email) as EditText
-
     }
 
     fun getUser()
     {
-        var inval :Array<String> = arrayOf("khanh@gmail.com")
+        var inval :Array<String> = arrayOf(LocalData.user.getEMAIL().toString()  )
         call.Call_Service(Value.workername_getuser,Value.servicename_getuser,inval,Value.key_getuser)
     }
-
 
     //Nhận kết quả trả về khi login_layout
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -165,19 +166,38 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
         if (event.getKey() == Value.key_getuser)
         {
             var json: ArrayList<JSONObject>? = event.getData()!!.getData()
-
             if (event.getData()!!.getResult()=="1")
             {
                 val gson = Gson()
-                var user: UserInfo= gson.fromJson(event.getData()!!.getData().toString(),UserInfo::class.java)
-                edt_name!!.setText(user.getUsername())
-                edt_address!!.setText(user.getUseraddress())
-                tv_age!!.setText(user.getUserage())
-                edt_phone!!.setText(user.getUserphone())
+                var user: User= gson.fromJson(event.getData()!!.getData()!![0].toString(),User::class.java)
+
+                var userlocal=helper.getData(user.getID())
+
+
+                edt_name!!.setText(user.getNAME())
+                edt_phone!!.setText(user.getPHONENUMBER().toString())
+                edt_address!!.setText(user.getADDRESS())
+                var age1= ConverMiliseconds()!!.converttodate(user.getBIRTHDAY())
+                tv_age!!.setText(age1)
+
+                if(userlocal!=null)
+                {
+                    //helper.deleteData(user.getID().toString())
+
+                    helper.updateData(user.getID(), user.getNAME().toString(), user.getEMAIL().toString(), user.getPHONENUMBER().toString(),
+                            user.getADDRESS().toString(), user.getBIRTHDAY().toInt(),
+                            user.getHASHCODE().toString(), user.getACTIVE().toString(), Integer.parseInt(user.getUSER_TYPE().toString()))
+
+                }
+                else {
+                    helper.insertData(user.getID(), user.getNAME().toString(), user.getEMAIL().toString(), user.getPHONENUMBER().toString(),
+                            user.getADDRESS().toString(), Integer.parseInt(user.getBIRTHDAY().toString()),
+                            user.getHASHCODE().toString(), user.getACTIVE().toString(), Integer.parseInt(user.getUSER_TYPE().toString()))
+                }
+                getInforUserLocal()
             }
             else
             {
-
             }
         }
         if (event.getKey()==Value.key_change_infor_user)
@@ -199,16 +219,12 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
                         .positiveText("OK")
                         .show()
             }
-
         }
     }
-
-
-
     /**
      * Hàm hiển thị DatePicker dialog
      */
-    fun showDatePickerDialog() {
+    fun showDatePickerDialog(){
         val callback = OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             //Mỗi lần thay đổi ngày tháng năm thì cập nhật lại TextView Date
             var day=dayOfMonth
@@ -231,10 +247,7 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
             {
                 month1=(month+1).toString()
             }
-
-
             tv_age!!.setText(day1.toString() + "/" + (month1) + "/" + year)
-
         }
 
         var s = tv_age!!.getText()
@@ -243,7 +256,6 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
         {
             s="01/01/2000"
         }
-
         var strArrtmp = s.split("/".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
         var ngay = Integer.parseInt(strArrtmp[0])
         var thang = Integer.parseInt(strArrtmp[1]) - 1
@@ -252,9 +264,30 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
         pic.setTitle("Chọn ngày hoàn thành")
         pic.show()
     }
-
-
-
+    //Lấy thông tin dữ liệu Local
+    fun getInforUserLocal()
+    {
+        //helper.insertData(2,"vanKhanh2","donkihote2305@gmail.com","0989898989","Số 1 VVN",121,"ádfasdf","ádfsad",1)
+        val res = helper.allData
+        if (res.count ==0)
+        {
+            Log.d("ChangeInforUser", "Không có dữ liệu")
+        }
+        else
+        {
+            var x:String
+            var y:String
+            var z:String
+            while (res.moveToNext()){
+               //Log.d("datasqlite", "lần1:" + res.getString(0) +";lần 2:"+ res.getString(1)+"lần3:" + res.getString(2)+"lần 4:"+res.getString(3)+"lần 5"+res.getString(4)+res.getString(5)+res.getString(6))
+                edt_name!!.setText(res.getString(1))
+                edt_phone!!.setText(res.getString(3))
+                edt_address!!.setText(res.getString(4))
+                var age= ConverMiliseconds().converttodate(res.getLong(5))
+                tv_age!!.setText(age)
+            }
+        }
+    }
 
     public override fun onStop() {
         EventBus.getDefault().unregister(this)
@@ -265,6 +298,7 @@ class ChangeInforUser: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener
 
         Handler().postDelayed(Runnable {
             getUser()
+            getInforUserLocal()
             refres_info_user!!.setRefreshing(false)
         }, 2000)
     }

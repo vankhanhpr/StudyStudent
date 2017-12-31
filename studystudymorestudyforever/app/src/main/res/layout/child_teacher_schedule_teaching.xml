@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/person_name"
+                android:id="@+id/tv_namecourse"
                 android:layout_toRightOf="@+id/person_photo"
                 android:layout_alignParentTop="true"
                 android:textColor="@color/text_view_student"
@@ -31,13 +31,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/person_age"
+                android:id="@+id/tv_time"
                 android:text="Thứ 4"
                 android:textSize="@dimen/age_text_file"
                 android:paddingTop="6dp"
                 android:textColor="@color/text_view_student"
                 android:layout_toRightOf="@+id/person_photo"
-                android:layout_below="@+id/person_name" />
+                android:layout_below="@+id/tv_namecourse" />
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

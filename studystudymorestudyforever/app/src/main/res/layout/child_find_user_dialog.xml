@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/tab_teacher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:padding="16dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/person_photo"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/icon_teacher_list"
+            android:layout_marginRight="16dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_person_name"
+            android:layout_toRightOf="@+id/person_photo"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/text_view_student"
+            android:text="Nguyễn Văn Khánh"
+            android:textSize="@dimen/name_text_file" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_course_name"
+            android:text="Toán cao cáp A1"
+            android:textSize="@dimen/age_text_file"
+            android:paddingTop="6dp"
+            android:textColor="@color/text_view_student"
+            android:layout_toRightOf="@+id/person_photo"
+            android:layout_below="@+id/tv_person_name" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="10dp"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/imv_add_friend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:background="@drawable/icon_add_friend1"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

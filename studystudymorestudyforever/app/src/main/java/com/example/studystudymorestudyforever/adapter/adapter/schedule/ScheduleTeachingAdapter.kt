@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.studystudymorestudyforever.R
+import com.example.studystudymorestudyforever.convert.milisecond.ConverMiliseconds
 import com.example.studystudymorestudyforever.myinterface.ISelectCourse
 import com.example.studystudymorestudyforever.until.course.ScheduleAdd
 import com.example.studystudymorestudyforever.until.datalocal.LocalData
@@ -33,7 +34,12 @@ class ScheduleTeachingAdapter (context: Context, listcourse: ArrayList<ScheduleA
 
     // binds the data to the textview in each row
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val animal = listcourse!!.get(position)
+
+        holder!!.tv_namecourse!!.setText(listcourse!![position]!!.getSUB_NAME().toString())
+        var starttime= ConverMiliseconds().converttodate(listcourse!![position]!!.getSTART_TIME().toLong())
+        var endtime= ConverMiliseconds().converttodate(listcourse!![position]!!.getEND_TIME().toLong())
+        holder!!.tv_time!!.setText(starttime+" đến " +endtime);
+
         holder.itemView.setOnClickListener()
         {
             iter.selectCourse()
@@ -49,19 +55,13 @@ class ScheduleTeachingAdapter (context: Context, listcourse: ArrayList<ScheduleA
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        private var title: TextView?=null
-        private var author: TextView?=null
-        private var price: TextView?=null
-
-        fun BookViewHolder(itemView: View) {
-
-            /*title = itemView.findViewById(R.id.title) as TextView
-            author = itemView.findViewById(R.id.author) as TextView
-            price = itemView.findViewById(R.id.price) as TextView*/
-        }
+         var tv_namecourse: TextView?=null
+         var tv_time: TextView?=null
 
         init {
-            //myTextView = itemView.findViewById(R.id.person_photo) as TextView
+            this.tv_namecourse = itemView.findViewById(R.id.tv_namecourse) as TextView
+            this.tv_time = itemView.findViewById(R.id.tv_time) as TextView
+
             itemView.setOnClickListener(this)
         }
 

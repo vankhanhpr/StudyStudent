@@ -1,123 +1,70 @@
 package com.example.studystudymorestudyforever.until;
 
+import android.print.PageRange;
+
+import org.w3c.dom.ProcessingInstruction;
+
 /**
  * Created by VANKHANHPR on 9/28/2017.
  */
 
 public class EX {
 
+    private int ID;
 
-    private int SCHE_ID;
-    private int USER_ID;
-    private long START_TIME;
-    private long END_TIME;
-    private String FEE;
-    private  String LOCATION;
-    private long SUB_ID;
-
-    public int getSCHE_ID() {
-        return SCHE_ID;
+    public int getID() {
+        return ID;
     }
 
-    public void setSCHE_ID(int SCHE_ID) {
-        this.SCHE_ID = SCHE_ID;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
-    public int getUSER_ID() {
-        return USER_ID;
+    private  int USER_ID_SEND_NOTIFICATION;
+
+    public int getUSER_ID_SEND_NOTIFICATION() {
+        return USER_ID_SEND_NOTIFICATION;
     }
 
-    public void setUSER_ID(int USER_ID) {
-        this.USER_ID = USER_ID;
+    public void setUSER_ID_SEND_NOTIFICATION(int USER_ID_SEND_NOTIFICATION) {
+        this.USER_ID_SEND_NOTIFICATION = USER_ID_SEND_NOTIFICATION;
     }
 
-    public long getSTART_TIME() {
-        return START_TIME;
+    private int STATUS;
+
+    public int getSTATUS() {
+        return STATUS;
     }
 
-    public void setSTART_TIME(long START_TIME) {
-        this.START_TIME = START_TIME;
+    public void setSTATUS(int STATUS) {
+        this.STATUS = STATUS;
     }
 
-    public long getEND_TIME() {
-        return END_TIME;
+    private long CREATED_DATE;
+  private  String NAME;
+  private String RECENTLY_ACTIVITY;
+
+    public long getCREATED_DATE() {
+        return CREATED_DATE;
     }
 
-    public void setEND_TIME(long END_TIME) {
-        this.END_TIME = END_TIME;
+    public void setCREATED_DATE(long CREATED_DATE) {
+        this.CREATED_DATE = CREATED_DATE;
     }
 
-    public String getFEE() {
-        return FEE;
+    public String getNAME() {
+        return NAME;
     }
 
-    public void setFEE(String FEE) {
-        this.FEE = FEE;
+    public void setNAME(String NAME) {
+        this.NAME = NAME;
     }
 
-    public String getLOCATION() {
-        return LOCATION;
+    public String getRECENTLY_ACTIVITY() {
+        return RECENTLY_ACTIVITY;
     }
 
-    public void setLOCATION(String LOCATION) {
-        this.LOCATION = LOCATION;
-    }
-    private  String SUB_NAME;
-
-    public String getSUB_NAME() {
-        return SUB_NAME;
-    }
-
-    public void setSUB_NAME(String SUB_NAME) {
-        this.SUB_NAME = SUB_NAME;
-    }
-
-
-    public long getSUB_ID() {
-        return SUB_ID;
-    }
-
-    public void setSUB_ID(long SUB_ID) {
-        this.SUB_ID = SUB_ID;
-    }
-
-    public EX(int SCHE_ID, int USER_ID, long START_TIME, long END_TIME, String FEE, String LOCATION, long SUB_ID, String SUB_NAME) {
-        this.SCHE_ID = SCHE_ID;
-        this.USER_ID = USER_ID;
-        this.START_TIME = START_TIME;
-        this.END_TIME = END_TIME;
-        this.FEE = FEE;
-        this.LOCATION = LOCATION;
-        this.SUB_ID = SUB_ID;
-        this.SUB_NAME = SUB_NAME;
-    }
-    private  String THU;
-
-    public String getTHU() {
-        return THU;
-    }
-
-    public void setTHU(String THU) {
-        this.THU = THU;
-    }
-
-    private String TIME;
-
-    public String getTIME() {
-        return TIME;
-    }
-
-    public void setTIME(String TIME) {
-        this.TIME = TIME;
-    }
-
-    private String TEACHER_ID;
-
-    public String getTEACHER_ID() {
-        return TEACHER_ID;
-    }
-
-    public void setTEACHER_ID(String TEACHER_ID) {
-        this.TEACHER_ID = TEACHER_ID;
+    public void setRECENTLY_ACTIVITY(String RECENTLY_ACTIVITY) {
+        this.RECENTLY_ACTIVITY = RECENTLY_ACTIVITY;
     }
 }

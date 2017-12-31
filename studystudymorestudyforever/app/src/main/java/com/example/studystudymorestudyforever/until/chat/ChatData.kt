@@ -5,26 +5,41 @@ package com.example.studystudymorestudyforever.until.chat
  */
 class ChatData {
 
-    private var chatID = 0
-    private var chatstatus = ""
+    private var CREATED_DATE: Long = 0
+    private var NAME: String? = null
+    private var RECENTLY_ACTIVITY: String? = null
+    private var ID: Int = 0
 
-    fun ChatData(chatstatus: String) {
-        this.chatstatus = chatstatus
+    fun getID(): Int {
+        return ID
     }
 
-    fun getChatID(): Int {
-        return chatID
+    fun setID(ID: Int) {
+        this.ID = ID
     }
 
-    fun setChatID(chatID: Int) {
-        this.chatID = chatID
+
+    fun getCREATED_DATE(): Long {
+        return CREATED_DATE
     }
 
-    fun getChatstatus(): String {
-        return chatstatus
+    fun setCREATED_DATE(CREATED_DATE: Long) {
+        this.CREATED_DATE = CREATED_DATE
     }
 
-    fun setChatstatus(chatstatus: String) {
-        this.chatstatus = chatstatus
+    fun getNAME(): String ?{
+        return NAME
+    }
+
+    fun setNAME(NAME: String) {
+        this.NAME = NAME
+    }
+
+    fun getRECENTLY_ACTIVITY(): String ?{
+        return RECENTLY_ACTIVITY
+    }
+
+    fun setRECENTLY_ACTIVITY(RECENTLY_ACTIVITY: String) {
+        this.RECENTLY_ACTIVITY = RECENTLY_ACTIVITY
     }
 }

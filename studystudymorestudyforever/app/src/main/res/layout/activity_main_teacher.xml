@@ -5,9 +5,15 @@
     android:layout_height="match_parent"
     xmlns:design="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.studystudymorestudyforever.fragment.main.MainActivity">
+
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -28,5 +34,19 @@
                 android:layout_alignParentBottom="false"
                 design:menu="@menu/menuteacher"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_no_connect"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#dcd7d7">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Mất kết nối"
+                android:textSize="15dp"
+                android:gravity="center"/>
+        </LinearLayout>
+
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

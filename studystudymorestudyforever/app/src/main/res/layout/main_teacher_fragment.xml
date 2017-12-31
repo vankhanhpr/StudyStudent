@@ -10,6 +10,10 @@
         card_view:cardCornerRadius="5dp"
         card_view:cardUseCompatPadding="true"
         card_view:cardElevation="5dp">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swp_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -47,10 +51,17 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <!--<android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/recicleview_list_teacher"/>
+                android:id="@+id/recicleview_list_teacher"/>-->
+
+            <com.baoyz.swipemenulistview.SwipeMenuListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/lv_list_teacher">
+            </com.baoyz.swipemenulistview.SwipeMenuListView>
+
             <LinearLayout
                 android:id="@+id/tab_no_data_teacher"
                 android:layout_width="match_parent"
@@ -73,5 +84,6 @@
             </LinearLayout>
 
         </LinearLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>
