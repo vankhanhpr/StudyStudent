@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_size_title">16dip</dimen>
+    <dimen name="text_size_title">16sp</dimen>
     <dimen name="text_size_text_login">15dip</dimen>
     <dimen name="text_size_forgetpass">15dip</dimen>
     <dimen name="pading_login">10dip</dimen>
@@ -18,7 +18,7 @@
     <dimen name="sche_text_title">16dip</dimen>
     <dimen name="padding_text_image">5dip</dimen>
 
-    <dimen name="text_size_view_info_user">12dip</dimen>
+    <dimen name="text_size_view_info_user">12sp</dimen>
     <dimen name="pading">10dip</dimen>
 
     size carview file student

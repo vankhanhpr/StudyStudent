@@ -42,7 +42,7 @@ class SelectCourse:AppCompatActivity() {
     var tv_endtime:TextView?=null
     var tv_tuition:TextView?=null
     var tv_address:TextView?=null
-
+    var nameteacherTextview:TextView?=null
 
 
     fun initt()
@@ -59,7 +59,7 @@ class SelectCourse:AppCompatActivity() {
         tv_endtime= header.findViewById(R.id.tv_endtime) as TextView
         tv_tuition= header.findViewById(R.id.tv_tuition) as TextView
         tv_address= header.findViewById(R.id.tv_address) as TextView
-
+        nameteacherTextview = header.findViewById(R.id.nameteacherTextview) as TextView
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +68,8 @@ class SelectCourse:AppCompatActivity() {
         initt()
 
         var invalsetdetailCourse:Array<String> = arrayOf(LocalData.selectCourseSt.getSCHE_ID())
-
+        val bundle = intent.extras
+        nameteacherTextview!!.setText(bundle.getString("nameteacher"))
         call.Call_Service(Value.workername_getdetailteacher,
                 Value.servicename_getdetailteacher,
                 invalsetdetailCourse,

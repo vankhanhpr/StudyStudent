@@ -81,7 +81,7 @@
     <string name="info_name">Họ tên:</string>
     <string name="info_email">Email:</string>
     <string name="info_age">Ngày sinh:</string>
-    <string name="info_phone">Số điện thoại</string>
+    <string name="info_phone">Số điện thoại:</string>
     <string name="info_address">Địa chỉ</string>
     <string name="info_button_update_user">Cập nhật thông tin cá nhân</string>
 

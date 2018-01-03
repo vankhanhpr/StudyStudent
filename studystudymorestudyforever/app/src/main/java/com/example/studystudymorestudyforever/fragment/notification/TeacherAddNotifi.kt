@@ -11,6 +11,7 @@ import android.view.Window
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import com.example.studystudymorestudyforever.R
 import com.example.studystudymorestudyforever.adapter.adapter.notification.DialogAddNotifiAdapter
 import com.example.studystudymorestudyforever.model.OnEmitService
@@ -43,7 +44,7 @@ class TeacherAddNotifi:AppCompatActivity(), View.OnClickListener {
     var mCountDownTimer: CountDownTimer? = null
     var tab_back:LinearLayout?=null
 
-
+    var listFriendStudent :ArrayList<User> = arrayListOf()
 
     var call =OnEmitService.getIns()
 
@@ -70,6 +71,7 @@ class TeacherAddNotifi:AppCompatActivity(), View.OnClickListener {
         {
             R.id.tab_select_uer_chat ->
             {
+                getUser()
                 dialogshowAccount= Dialog(this)
                 dialogshowAccount!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 dialogshowAccount!!.setContentView(R.layout.dialog_list_account_sent_notifilecation)
@@ -95,7 +97,7 @@ class TeacherAddNotifi:AppCompatActivity(), View.OnClickListener {
                     dialogshowAccount!!.cancel()
                 }
 
-                adapte = DialogAddNotifiAdapter(applicationContext,LocalData.listUser)
+                adapte = DialogAddNotifiAdapter(applicationContext,listFriendStudent)
                 lv_select_account!!.adapter= adapte
                 dialogshowAccount!!.show()
             }
@@ -105,47 +107,52 @@ class TeacherAddNotifi:AppCompatActivity(), View.OnClickListener {
                 var gson= Gson()
                 var listUsersentNotif= gson.toJson(listcheckedUser)
 
-                var title = edt_title_notifi.text.toString().trim()
+                var title = ""+edt_title_notifi.text.toString().trim()
                 var status= edt_status_notif.text.toString().trim()
-                var inval :Array<String> = arrayOf(LocalData.user.getID().toString(),
-                        title,status,
-                        listUsersentNotif.toString())
-                //timeout
-                mCountDownTimer = object : CountDownTimer(10000, 1000) {
-                    var i = 0
-                    override fun onTick(millisUntilFinished: Long) {
-                        i++
-                        if (i == 5) {
-                            for (i in 0..OnEmitService.getIns().hasmap!!.size - 1) {
+                if(title== "")
+                {
+                    Toast.makeText(this,"Bạn chưa nhập tiêu đề",Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    var inval: Array<String> = arrayOf(LocalData.user.getID().toString(),
+                            title, status,
+                            listUsersentNotif.toString())
+
+                    //timeout
+                    mCountDownTimer = object : CountDownTimer(10000, 1000) {
+                        var i = 0
+                        override fun onTick(millisUntilFinished: Long) {
+                            i++
+                            if (i == 5) {
+                                for (i in 0..OnEmitService.getIns().hasmap!!.size - 1) {
+                                }
+                            }
+                            if (i == 10) {
+                                progress_addnotifi!!.visibility = View.GONE
                             }
                         }
-                        if (i == 10) {
+
+                        override fun onFinish() {
+                            //Do what you want
+                            i++
                             progress_addnotifi!!.visibility = View.GONE
+                            try {
+                                MaterialDialog.Builder(this@TeacherAddNotifi)
+                                        .title("Lỗi")
+                                        .content("Có lỗi xảy ra vui lòng thử lại!")
+                                        .positiveText("Đồng ý")
+                                        .show()
+
+                            } catch (e: Exception) {
+                            }
                         }
                     }
+                    mCountDownTimer!!.start()
 
-                    override fun onFinish() {
-                        //Do what you want
-                        i++
-                        progress_addnotifi!!.visibility = View.GONE
-                        try {
-                            MaterialDialog.Builder(this@TeacherAddNotifi)
-                                    .title("Lỗi")
-                                    .content("Có lỗi xảy ra vui lòng thử lại!")
-                                    .positiveText("Đồng ý")
-                                    .show()
-
-                        }
-                        catch (e: Exception)
-                        {
-                        }
-                    }
+                    call.Call_Service(Value.workername_sentnotifilecation,
+                            Value.service_sentnotifilecation, inval,
+                            Value.key_sendnotifile)
                 }
-                mCountDownTimer!!.start()
-
-                call.Call_Service(Value.workername_sentnotifilecation,
-                        Value.service_sentnotifilecation,inval,
-                        Value.key_sendnotifile)
             }
             R.id.tab_back->{
                 finish()
@@ -180,6 +187,15 @@ class TeacherAddNotifi:AppCompatActivity(), View.OnClickListener {
                         .show()
             }
         }
+        if(event.getKey()==Value.key_get_listfriendchat)
+        {
+            listFriendStudent.clear()
+            for(i in 0.. event!!.getData()!!.getData()!!.size-1)
+            {
+                var temp= Gson().fromJson(event!!.getData()!!.getData()!![i].toString(),User::class.java)
+                listFriendStudent.add(temp)
+            }
+        }
     }
 
     public override fun onStop() {
@@ -200,5 +216,15 @@ class TeacherAddNotifi:AppCompatActivity(), View.OnClickListener {
         var ser1 : JsonLogin = JsonLogin()
         ser1.setC0(c0!!)
         return ser1
+    }
+
+
+    //lấy danh sách bạn bè
+
+    //lấy danh sách bạn bè
+    fun getUser() {
+        var inval3: Array<String> = arrayOf(LocalData.user.getID().toString())
+        call.Call_Service(Value.workername_getlist_teacher, Value.servicename_getlist_teacher,
+                inval3, Value.key_get_listfriendchat)
     }
 }

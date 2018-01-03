@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.AbsListView
 import android.widget.ListView
 import com.baoyz.swipemenulistview.SwipeMenu
 import com.baoyz.swipemenulistview.SwipeMenuCreator
@@ -110,6 +111,7 @@ class SchedulerCalendar : Fragment() {
     }
 
 
+    //Hiển thị các lớp học lên lịch
     fun setViewListSchedule(dateClick:Date)
     {
         listEvent.clear()
@@ -135,6 +137,7 @@ class SchedulerCalendar : Fragment() {
         setAdapter(listEvent)
     }
 
+    //Lấy danh sách lớp học
     fun getCourse() {
         var inval: Array<String> = arrayOf(LocalData.user!!.getID()!!.toString())
         call.Call_Service(Value.workername_get_coursestudent,
@@ -194,6 +197,20 @@ class SchedulerCalendar : Fragment() {
                     }
                 }
                 return false
+            }
+        })
+
+        //Chặn scroll của refresh khi scroll listview
+        lv_course_student!!.setOnScrollListener(object : AbsListView.OnScrollListener {
+            override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
+
+            }
+            override fun onScroll(listView: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
+                val topRowVerticalPosition = if (listView == null || listView.childCount === 0)
+                    0
+                else
+                    lv_course_student!!.getChildAt(0).getTop()
+                sw_refresh!!.setEnabled(topRowVerticalPosition >= 0)
             }
         })
 

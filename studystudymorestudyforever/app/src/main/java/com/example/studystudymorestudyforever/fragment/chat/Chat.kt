@@ -31,8 +31,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import android.widget.ProgressBar
-
-
+import android.widget.Toast
 
 
 /**
@@ -131,7 +130,10 @@ class  Chat: Fragment(),ISetMessage,ISelectAccountChat
     fun getListMessage()
     {
         var inval2: Array<String> = arrayOf(LocalData.user.getID().toString())
-        call.Call_Service(Value.workername_getlistmessage,Value.servicename_getlistmessage,inval2,Value.key_getlistmessage)
+        call.Call_Service(Value.workername_getlistmessage,
+                Value.servicename_getlistmessage,
+                inval2,
+                Value.key_getlistmessage)
     }
     //Nhận kết quả trả về khi login_layout
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -196,11 +198,10 @@ class  Chat: Fragment(),ISetMessage,ISelectAccountChat
         return true
     }
 
-   /* override fun onStop() {
+    override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
     }
-*/
 
     //Hiển thị lịch sử chat ra màn hình
     fun showListMessage()
@@ -215,30 +216,35 @@ class  Chat: Fragment(),ISetMessage,ISelectAccountChat
     {
         var inval:Array<String> =  arrayOf(LocalData.user.getID().toString())
         if(LocalData.usertype == 2) {
-            call.Call_Service(Value.workername_getlist_teacher, Value.servicename_getlist_teacher, inval, Value.key_getlist_tdialog)
+            call.Call_Service(Value.workername_getlist_teacher,
+                    Value.servicename_getlist_teacher,
+                    inval, Value.key_getlist_tdialog)
         }
         else{
-            call.Call_Service(Value.workername_getlistfriendofstudent, Value.servicename_getlistfriendofstudent, inval, Value.key_getlist_tdialog)
+            call.Call_Service(Value.workername_getlistfriendofstudent,
+                    Value.servicename_getlistfriendofstudent, inval,
+                    Value.key_getlist_tdialog)
         }
     }
-    override fun chat(tem: String) {
+    //xem lịch sử chat và chat tiếp
+    override fun chat(tem: ChatData) {
         super.chat(tem)
-        var inten = Intent(context,ChatMessager::class.java)
+       /* var inten = Intent(context,ChatMessager::class.java)
         var bundle= Bundle()
         bundle.putString("bundle",tem!!)
         inten.putExtra("intent",bundle)
-        startActivity(inten)
-    }
-    //xem lịch sử chat và chat tiếp
-    override fun selectaccount(id: String) {
-        super.selectaccount(id)
-
-        var bundle =Bundle()
-        bundle.putString("bundle",id)
-
+        //startActivity(inten)*/
         var iten2= Intent(context,ChatMessager::class.java)
-        iten2.putExtra("intent",bundle)
+        iten2.putExtra("id_chat",tem.getID().toString())
+        iten2.putExtra("name",tem.getNAME())
+        startActivity(iten2)
+    }
 
+    override fun selectaccount(id: TeacherofStudent) {
+        super.selectaccount(id)
+        var iten2= Intent(context,ChatMessager::class.java)
+        iten2.putExtra("id_chat",id.getID().toString())
+        iten2.putExtra("name",id.getNAME())
         startActivity(iten2)
         dialog_show_list_account!!.cancel()
     }

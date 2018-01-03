@@ -24,13 +24,14 @@
                     android:background="@drawable/icon_back"/>
             </LinearLayout>
             <TextView
+                android:id="@+id/tv_name_user_chat"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="@dimen/text_size_title"
                 android:gravity="center"
                 android:layout_toRightOf="@+id/tab_back"
                 android:layout_toLeftOf="@+id/tab_add"
-                android:text="Nguyễn Văn Khánh"
+                android:text=""
                 android:textColor="#000000" />
         </RelativeLayout>
     </LinearLayout>

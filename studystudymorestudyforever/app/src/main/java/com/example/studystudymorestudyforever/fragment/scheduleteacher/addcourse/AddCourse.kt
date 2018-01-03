@@ -275,22 +275,25 @@ class AddCourse:AppCompatActivity(),View.OnClickListener,ISetTimeDialog{
                 {
                     tuitionmoney= "0"
                 }
-                if(daystart>dayend)
+
+                var format :SimpleDateFormat=  SimpleDateFormat("dd/MM/yyyy")
+                var stday= format.parse(tv_course_starttime!!.text.toString())
+                var edday =format.parse(tv_course_endtime!!.text.toString())
+
+                if(stday.after(edday))
                 {
-                    Toast.makeText(applicationContext,"Ngày bắt đầu không được nhỏ hơn hay bằng ngày kết thúc",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Ngày bắt đầu phải nhỏ hơn ngày kết thúc!",Toast.LENGTH_SHORT).show()
                 }
-                else{
-
+                else {
+                    var inval: Array<String> = arrayOf(LocalData.user.getID().toString(),
+                            address,
+                            tuitionmoney,
+                            daystart!!.toString(),
+                            dayend!!.toString(),
+                            listdayofw.toString(),
+                            listtimest.toString())
+                    call.Call_Service(Value.workername_adđcourse, Value.servicename_addcourse, inval, Value.key_addcourse)
                 }
-
-                var inval: Array<String> = arrayOf(LocalData.user.getID().toString(),
-                        address,
-                        tuitionmoney,
-                        daystart!!.toString(),
-                        dayend!!.toString(),
-                        listdayofw.toString(),
-                        listtimest.toString())
-                call.Call_Service(Value.workername_adđcourse,Value.servicename_addcourse,inval,Value.key_addcourse)
             }
         }
     }
@@ -346,7 +349,6 @@ class AddCourse:AppCompatActivity(),View.OnClickListener,ISetTimeDialog{
             } else {
                 month1 = (month + 1).toString()
             }
-
 
             tv_course_starttime!!.setText(day1.toString() + "/" + (month1) + "/" + year)
 
@@ -476,6 +478,8 @@ class AddCourse:AppCompatActivity(),View.OnClickListener,ISetTimeDialog{
         time.show()
     }
 
+
+    //Lấy thời gian hiện tại
     fun getDefaultInforView(tv:TextView) {
         //lấy ngày hiện tại của hệ thống
         cal = Calendar.getInstance()
@@ -488,6 +492,7 @@ class AddCourse:AppCompatActivity(),View.OnClickListener,ISetTimeDialog{
 
     }
 
+    //Gọi hàm set thời gian qua interface
     override fun callSetTime(tv: TextView) {
         super.callSetTime(tv)
         showTimePickerDialog(tv)

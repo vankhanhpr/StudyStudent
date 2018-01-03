@@ -6,8 +6,8 @@ package com.example.studystudymorestudyforever.until
  object Value
 {
     var service:String?="CLIENT_MSG"
-   // var address:String?="http://192.168.137.38:8081"
-    var address:String?="http://192.168.1.17:8081"
+    //var address:String?="http://192.168.1.17:8081"
+    var address:String?="http://10.134.40.200:8081"
     //var address:String?="http://10.132.153.72:8081"
     var connect:String?="connect"
     var disconnect:String?="disconnectSystem"
@@ -67,12 +67,13 @@ package com.example.studystudymorestudyforever.until
      var servicename_getlist_teacher="getlistfriend"
      var key_getlist_teacher="call_getlist.teacher"
      var key_getlist_tdialog="call_getlist.teacher.dialog"
-
+    var key_get_listfriendchat="callgetlistfriendchat"
     //get list friend of student
      var workername_getlistfriendofstudent="studentcontroller"
      //var servicename_getlistfriendofstudent="getlistfriendofstudent"
      var servicename_getlistfriendofstudent="getlistteacherwhostudenthaveadd"
      var key_getlistfriendofstudent="callgetlistfriendofstudent"
+
 
 
     //Lấy danh sách giáo viên của phụ huynh
@@ -169,7 +170,7 @@ package com.example.studystudymorestudyforever.until
     var service_readnotif="markasreadnotification"
     var key_readnotifi="call_readnotif"
 
-    //Lấy danh sách lớp lớp học của giáo viên
+    //Lấy danh sách lớp học của giáo viên
     var workername_getlisstcoursestudent="studentcontroller"
     var servicename_getlisstcoursestudent="getscheduletoregister"
     var key_getlistcoursestudentbuck="callgetlistcoursestudent"

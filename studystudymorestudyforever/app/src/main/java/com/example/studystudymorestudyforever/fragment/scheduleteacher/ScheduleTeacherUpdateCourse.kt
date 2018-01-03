@@ -120,6 +120,7 @@ class ScheduleTeacherUpdateCourse :AppCompatActivity(), View.OnClickListener,ISe
     }
 
 
+    //Lấy chi tiết lớp học
     fun getDetailCourse()
     {
         var inval :Array<String> = arrayOf(course!!.getSCHE_ID()!!.toString())
@@ -246,8 +247,6 @@ class ScheduleTeacherUpdateCourse :AppCompatActivity(), View.OnClickListener,ISe
                 var starttime1= ConverMiliseconds().converttomiliseconds(tv_course_starttime!!.text.toString())
                 var endtime1= ConverMiliseconds().converttomiliseconds(tv_course_endtime!!.text.toString())
 
-                Log.d("ngay12",tv_course_starttime!!.text.toString()+"=="+tv_course_endtime!!.text.toString())
-
                 var listDayofWeek:ArrayList<String> = arrayListOf()
                 var listTime:ArrayList<String> = arrayListOf()
                 listDayofWeek.add(dataspin!!)
@@ -262,21 +261,33 @@ class ScheduleTeacherUpdateCourse :AppCompatActivity(), View.OnClickListener,ISe
                 var listdayofw :String= gson.toJson(listDayofWeek)
                 var listtimest :String= gson.toJson(listTime)
 
-                var inval :Array<String> = arrayOf(
-                        edt_course_address!!.text.toString(),
-                        edt_course_tuition!!.text.toString(),
-                        starttime1.toString(),
-                        endtime1.toString(),
-                        LocalData.course.getSCHE_ID(),
-                        listdayofw.toString(),listtimest!!.toString())
-                call.Call_Service(Value.workername_updatecourse,Value.servicename_updatecourse,inval,Value.key_updatecourse)
+
+                var format :SimpleDateFormat=  SimpleDateFormat("dd/MM/yyyy")
+                var stday= format.parse(tv_course_starttime!!.text.toString())
+                var edday =format.parse(tv_course_endtime!!.text.toString())
+
+                if(stday.after(edday))
+                {
+                    Toast.makeText(this,"Ngày bắt đầu phải nhỏ hơn ngày kết thúc!",Toast.LENGTH_SHORT).show()
+                }
+                else {
+
+                    var inval: Array<String> = arrayOf(
+                            edt_course_address!!.text.toString(),
+                            edt_course_tuition!!.text.toString(),
+                            starttime1.toString(),
+                            endtime1.toString(),
+                            LocalData.course.getSCHE_ID(),
+                            listdayofw.toString(), listtimest!!.toString())
+                    call.Call_Service(Value.workername_updatecourse, Value.servicename_updatecourse, inval, Value.key_updatecourse)
 
 
-                dialogwwait=MaterialDialog.Builder(this)
-                        .title("Đang cập nhật")
-                        .content("Vui lòng chờ")
-                        .progress(true, 0)
-                        .show()
+                    dialogwwait = MaterialDialog.Builder(this)
+                            .title("Đang cập nhật")
+                            .content("Vui lòng chờ")
+                            .progress(true, 0)
+                            .show()
+                }
                 dialogerror = MaterialDialog.Builder(this)
                         .title("Lỗi")
                         .content("Có lỗi xảy ra vui lòng thử lại!!!")

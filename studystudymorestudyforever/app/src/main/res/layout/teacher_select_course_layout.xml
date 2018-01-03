@@ -46,6 +46,7 @@
 
 
                 <ListView
+                    android:visibility="visible"
                     android:id="@+id/lv_time_course"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">

@@ -1,9 +1,13 @@
 package com.example.studystudymorestudyforever.until.course
 
+import android.os.Parcel
+import android.os.Parcelable
+
 /**
  * Created by VANKHANHPR on 11/1/2017.
  */
 class CourseStudent {
+
     private var SCHE_ID: String = ""
     private var TEACHER_ID: String = ""
     private var START_TIME: String = ""

@@ -56,7 +56,7 @@ class ChatApdater(context: Context,chat:ArrayList<ChatData>,iner:ISetMessage):  
 
         holder.itemView.setOnClickListener()
         {
-            iner.chat(chat!![position].getID().toString())
+            iner.chat(chat!![position])
         }
     }
     // total number of rows

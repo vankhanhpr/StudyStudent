@@ -41,8 +41,8 @@ class SelectAcountChatAdapter(context: Context, teacher: ArrayList<TeacherofStud
         holder.itemView.setOnClickListener()
         {
             //lay data
-            iner.selectaccount(teacher!![position].getID().toString())
-            Log.d("idchat",teacher!![position].getID().toString())
+            iner.selectaccount(teacher!![position])
+           // Log.d("idchat",teacher!![position].getNAME().toString())
         }
         holder.person_name!!.setText(teacher!![position].getNAME())
         holder.person_subject!!.setText(teacher!![position].getEMAIL())

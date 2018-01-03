@@ -78,7 +78,7 @@ class  Teacher: Fragment(),ISetTeacher, ISetCourseStudent,ICallAddFriend {
     var tab_nodata: LinearLayout? = null
 
     var lv_find_user: ListView? = null
-
+    var saveTeacherClick:TeacherofStudent?=null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view: View = inflater!!.inflate(R.layout.main_teacher_fragment, container, false)
@@ -117,7 +117,8 @@ class  Teacher: Fragment(),ISetTeacher, ISetCourseStudent,ICallAddFriend {
 
         lv_list_teacher!!.setOnItemClickListener{
             parent, view, position, id ->
-            callgetDetail(listUser[position].getID().toString())
+                saveTeacherClick = listUser[position]
+                callgetDetail(listUser[position])
         }
 
        /* lv_list_teacher!!.setOnMenuItemClickListener(object : SwipeMenuListView.OnMenuItemClickListener{
@@ -373,7 +374,7 @@ class  Teacher: Fragment(),ISetTeacher, ISetCourseStudent,ICallAddFriend {
         return teacher
     }
 
-    fun callgetDetail(id:String)
+    fun callgetDetail(teacher:TeacherofStudent)
     {
 
         dialogshowCourseTeacher = Dialog(context)
@@ -390,7 +391,7 @@ class  Teacher: Fragment(),ISetTeacher, ISetCourseStudent,ICallAddFriend {
 
         tv_title_dialog!!.setText("Danh sách các buổi học")
 
-        var invallistCourse: Array<String> = arrayOf(id)
+        var invallistCourse: Array<String> = arrayOf(teacher.getID().toString())
         call.Call_Service(Value.workername_getlisstcoursestudent,
                 Value.servicename_getlisstcoursestudent, invallistCourse,
                 Value.key_getlistcoursestudentbuck)
@@ -398,7 +399,6 @@ class  Teacher: Fragment(),ISetTeacher, ISetCourseStudent,ICallAddFriend {
     }
 
     override fun setteacher(id: String) {
-
         dialogshowCourseTeacher = Dialog(context)
         dialogshowCourseTeacher!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialogshowCourseTeacher!!.setContentView(R.layout.dialog_list_account_chat)
@@ -418,15 +418,18 @@ class  Teacher: Fragment(),ISetTeacher, ISetCourseStudent,ICallAddFriend {
                 Value.servicename_getlisstcoursestudent, invallistCourse,
                 Value.key_getlistcoursestudentbuck)
         dialogshowCourseTeacher!!.show()
-
-
     }
 
     override fun gotoDetailCourse() {
         super.gotoDetailCourse()
-        var intent = Intent(context, SelectCourse::class.java)
-        dialogshowCourseTeacher!!.cancel()
-        startActivity(intent)
+        if(saveTeacherClick!=null){
+            var intent = Intent(context, SelectCourse::class.java)
+            intent.putExtra("nameteacher",saveTeacherClick!!.getNAME());
+            dialogshowCourseTeacher!!.cancel()
+            startActivity(intent)
+        }else{
+            Toast.makeText(context,"Please select teacher to get course detail",Toast.LENGTH_SHORT)
+        }
     }
 
 

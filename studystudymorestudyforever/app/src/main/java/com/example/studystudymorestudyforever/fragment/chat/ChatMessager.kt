@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.widget.TextView
 import com.example.studystudymorestudyforever.R
 import com.example.studystudymorestudyforever.adapter.adapter.chat.MessageAdapter
 import com.example.studystudymorestudyforever.until.chat.ChatMessage
@@ -34,13 +35,18 @@ class ChatMessager :AppCompatActivity(){
     var adapter:MessageAdapter? = null
     var status_res:String = ""
 
+    var tv_name_user_chat:TextView? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chat_message_main_layout)
         initt()
-        var intent :Intent = intent
-        var bundle= intent.getBundleExtra("intent")
-        userchat= bundle.getString("bundle")
+        var bundle = intent.extras;
+        var name= bundle.getString("name")
+        userchat= bundle.getString("id_chat")
+
+        tv_name_user_chat!!.setText(""+name)
 
         getContentMessage()
 
@@ -69,6 +75,7 @@ class ChatMessager :AppCompatActivity(){
     fun initt()
     {
         EventBus.getDefault().register(this)
+        tv_name_user_chat = findViewById(R.id.tv_name_user_chat) as TextView
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
